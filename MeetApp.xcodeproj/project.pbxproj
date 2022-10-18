@@ -37,6 +37,7 @@
 		3D37F3E028F7AF5C00BDD35D /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3DF28F7AF5C00BDD35D /* FirebaseStorageCombine-Community */; };
 		3D37F3E228F7B33400BDD35D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D37F3E128F7B33400BDD35D /* LoginViewController.swift */; };
 		3D37F3E428F7B34800BDD35D /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */; };
+		674B68D528FE3EAC00D1C363 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674B68D428FE3EAC00D1C363 /* HomeView.swift */; };
 		67BF8E4C28F4C0F8002C2A7D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BF8E4B28F4C0F8002C2A7D /* AppDelegate.swift */; };
 		67BF8E4E28F4C0F8002C2A7D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BF8E4D28F4C0F8002C2A7D /* SceneDelegate.swift */; };
 		67BF8E5028F4C0F8002C2A7D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BF8E4F28F4C0F8002C2A7D /* ViewController.swift */; };
@@ -50,6 +51,7 @@
 		3D37F3A828F7AD1E00BDD35D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3D37F3E128F7B33400BDD35D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		674B68D428FE3EAC00D1C363 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		67BF8E4828F4C0F8002C2A7D /* MeetApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeetApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		67BF8E4B28F4C0F8002C2A7D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		67BF8E4D28F4C0F8002C2A7D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				67BF8E4B28F4C0F8002C2A7D /* AppDelegate.swift */,
 				67BF8E4D28F4C0F8002C2A7D /* SceneDelegate.swift */,
 				67BF8E4F28F4C0F8002C2A7D /* ViewController.swift */,
+				674B68D428FE3EAC00D1C363 /* HomeView.swift */,
 				3D37F3E128F7B33400BDD35D /* LoginViewController.swift */,
 				3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */,
 				67BF8E5128F4C0F8002C2A7D /* Main.storyboard */,
@@ -238,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				67BF8E5628F4C0F8002C2A7D /* MeetApp.xcdatamodeld in Sources */,
+				674B68D528FE3EAC00D1C363 /* HomeView.swift in Sources */,
 				67BF8E5028F4C0F8002C2A7D /* ViewController.swift in Sources */,
 				67BF8E4C28F4C0F8002C2A7D /* AppDelegate.swift in Sources */,
 				3D37F3E428F7B34800BDD35D /* RegisterViewController.swift in Sources */,
@@ -389,7 +393,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GC42DPS2VN;
+				DEVELOPMENT_TEAM = 59JCQBKBHG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MeetApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -417,7 +421,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GC42DPS2VN;
+				DEVELOPMENT_TEAM = 59JCQBKBHG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MeetApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
