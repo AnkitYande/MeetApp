@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3D37F3A928F7AD1F00BDD35D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D37F3A828F7AD1E00BDD35D /* GoogleService-Info.plist */; };
 		3D37F3AC28F7AF5C00BDD35D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3AB28F7AF5C00BDD35D /* FirebaseAnalytics */; };
 		3D37F3AE28F7AF5C00BDD35D /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3AD28F7AF5C00BDD35D /* FirebaseAnalyticsOnDeviceConversion */; };
 		3D37F3B028F7AF5C00BDD35D /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3AF28F7AF5C00BDD35D /* FirebaseAnalyticsSwift */; };
@@ -47,10 +46,10 @@
 		67BF8E5628F4C0F8002C2A7D /* MeetApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 67BF8E5428F4C0F8002C2A7D /* MeetApp.xcdatamodeld */; };
 		67BF8E5828F4C0FB002C2A7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 67BF8E5728F4C0FB002C2A7D /* Assets.xcassets */; };
 		67BF8E5B28F4C0FB002C2A7D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67BF8E5928F4C0FB002C2A7D /* LaunchScreen.storyboard */; };
+		EDCE9A1B28FF4E6A00D4ED21 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EDCE9A1A28FF4E6A00D4ED21 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3D37F3A828F7AD1E00BDD35D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3D37F3E128F7B33400BDD35D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		6706357328FEF0FA00EAE994 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -65,6 +64,7 @@
 		67BF8E5728F4C0FB002C2A7D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		67BF8E5A28F4C0FB002C2A7D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		67BF8E5C28F4C0FB002C2A7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EDCE9A1A28FF4E6A00D4ED21 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,7 +137,7 @@
 				67BF8E5928F4C0FB002C2A7D /* LaunchScreen.storyboard */,
 				67BF8E5C28F4C0FB002C2A7D /* Info.plist */,
 				67BF8E5428F4C0F8002C2A7D /* MeetApp.xcdatamodeld */,
-				3D37F3A828F7AD1E00BDD35D /* GoogleService-Info.plist */,
+				EDCE9A1A28FF4E6A00D4ED21 /* GoogleService-Info.plist */,
 			);
 			path = MeetApp;
 			sourceTree = "<group>";
@@ -233,7 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				67BF8E5B28F4C0FB002C2A7D /* LaunchScreen.storyboard in Resources */,
-				3D37F3A928F7AD1F00BDD35D /* GoogleService-Info.plist in Resources */,
+				EDCE9A1B28FF4E6A00D4ED21 /* GoogleService-Info.plist in Resources */,
 				67BF8E5828F4C0FB002C2A7D /* Assets.xcassets in Resources */,
 				67BF8E5328F4C0F8002C2A7D /* Main.storyboard in Resources */,
 			);
