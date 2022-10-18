@@ -15,6 +15,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        overrideUserInterfaceStyle = .light
         loginEmailTextField.placeholder = "Email"
         loginPasswordTextField.placeholder = "Password"
     }

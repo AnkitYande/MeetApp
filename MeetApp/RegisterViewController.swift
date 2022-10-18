@@ -15,6 +15,7 @@ class RegisterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        overrideUserInterfaceStyle = .light
         registerEmailTextField.placeholder = "Email"
         registerPasswordTextField.placeholder = "Password"
     }

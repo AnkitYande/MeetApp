@@ -14,7 +14,7 @@
             <objects>
                 <viewController title="Home Screen" id="BYZ-38-t0r" customClass="ViewController" customModule="MeetApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="787"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -31,7 +31,7 @@
         <!--Settings-->
         <scene sceneID="teP-2G-YcE">
             <objects>
-                <viewController title="Settings" id="hZj-hk-znv" customClass="ViewController" customModule="MeetApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsViewController" title="Settings" id="hZj-hk-znv" customClass="SettingsViewController" customModule="MeetApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0RA-Bh-a30">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -121,7 +121,7 @@
         <!--Social-->
         <scene sceneID="QpH-JN-nwk">
             <objects>
-                <viewController title="Social" id="8bP-ba-n9r" customClass="ViewController" customModule="MeetApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SocialViewController" title="Social" id="8bP-ba-n9r" customClass="SocialViewController" customModule="MeetApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dLB-M2-gt4">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -252,7 +252,7 @@
                     <connections>
                         <outlet property="loginEmailTextField" destination="W3u-F0-Raz" id="SjC-6X-Kmv"/>
                         <outlet property="loginPasswordTextField" destination="Gsh-Gn-6Mu" id="b9U-ol-9Tw"/>
-                        <segue destination="BYZ-38-t0r" kind="show" identifier="loginSegue" animates="NO" id="Sdp-ku-VuQ"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="loginSegue" animates="NO" modalPresentationStyle="fullScreen" id="Sdp-ku-VuQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MxA-cS-WcA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

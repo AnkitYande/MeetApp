@@ -46,22 +46,55 @@ struct HomeView: View {
     }
 }
 
+struct SettingsView: UIViewControllerRepresentable {
+    typealias UIViewControllerType = SettingsViewController
+
+    func makeUIViewController(context: Context) -> SettingsViewController {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = sb.instantiateViewController(identifier: "SettingsViewController") as! SettingsViewController
+        return viewController
+    }
+    
+    func updateUIViewController(_ uiViewController: SettingsViewController, context: Context) {
+        
+    }
+}
+
+struct SocialView: UIViewControllerRepresentable {
+    typealias UIViewControllerType = SocialViewController
+    
+    func makeUIViewController(context: Context) -> SocialViewController {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = sb.instantiateViewController(identifier: "SocialViewController") as! SocialViewController
+        return viewController
+    }
+    
+    func updateUIViewController(_ uiViewController: SocialViewController, context: Context) {
+        
+    }
+}
+
+
 struct headdingButtons: View{
     var body: some View{
         HStack{
-            Image(systemName: "gearshape")
-                .padding()
-                .background(Color.white)
-                .foregroundColor(Color.purple)
-                .clipShape(Circle())
-                .padding()
+            NavigationLink(destination:SettingsView()){
+                Image(systemName: "gearshape")
+                    .padding()
+                    .background(Color.white)
+                    .foregroundColor(Color.purple)
+                    .clipShape(Circle())
+                    .padding()
+            }
             Spacer()
-            Image(systemName: "person.3")
-                .padding()
-                .background(Color.white)
-                .foregroundColor(Color.purple)
-                .clipShape(Circle())
-                .padding()
+            NavigationLink(destination:SocialView()){
+                Image(systemName: "person.3")
+                    .padding()
+                    .background(Color.white)
+                    .foregroundColor(Color.purple)
+                    .clipShape(Circle())
+                    .padding()
+            }
         }
     }
 }
@@ -120,7 +153,7 @@ public struct cta: View{
     
     var text:String
     
-    public var body: some View{
+    public var body: some View {
         Button(text, action: action)
             .frame(minWidth: 64)
             .padding()
