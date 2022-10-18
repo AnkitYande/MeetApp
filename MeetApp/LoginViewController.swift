@@ -13,6 +13,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var loginEmailTextField: UITextField!
     @IBOutlet weak var loginPasswordTextField: UITextField!
     
+    let loginSegueIdentifier = "loginSegue"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loginEmailTextField.delegate = self
@@ -20,6 +22,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         overrideUserInterfaceStyle = .light
         loginEmailTextField.placeholder = "Email"
         loginPasswordTextField.placeholder = "Password"
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        if Auth.auth().currentUser != nil {
+            performSegue(withIdentifier: loginSegueIdentifier, sender: self)
+        }
     }
     
     @IBAction func loginButtonPressed(_ sender: Any) {
