@@ -8,13 +8,15 @@
 import UIKit
 import FirebaseAuth
 
-class RegisterViewController: UIViewController {
+class RegisterViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var registerEmailTextField: UITextField!
     @IBOutlet weak var registerPasswordTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerEmailTextField.delegate = self
+        registerPasswordTextField.delegate = self
         overrideUserInterfaceStyle = .light
         registerEmailTextField.placeholder = "Email"
         registerPasswordTextField.placeholder = "Password"
@@ -44,5 +46,14 @@ class RegisterViewController: UIViewController {
             incompleteAlert.addAction(okButton)
             present(incompleteAlert, animated: true)
         }
+    }
+    
+    func textFieldShouldReturn(_ textField:UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
 }
