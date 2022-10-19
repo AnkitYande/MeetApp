@@ -1,15 +1,17 @@
-#Contributions:
+# Contributions:
 
-##Ankit
+## Ankit
+- implimented the home screen of the App
+- Created the layout for a basic settings and social screen
 
-##Bo
+## Bo
 
-##William
+## William
 
-##Lorenzo: 
+## Lorenzo: 
 - Implemented login screen
 - Implemented register screen
 - Added auto-login functionality
 
 
-#Differences:
+# Differences:
