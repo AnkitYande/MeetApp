@@ -47,6 +47,7 @@
 		67BF8E5828F4C0FB002C2A7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 67BF8E5728F4C0FB002C2A7D /* Assets.xcassets */; };
 		67BF8E5B28F4C0FB002C2A7D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67BF8E5928F4C0FB002C2A7D /* LaunchScreen.storyboard */; };
 		ED2F727E28FF727A0078EA18 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = ED2F727D28FF727A0078EA18 /* README.md */; };
+		ED2F728028FF85FE0078EA18 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2F727F28FF85FE0078EA18 /* MapViewController.swift */; };
 		EDCE9A1B28FF4E6A00D4ED21 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EDCE9A1A28FF4E6A00D4ED21 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +67,7 @@
 		67BF8E5A28F4C0FB002C2A7D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		67BF8E5C28F4C0FB002C2A7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED2F727D28FF727A0078EA18 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		ED2F727F28FF85FE0078EA18 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		EDCE9A1A28FF4E6A00D4ED21 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -133,6 +135,7 @@
 				6706357528FEF3AB00EAE994 /* SocialViewController.swift */,
 				3D37F3E128F7B33400BDD35D /* LoginViewController.swift */,
 				3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */,
+				ED2F727F28FF85FE0078EA18 /* MapViewController.swift */,
 				67BF8E5128F4C0F8002C2A7D /* Main.storyboard */,
 				6706357328FEF0FA00EAE994 /* SettingsViewController.swift */,
 				ED2F727D28FF727A0078EA18 /* README.md */,
@@ -253,6 +256,7 @@
 				67BF8E5628F4C0F8002C2A7D /* MeetApp.xcdatamodeld in Sources */,
 				674B68D528FE3EAC00D1C363 /* HomeView.swift in Sources */,
 				67BF8E5028F4C0F8002C2A7D /* ViewController.swift in Sources */,
+				ED2F728028FF85FE0078EA18 /* MapViewController.swift in Sources */,
 				67BF8E4C28F4C0F8002C2A7D /* AppDelegate.swift in Sources */,
 				3D37F3E428F7B34800BDD35D /* RegisterViewController.swift in Sources */,
 				3D37F3E228F7B33400BDD35D /* LoginViewController.swift in Sources */,

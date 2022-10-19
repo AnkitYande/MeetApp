@@ -74,6 +74,19 @@ struct SocialView: UIViewControllerRepresentable {
     }
 }
 
+struct MapView: UIViewControllerRepresentable {
+    typealias UIViewControllerType = MapViewController
+    
+    func makeUIViewController(context: Context) -> MapViewController {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = sb.instantiateViewController(identifier: "MapViewController") as! MapViewController
+        return viewController
+    }
+    
+    func updateUIViewController(_ uiViewController: MapViewController, context: Context) {
+        
+    }
+}
 
 struct headdingButtons: View{
     var body: some View{
@@ -105,14 +118,14 @@ struct addBtn: View{
             Spacer()
             HStack{
                 Spacer()
-//                NavigationLink(destination: CreateMeetingView()){
+                NavigationLink(destination: MapView()){
                     Image(systemName: "plus")
                         .font(.system(size:24, weight: .bold))
                         .padding()
                         .foregroundColor(Color.white)
                         .background(Color.purple)
                         .clipShape(Circle())
-//                }
+                }
             }
             .padding()
         }
