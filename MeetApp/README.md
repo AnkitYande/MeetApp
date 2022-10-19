@@ -1,8 +1,9 @@
 # Contributions:
 
 ## Ankit
-- implimented the home screen of the App
-- Created the layout for a basic settings and social screen
+- Implimented the Home Screen of the App
+- Began working on the Create Meeting screen
+- Created the layout for a basic settings and friends/groups screen
 
 ## Bo
 
