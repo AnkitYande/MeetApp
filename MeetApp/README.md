@@ -23,5 +23,6 @@
 
 
 # Differences:
-- We ended up setting up and adding the login/registration logic through Firebase which was not originally in our goals for the alpha.
-- Other than this, we met all of our goals besides implementing the meeting/event functionality and navigation with MapKit. However, multiple of us have begun the research and development process with MapKit already to be prepared to complete it during the initial working time of beta.
+- We ended up setting up and adding the login/registration logic through Firebase which was not originally in our goals for the Alpha release.
+- Other than this, we met all of our goals besides implementing the meeting/event functionality and navigation with MapKit. However, multiple of us have begun the research and development process with MapKit already to be prepared to complete it during the initial working time of Beta. Additionally, our team decided to utilize SwiftUI for some of the functionality, so Ankit spent extra time learning how to incorporate this into our product.
+- The last difference we noticed was that our "home screen" we mentioned in the proposal document became many different views once we thought about the actual design, and each of these need to be set up for meeting/event functionality to work correctly.
