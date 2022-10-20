@@ -16,26 +16,25 @@ struct HomeView: View {
                     VStack{
                         VStack{
                             headdingButtons()
-                                .padding(.top, 30.0)
+                                .padding(.top, 32.0)
                             Spacer()
                             Text("Happening Now!")
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundColor(Color.white)
-                            card(title: "Party at Bo's", date: "October 31st", time: "7:30pm", address:"123 Bo Street, Austin, TX")
-                                .padding()
+                            card(title: "Party at Bo's", date: "October 31st", time: "7:30pm", address:"123 Bo Street, Austin, TX").padding(.leading).padding(.trailing)
                         }
                         .background(Color.purple)
-                        
                         Spacer()
                         Text("Future Events")
-                            .font(.title2)
+                            .font(.title)
                             .fontWeight(.bold)
+                            .padding(.top, 24.0)
                         LazyVStack(){
                             card(title: "Party at Bo's", date: "October 31st", time: "7:30pm", address:"123 Bo Street, Austin, TX")
                             card(title: "Party at Bo's", date: "October 31st", time: "7:30pm", address:"123 Bo Street, Austin, TX")
                             card(title: "Party at Bo's", date: "October 31st", time: "7:30pm", address:"123 Bo Street, Austin, TX")
-                        }.padding()
+                        }.padding(.leading).padding(.trailing)
                     }
                 }
                 .edgesIgnoringSafeArea(.top)
@@ -48,7 +47,7 @@ struct HomeView: View {
 
 struct SettingsView: UIViewControllerRepresentable {
     typealias UIViewControllerType = SettingsViewController
-
+    
     func makeUIViewController(context: Context) -> SettingsViewController {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         let viewController = sb.instantiateViewController(identifier: "SettingsViewController") as! SettingsViewController
@@ -118,7 +117,7 @@ struct addBtn: View{
             Spacer()
             HStack{
                 Spacer()
-                NavigationLink(destination: MapView()){
+                NavigationLink(destination: CreateMeetingView()){
                     Image(systemName: "plus")
                         .font(.system(size:24, weight: .bold))
                         .padding()
@@ -148,9 +147,9 @@ struct card: View{
             Text(address)
             HStack{
                 Spacer()
-                cta(text: "Accept")
+                cta(text: "Accept", action: action)
                 Spacer()
-                cta(text: "Decline")
+                cta(text: "Decline", action: action)
                 Spacer()
             }
         }
@@ -165,6 +164,7 @@ struct card: View{
 public struct cta: View{
     
     var text:String
+    var action: ()->Void
     
     public var body: some View {
         Button(text, action: action)
@@ -177,9 +177,8 @@ public struct cta: View{
     }
 }
 
-func action() {
+func action() -> Void {
     print("pressed")
-    return
 }
 
 struct ContentView_Previews: PreviewProvider {

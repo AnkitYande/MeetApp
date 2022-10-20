@@ -160,7 +160,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="dAz-Oo-izY">
-                                <rect key="frame" x="65" y="146" width="260" height="32"/>
+                                <rect key="frame" x="16" y="146" width="353" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="Friends"/>
@@ -198,7 +198,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Asw-jp-nQM" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-882" y="-638"/>
+            <point key="canvasLocation" x="-883.20610687022895" y="-638.02816901408448"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="pQu-qN-ZKq">
