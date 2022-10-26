@@ -109,41 +109,6 @@ struct MapKitView: UIViewRepresentable {
     }
 }
 
-
-//struct MapView: View {
-//
-//    @State private var searchText = ""
-//
-//    var body: some View {
-//        MapKitView()
-//            .edgesIgnoringSafeArea(.bottom)
-////            .ignoresSafeArea()
-//            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-//    }
-//}
-
-//struct MapKitView: UIViewRepresentable {
-//    var locationManager = CLLocationManager()
-//
-//    func setupManager() {
-//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//        locationManager.requestWhenInUseAuthorization()
-//        locationManager.requestAlwaysAuthorization()
-//    }
-//
-//    func makeUIView(context: Context) -> MKMapView {
-//        setupManager()
-//        let mapView = MKMapView(frame: .zero)
-//        mapView.showsUserLocation = true
-//        mapView.userTrackingMode = .follow
-//        return mapView
-//    }
-//
-//    func updateUIView(_ uiView: MKMapView, context: Context) {
-//
-//    }
-//}
-
 struct MapView_Previews: PreviewProvider {
     static var previews: some View {
         MapView()

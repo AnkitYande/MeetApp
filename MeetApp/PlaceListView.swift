@@ -41,6 +41,5 @@ struct PlaceListView: View {
 struct PlaceListView_Previews: PreviewProvider {
     static var previews: some View {
         PlaceListView(landmarks: [], onTap: {})
-//        PlaceListView(landmarks: [Landmark(placemark: MKPlacemark())], onTap: {})
     }
 }

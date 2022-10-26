@@ -52,7 +52,6 @@
 		ED09A8F82909BE2C00C464DD /* Landmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED09A8F72909BE2C00C464DD /* Landmark.swift */; };
 		ED09A8FA2909C06B00C464DD /* PlaceListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED09A8F92909C06B00C464DD /* PlaceListView.swift */; };
 		ED2F727E28FF727A0078EA18 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = ED2F727D28FF727A0078EA18 /* README.md */; };
-		ED2F728028FF85FE0078EA18 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2F727F28FF85FE0078EA18 /* MapViewController.swift */; };
 		EDCE9A1B28FF4E6A00D4ED21 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EDCE9A1A28FF4E6A00D4ED21 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -78,7 +77,6 @@
 		ED09A8F72909BE2C00C464DD /* Landmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Landmark.swift; sourceTree = "<group>"; };
 		ED09A8F92909C06B00C464DD /* PlaceListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceListView.swift; sourceTree = "<group>"; };
 		ED2F727D28FF727A0078EA18 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		ED2F727F28FF85FE0078EA18 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		EDCE9A1A28FF4E6A00D4ED21 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -147,7 +145,6 @@
 				3D37F3E128F7B33400BDD35D /* LoginViewController.swift */,
 				3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */,
 				67CAEBDA2901DFA60027CB56 /* CreateMeetingView.swift */,
-				ED2F727F28FF85FE0078EA18 /* MapViewController.swift */,
 				122622E82908DB4B00AD97B8 /* FirebaseSchema.md */,
 				67BF8E5128F4C0F8002C2A7D /* Main.storyboard */,
 				ED09A8F32909ACBD00C464DD /* MapView.swift */,
@@ -274,7 +271,6 @@
 				ED09A8F42909ACBD00C464DD /* MapView.swift in Sources */,
 				674B68D528FE3EAC00D1C363 /* HomeView.swift in Sources */,
 				67BF8E5028F4C0F8002C2A7D /* ViewController.swift in Sources */,
-				ED2F728028FF85FE0078EA18 /* MapViewController.swift in Sources */,
 				67BF8E4C28F4C0F8002C2A7D /* AppDelegate.swift in Sources */,
 				3D37F3E428F7B34800BDD35D /* RegisterViewController.swift in Sources */,
 				ED09A8F82909BE2C00C464DD /* Landmark.swift in Sources */,
