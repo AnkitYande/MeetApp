@@ -55,7 +55,8 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
             }
             print("\(user.email!) created")
             self.database.child("users").child(user.uid).setValue([
-                "username": self.registerUsernameTextField.text!
+                "username": self.registerUsernameTextField.text!,
+                "email": self.registerEmailTextField.text!
             ])
         }
     }

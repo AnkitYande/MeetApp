@@ -1,6 +1,7 @@
 - Users: obj
     - userUID: obj
         - username: str
+        - email: str
         - firstName: str
         - lastName: str
         - friends: obj
