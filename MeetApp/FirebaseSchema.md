@@ -1,0 +1,23 @@
+- Users: obj
+    - userUID: obj
+        - username: str
+        - firstName: str
+        - lastName: str
+        - friends: obj
+            - userUID: bool
+        - events: obj
+            - eventUID: bool
+- Events: obj
+    - eventUID: obj
+         - eventName: string
+         - datetime: string
+         - description: string
+         - attendees: obj
+             - userUID: bool
+         - host: obj
+             - userUID: bool
+- Groups: obj
+    - groupUID: obj
+        - groupName: str
+        - members: obj
+            - userUID: bool

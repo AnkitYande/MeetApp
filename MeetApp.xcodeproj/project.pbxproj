@@ -53,6 +53,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		122622E82908DB4B00AD97B8 /* FirebaseSchema.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FirebaseSchema.md; sourceTree = "<group>"; };
 		3D37F3E128F7B33400BDD35D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		6706357328FEF0FA00EAE994 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -139,6 +140,7 @@
 				3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */,
 				67CAEBDA2901DFA60027CB56 /* CreateMeetingView.swift */,
 				ED2F727F28FF85FE0078EA18 /* MapViewController.swift */,
+				122622E82908DB4B00AD97B8 /* FirebaseSchema.md */,
 				67BF8E5128F4C0F8002C2A7D /* Main.storyboard */,
 				6706357328FEF0FA00EAE994 /* SettingsViewController.swift */,
 				ED2F727D28FF727A0078EA18 /* README.md */,
