@@ -7,6 +7,17 @@
 
 import SwiftUI
 
+var _eventName:String = "Party at Bo's"
+var _startDatetime:String = "2022-10-30 22:00:00 +0000"
+var _endDatetime:String = "2022-10-31 22:26:00 +0000"
+var _address = "123 West Campus Street"
+var _description:String = "Bo is throwing the most popping party in all of Wampus!  Come on through for this great networking opportunity"
+var _attendees:String = ""
+var _host:String = "Bo Deng"
+
+public var testEvent = Event(eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address, description: _description, attendees: _attendees, host: _host)
+
+
 struct HomeView: View {
     var body: some View {
         NavigationView {
@@ -22,7 +33,7 @@ struct HomeView: View {
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundColor(Color.white)
-                            card(title: "Party at Bo's", date: "October 31st", time: "7:30pm", address:"123 Bo Street, Austin, TX").padding(.leading).padding(.trailing)
+                            card(event: testEvent).padding(.leading).padding(.trailing)
                         }
                         .background(Color.purple)
                         Spacer()
@@ -31,9 +42,10 @@ struct HomeView: View {
                             .fontWeight(.bold)
                             .padding(.top, 24.0)
                         LazyVStack(){
-                            card(title: "Party at Bo's", date: "October 31st", time: "7:30pm", address:"123 Bo Street, Austin, TX")
-                            card(title: "Party at Bo's", date: "October 31st", time: "7:30pm", address:"123 Bo Street, Austin, TX")
-                            card(title: "Party at Bo's", date: "October 31st", time: "7:30pm", address:"123 Bo Street, Austin, TX")
+                            card(event: testEvent)
+                            card(event: testEvent)
+                            card(event: testEvent)
+                            card(event: testEvent)
                         }.padding(.leading).padding(.trailing)
                     }
                 }
@@ -133,31 +145,31 @@ struct addBtn: View{
 }
 
 struct card: View{
-    var title:String
-    var date:String
-    var time:String
-    var address:String
+    var event:Event
     
     var body: some View{
-        VStack(alignment: .leading){
-            Text(title)
-                .fontWeight(.bold)
-            Text(date)
-            Text(time)
-            Text(address)
-            HStack{
-                Spacer()
-                cta(text: "Accept", action: action)
-                Spacer()
-                cta(text: "Decline", action: action)
-                Spacer()
+        NavigationLink(destination: EventView(event: testEvent)){
+            VStack(alignment: .leading){
+                Text(event.eventName)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.black)
+                Text("\(formatDate(datetimeString: event.startDatetime))").foregroundColor(Color.black)
+                Text("\(formatTime(datetimeString: event.startDatetime))").foregroundColor(Color.black)
+                Text(event.address).foregroundColor(Color.black)
+                HStack{
+                    Spacer()
+                    cta(text: "Accept", action: action)
+                    Spacer()
+                    cta(text: "Decline", action: action)
+                    Spacer()
+                }
             }
+            .padding()
+            .background(Color.white)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(color: Color.gray, radius: 4)
+            .padding()
         }
-        .padding()
-        .background(Color.white)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .shadow(color: Color.gray, radius: 4)
-        .padding()
     }
 }
 
