@@ -129,7 +129,7 @@ struct addBtn: View{
             Spacer()
             HStack{
                 Spacer()
-                NavigationLink(destination: CreateMeetingView()){
+                NavigationLink(destination: CreateEventView()){
                     Image(systemName: "plus")
                         .font(.system(size:24, weight: .bold))
                         .padding()
@@ -158,9 +158,9 @@ struct card: View{
                 Text(event.address).foregroundColor(Color.black)
                 HStack{
                     Spacer()
-                    cta(text: "Accept", action: action)
+                    cta(text: "Accept", minWidth: 64, action: action)
                     Spacer()
-                    cta(text: "Decline", action: action)
+                    cta(text: "Decline", minWidth: 64, action: action)
                     Spacer()
                 }
             }
@@ -176,11 +176,12 @@ struct card: View{
 public struct cta: View{
     
     var text:String
+    var minWidth:CGFloat
     var action: ()->Void
     
     public var body: some View {
         Button(text, action: action)
-            .frame(minWidth: 64)
+            .frame(minWidth: minWidth)
             .padding()
             .background(Color.purple)
             .foregroundColor(Color.white)

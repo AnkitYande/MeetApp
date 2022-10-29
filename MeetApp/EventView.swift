@@ -10,13 +10,18 @@ import SwiftUI
 struct EventView: View {
     
     let event:Event
-    
+    @State var confirmed:Bool = false// Link this to core data to store status for each event?
+
     var body: some View {
-        
         
         ScrollView {
             VStack(alignment: .leading){
                 Text(event.eventName).font(.title).fontWeight(.semibold).padding(.top, 12.0)
+                HStack{
+                    Spacer()
+                    cta(text: confirmed ? "Confirmed!" : "Confirm?", minWidth: 128, action: toggleStatus)
+                    Spacer()
+                }
                 Group{
                     Text("Details").font(.title3).fontWeight(.semibold).padding(.top, 12.0)
                     HStack {
@@ -41,14 +46,20 @@ struct EventView: View {
             }.padding()
         }
     }
+    
+    func formatDates( _ datetimeString1:String, _ datetimeString2:String) -> String {
+        // do not show a date if the event begins and ends on the same day
+        let d1 = formatDate(datetimeString: datetimeString1)
+        let d2 = formatDate(datetimeString: datetimeString2)
+        return d1 == d2 ? d1 : "\(d1) - \(d2)"
+    }
+
+    func toggleStatus() -> Void {
+        confirmed.toggle()
+    }
 }
 
-func formatDates( _ datetimeString1:String, _ datetimeString2:String) -> String {
-    // do not show a date if the event begins and ends on the same day
-    let d1 = formatDate(datetimeString: datetimeString1)
-    let d2 = formatDate(datetimeString: datetimeString2)
-    return d1 == d2 ? d1 : "\(d1) - \(d2)"
-}
+
 
 struct EventView_Previews: PreviewProvider {
     static var previews: some View {
