@@ -53,10 +53,12 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
                 print(error!.localizedDescription)
                 return
             }
+            user_id = user.uid
             print("\(user.email!) created")
             self.database.child("users").child(user.uid).setValue([
                 "username": self.registerUsernameTextField.text!,
-                "email": self.registerEmailTextField.text!
+                "email": self.registerEmailTextField.text!,
+                "profilePic": "gs://meetapp-cafdc.appspot.com/user.jpeg"
             ])
         }
     }
