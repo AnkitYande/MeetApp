@@ -2,8 +2,9 @@
     - userUID: obj
         - username: str
         - email: str
-        - firstName: str
-        - lastName: str
+        - displayName: str
+        - profilePicture: str
+        - status: str
         - friends: obj
             - userUID: bool
         - events: obj
@@ -11,7 +12,9 @@
 - Events: obj
     - eventUID: obj
          - eventName: string
-         - datetime: string
+         - location: string
+         - startDatetime: string
+         - endDatetime: string
          - description: string
          - attendees: obj
              - userUID: bool
