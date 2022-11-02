@@ -14,6 +14,7 @@ struct CreateMeetingView: View {
     @State private var meetingDescription: String = ""
     @State private var startDate = Date()
     @State private var endDate = Date()
+    @State private var location: String = ""
     
     var body: some View {
         ScrollView {
@@ -22,8 +23,8 @@ struct CreateMeetingView: View {
                     .textFieldStyle(.plain)
                     .font(.title).fontWeight(.semibold)
                 Text("Where?").font(.title3).fontWeight(.semibold).padding(.top, 24.0)
-                NavigationLink(destination: MapView()){
-                    TextField("Search for Location", text: $meetingDescription, axis: .vertical)
+                NavigationLink(destination: MapView(location: $location)){
+                    TextField("Search for Location", text: $location, axis: .vertical)
                         .textFieldStyle(.roundedBorder)
                 }
                 Text("When?").font(.title3).fontWeight(.semibold).padding(.top, 24.0)
@@ -36,7 +37,7 @@ struct CreateMeetingView: View {
                     displayedComponents: [.date, .hourAndMinute]
                 )
                 Text("Who?").font(.title3).fontWeight(.semibold).padding(.top, 24.0)
-                NavigationLink(destination: MapView()){
+                NavigationLink(destination: MapView(location: $location)){
                     TextField("Search for Friends/ Groups", text: $meetingDescription, axis: .vertical)
                         .textFieldStyle(.roundedBorder)
                 }

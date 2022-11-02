@@ -11,6 +11,7 @@ import MapKit
 struct PlaceListView: View {
     
     let landmarks: [Landmark]
+    var choose: (String) -> ()
     var onTap: () -> ()
     
     var body: some View {
@@ -23,23 +24,47 @@ struct PlaceListView: View {
                     .onEnded(self.onTap)
                 )
             List {
-                
                 ForEach(self.landmarks, id: \.id) { landmark in
-                    
-                    VStack(alignment: .leading) {
-                        Text(landmark.name)
-                            .fontWeight(.bold)
-                        
-                        Text(landmark.title)
-                    }
+                    Place(choose: self.choose, landmark: landmark)
                 }
             }
         }.cornerRadius(10)
     }
 }
 
+struct Place: View {
+    
+    @State var showingAlert: Bool = false
+    var choose: (String) -> ()
+    
+    let landmark: Landmark
+    
+    var body: some View {
+        Button(action: { self.showingAlert = true }) {
+            VStack(alignment: .leading) {
+                Text(landmark.name)
+                    .fontWeight(.bold)
+                Text(landmark.title)
+            } .foregroundColor(.primary)
+        }
+        .alert(isPresented: $showingAlert, content: {
+            Alert(
+                title: Text(landmark.title),
+                message: Text("Select this location?"),
+                primaryButton: .cancel(
+                    Text("No"),
+                    action: {}
+                ),
+                secondaryButton: .default(
+                    Text("Yes"),
+                    action: { self.choose(landmark.title) }
+                ))
+        })
+    }
+}
+
 struct PlaceListView_Previews: PreviewProvider {
     static var previews: some View {
-        PlaceListView(landmarks: [], onTap: {})
+        PlaceListView(landmarks: [], choose: {_ in }, onTap: {})
     }
 }

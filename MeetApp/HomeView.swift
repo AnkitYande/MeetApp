@@ -73,20 +73,6 @@ struct SocialView: UIViewControllerRepresentable {
     }
 }
 
-//struct MapView: UIViewControllerRepresentable {
-//    typealias UIViewControllerType = MapViewController
-//
-//    func makeUIViewController(context: Context) -> MapViewController {
-//        let sb = UIStoryboard(name: "Main", bundle: nil)
-//        let viewController = sb.instantiateViewController(identifier: "MapViewController") as! MapViewController
-//        return viewController
-//    }
-//
-//    func updateUIViewController(_ uiViewController: MapViewController, context: Context) {
-//
-//    }
-//}
-
 struct headdingButtons: View{
     var body: some View{
         HStack{

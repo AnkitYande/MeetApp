@@ -17,6 +17,7 @@ struct MapView: View {
     @State private var search: String = ""
     @State private var tapped: Bool = false
     @State private var animationAmount = 1.0
+    @Binding var location: String
     
     private func getNearbyLandmarks() {
         let request = MKLocalSearch.Request()
@@ -43,6 +44,10 @@ struct MapView: View {
         }
     }
     
+    func chooseLocation(chosenLocation: String) {
+        self.location = chosenLocation
+    }
+    
     var body: some View {
         ZStack(alignment: .top) {
             
@@ -56,7 +61,7 @@ struct MapView: View {
                 .padding()
                 .offset(y: 0)
             
-            PlaceListView(landmarks: self.landmarks) {
+            PlaceListView(landmarks: self.landmarks, choose: self.chooseLocation) {
                 self.tapped.toggle()
             }.offset(y: calculateOffset())
         }
@@ -111,6 +116,6 @@ struct MapKitView: UIViewRepresentable {
 
 struct MapView_Previews: PreviewProvider {
     static var previews: some View {
-        MapView()
+        MapView(location: .constant(""))
     }
 }
