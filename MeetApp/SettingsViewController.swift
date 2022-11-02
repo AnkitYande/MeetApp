@@ -30,6 +30,7 @@ class SettingsViewController: UIViewController {
     
     func downloadImage() {
         // TODO: see if can do 1 getData call and get user data
+        print("User ID: \(user_id)")
          database.child("users").child(user_id).child("profilePic").getData(completion: { error, snapshot in
             guard error == nil else {
               print(error!.localizedDescription)
@@ -41,20 +42,40 @@ class SettingsViewController: UIViewController {
                      // TODO: alert user image is not correct size
                      print("picture is above max size")
                  } else {
-                     self.profilePictureButton.setImage(UIImage(data: data!), for: .normal)
+                     let image = self.resizeImage(image: UIImage(data: data!)!, newWidth: 90, newHeight: 90)
+                     self.profilePictureButton.setImage(image, for: .normal)
              }})
           })
         
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func buttonPressed(_ sender: Any) {
+        let data = Data()
+        ImagePickerManager().pickImage(self){ image in
+            let newImage = self.resizeImage(image: image, newWidth: 90, newHeight: 90)
+            self.profilePictureButton.setImage(newImage, for: .normal)
+            let imageRef = self.storage.reference().child("\(user_id).jpg")
+            let uploadTask = imageRef.putData(newImage.pngData()!, metadata: nil) { (metadata, error) in
+                guard let metadata = metadata else {
+                    return
+                }
+                let size = metadata.size
+                imageRef.downloadURL { (url, error) in
+                    guard let downloadURL = url else {
+                        return
+                    }
+                    self.database.child("users").child(user_id).child("profilePic").setValue(downloadURL.absoluteString)
+                }
+            }
+        }
     }
-    */
-
+    
+    private func resizeImage(image: UIImage, newWidth: CGFloat, newHeight: CGFloat) -> UIImage {
+        let scale = newWidth / image.size.width
+        //let newHeight = image.size.height * scale
+        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+        image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
+    }
 }

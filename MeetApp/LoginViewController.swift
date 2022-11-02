@@ -29,6 +29,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         if Auth.auth().currentUser != nil {
+            user_id = Auth.auth().currentUser!.uid
+            print("id: \(user_id)")
             performSegue(withIdentifier: loginSegueIdentifier, sender: self)
         }
     }

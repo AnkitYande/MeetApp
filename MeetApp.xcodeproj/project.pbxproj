@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D3647812913278F004D3958 /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3647802913278F004D3958 /* ImagePickerManager.swift */; };
 		3D37F3AC28F7AF5C00BDD35D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3AB28F7AF5C00BDD35D /* FirebaseAnalytics */; };
 		3D37F3AE28F7AF5C00BDD35D /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3AD28F7AF5C00BDD35D /* FirebaseAnalyticsOnDeviceConversion */; };
 		3D37F3B028F7AF5C00BDD35D /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3AF28F7AF5C00BDD35D /* FirebaseAnalyticsSwift */; };
@@ -54,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		122622E82908DB4B00AD97B8 /* FirebaseSchema.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FirebaseSchema.md; sourceTree = "<group>"; };
+		3D3647802913278F004D3958 /* ImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
 		3D37F3E128F7B33400BDD35D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		6706357328FEF0FA00EAE994 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				67CAEBDA2901DFA60027CB56 /* CreateMeetingView.swift */,
 				ED2F727F28FF85FE0078EA18 /* MapViewController.swift */,
 				6706357328FEF0FA00EAE994 /* SettingsViewController.swift */,
+				3D3647802913278F004D3958 /* ImagePickerManager.swift */,
 				122622E82908DB4B00AD97B8 /* FirebaseSchema.md */,
 				67BF8E5128F4C0F8002C2A7D /* Main.storyboard */,
 				ED2F727D28FF727A0078EA18 /* README.md */,
@@ -269,6 +272,7 @@
 				67BF8E4E28F4C0F8002C2A7D /* SceneDelegate.swift in Sources */,
 				67CAEBDB2901DFA60027CB56 /* CreateMeetingView.swift in Sources */,
 				6706357428FEF0FA00EAE994 /* SettingsViewController.swift in Sources */,
+				3D3647812913278F004D3958 /* ImagePickerManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
