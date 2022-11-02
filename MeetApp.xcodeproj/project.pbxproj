@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1226231129122FC000AD97B8 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226231029122FC000AD97B8 /* Util.swift */; };
+		122623132912300200AD97B8 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122623122912300200AD97B8 /* EventView.swift */; };
 		3D37F3AC28F7AF5C00BDD35D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3AB28F7AF5C00BDD35D /* FirebaseAnalytics */; };
 		3D37F3AE28F7AF5C00BDD35D /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3AD28F7AF5C00BDD35D /* FirebaseAnalyticsOnDeviceConversion */; };
 		3D37F3B028F7AF5C00BDD35D /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3AF28F7AF5C00BDD35D /* FirebaseAnalyticsSwift */; };
@@ -54,6 +56,8 @@
 
 /* Begin PBXFileReference section */
 		122622E82908DB4B00AD97B8 /* FirebaseSchema.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FirebaseSchema.md; sourceTree = "<group>"; };
+		1226231029122FC000AD97B8 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		122623122912300200AD97B8 /* EventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		3D37F3E128F7B33400BDD35D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		6706357328FEF0FA00EAE994 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -140,6 +144,7 @@
 				3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */,
 				67CAEBDA2901DFA60027CB56 /* CreateMeetingView.swift */,
 				ED2F727F28FF85FE0078EA18 /* MapViewController.swift */,
+				122623122912300200AD97B8 /* EventView.swift */,
 				122622E82908DB4B00AD97B8 /* FirebaseSchema.md */,
 				67BF8E5128F4C0F8002C2A7D /* Main.storyboard */,
 				6706357328FEF0FA00EAE994 /* SettingsViewController.swift */,
@@ -147,6 +152,7 @@
 				67BF8E5728F4C0FB002C2A7D /* Assets.xcassets */,
 				67BF8E5928F4C0FB002C2A7D /* LaunchScreen.storyboard */,
 				67BF8E5C28F4C0FB002C2A7D /* Info.plist */,
+				1226231029122FC000AD97B8 /* Util.swift */,
 				67BF8E5428F4C0F8002C2A7D /* MeetApp.xcdatamodeld */,
 				EDCE9A1A28FF4E6A00D4ED21 /* GoogleService-Info.plist */,
 			);
@@ -260,11 +266,13 @@
 			files = (
 				67BF8E5628F4C0F8002C2A7D /* MeetApp.xcdatamodeld in Sources */,
 				674B68D528FE3EAC00D1C363 /* HomeView.swift in Sources */,
+				122623132912300200AD97B8 /* EventView.swift in Sources */,
 				67BF8E5028F4C0F8002C2A7D /* ViewController.swift in Sources */,
 				ED2F728028FF85FE0078EA18 /* MapViewController.swift in Sources */,
 				67BF8E4C28F4C0F8002C2A7D /* AppDelegate.swift in Sources */,
 				3D37F3E428F7B34800BDD35D /* RegisterViewController.swift in Sources */,
 				3D37F3E228F7B33400BDD35D /* LoginViewController.swift in Sources */,
+				1226231129122FC000AD97B8 /* Util.swift in Sources */,
 				6706357628FEF3AB00EAE994 /* SocialViewController.swift in Sources */,
 				67BF8E4E28F4C0F8002C2A7D /* SceneDelegate.swift in Sources */,
 				67CAEBDB2901DFA60027CB56 /* CreateMeetingView.swift in Sources */,
