@@ -8,6 +8,8 @@
 import UIKit
 import FirebaseAuth
 
+public var user_id = ""
+
 class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var loginEmailTextField: UITextField!
@@ -27,6 +29,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         if Auth.auth().currentUser != nil {
+            user_id = Auth.auth().currentUser!.uid
+            print("id: \(user_id)")
             performSegue(withIdentifier: loginSegueIdentifier, sender: self)
         }
     }
@@ -64,8 +68,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 strongSelf.present(loginErrorAlert, animated: true)
                 return
             }
+            user_id = user.uid
             print("login successful")
-            print("user uid: \(user.uid)")
+            print("user uid: \(user_id)")
             strongSelf.performSegue(withIdentifier: "loginSegue", sender: strongSelf)
         }
     }
