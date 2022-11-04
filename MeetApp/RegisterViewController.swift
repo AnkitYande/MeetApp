@@ -13,6 +13,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var registerEmailTextField: UITextField!
     @IBOutlet weak var registerUsernameTextField: UITextField!
+    @IBOutlet weak var registerDisplayNameTextField: UITextField!
     @IBOutlet weak var registerPasswordTextField: UITextField!
     
     private let database = Database.database().reference()
@@ -21,18 +22,20 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         registerEmailTextField.delegate = self
         registerUsernameTextField.delegate = self
+        registerDisplayNameTextField.delegate = self
         registerPasswordTextField.delegate = self
         overrideUserInterfaceStyle = .light
         registerEmailTextField.placeholder = "Email"
         registerUsernameTextField.placeholder = "Username"
+        registerDisplayNameTextField.placeholder = "Display Name"
         registerPasswordTextField.placeholder = "Password"
     }
     
     @IBAction func registerButtonPressed(_ sender: Any) {
-        guard registerEmailTextField.hasText && registerUsernameTextField.hasText && registerPasswordTextField.hasText else {
+        guard registerEmailTextField.hasText && registerUsernameTextField.hasText && registerDisplayNameTextField.hasText && registerPasswordTextField.hasText else {
             let incompleteAlert = UIAlertController(
                 title: "Incomplete Registration",
-                message: "Please enter a valid email, username, and password",
+                message: "Please enter a valid email, username, display name, and password",
                 preferredStyle: .alert
             )
             
@@ -58,6 +61,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
             self.database.child("users").child(user.uid).setValue([
                 "username": self.registerUsernameTextField.text!,
                 "email": self.registerEmailTextField.text!,
+                "displayName": self.registerDisplayNameTextField.text!,
                 "profilePic": "gs://meetapp-cafdc.appspot.com/user.jpeg"
             ])
         }

@@ -8,7 +8,8 @@
         - friends: obj
             - userUID: bool
         - events: obj
-            - eventUID: bool
+            - eventUID: obj
+                - confimed: bool
 - Events: obj
     - eventUID: obj
          - eventName: string
@@ -16,8 +17,9 @@
          - startDatetime: string
          - endDatetime: string
          - description: string
-         - attendees: obj
-             - userUID: bool
+         - invitees: obj
+             - userUID: obj
+                 - confirmed: bool
          - host: obj
              - userUID: bool
 - Groups: obj

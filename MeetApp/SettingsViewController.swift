@@ -69,6 +69,15 @@ class SettingsViewController: UIViewController {
         }
     }
     
+    @IBAction func signOutButtonPressed(_ sender: Any) {
+        let firebaseAuth = Auth.auth()
+        do {
+          try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+          print("Error signing out: %@", signOutError)
+        }
+    }
+    
     private func resizeImage(image: UIImage, newWidth: CGFloat, newHeight: CGFloat) -> UIImage {
         let scale = newWidth / image.size.width
         //let newHeight = image.size.height * scale
