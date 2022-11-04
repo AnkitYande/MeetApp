@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import FirebaseDatabase
 
 struct CreateEventView: View {
     
@@ -46,14 +46,16 @@ struct CreateEventView: View {
                     .textFieldStyle(.roundedBorder)
             }.padding()
             
-            cta(text:"Create Event", minWidth: 128, action: printAction)
+            cta(text:"Create Event", minWidth: 128, action: createEvent)
                 .fontWeight(.bold)
                 .padding(.top, 48.0)
         }
     }
     
-    func printAction(){
-        print(eventName, eventDescription, startDate, endDate)
+    func createEvent(){
+        print(eventName, eventDescription, location, startDate, endDate)
+        // TODO: add event to events object
+        // TODO: add uuid of event to current user
     }
     
 }

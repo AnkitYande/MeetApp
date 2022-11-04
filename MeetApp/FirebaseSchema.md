@@ -7,9 +7,11 @@
         - status: str
         - friends: obj
             - userUID: bool
-        - events: obj
+        - eventsInvited: obj
             - eventUID: obj
-                - confimed: bool
+                - confirmed: bool
+        - eventsHosting: obj
+            - eventUID: bool
 - Events: obj
     - eventUID: obj
          - eventName: string
@@ -20,8 +22,7 @@
          - invitees: obj
              - userUID: obj
                  - confirmed: bool
-         - host: obj
-             - userUID: bool
+         - host: string(userUID)
 - Groups: obj
     - groupUID: obj
         - groupName: str
