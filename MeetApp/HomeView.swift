@@ -5,7 +5,7 @@
 //  Created by Ankit Yande on 10/16/22.
 //
 
-import SwiftUI
+import SwiftUI  
 
 var _eventName:String = "Party at Bo's"
 var _startDatetime:String = "2022-10-30 22:00:00 +0000"

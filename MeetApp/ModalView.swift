@@ -5,7 +5,7 @@
 //  Created by Ankit Yande on 11/3/22.
 //
 
-import SwiftUI
+import SwiftUI  
 
 enum modalType { case accept, decline, confirm, none}
 
