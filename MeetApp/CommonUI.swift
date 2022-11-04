@@ -7,14 +7,21 @@
 
 import SwiftUI
 
-struct CommonUI: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct CommonUI_Previews: PreviewProvider {
-    static var previews: some View {
-        CommonUI()
+public struct cta: View{
+    
+    var text:String
+    var minWidth:CGFloat
+    var bgColor:Color
+    var action: () -> Void
+    
+    public var body: some View {
+        Button(text, action: action)
+            .fontWeight(.semibold)
+            .frame(minWidth: minWidth)
+            .padding()
+            .background(bgColor)
+            .foregroundColor(Color.white)
+            .clipShape(RoundedRectangle(cornerRadius: 100))
+            .clipShape(RoundedRectangle(cornerRadius: 100))
     }
 }

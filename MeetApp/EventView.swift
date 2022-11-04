@@ -17,11 +17,7 @@ struct EventView: View {
         ScrollView {
             VStack(alignment: .leading){
                 Text(event.eventName).font(.title).fontWeight(.semibold).padding(.top, 12.0)
-                HStack{
-                    Spacer()
-                    cta(text: confirmed ? "Confirmed!" : "Confirm?", minWidth: 128, action: toggleStatus)
-                    Spacer()
-                }
+                ButtonControlView(buttonState: event.status)
                 Group{
                     Text("Details").font(.title3).fontWeight(.semibold).padding(.top, 12.0)
                     HStack {
@@ -30,7 +26,7 @@ struct EventView: View {
                     }
                     HStack {
                         Image(systemName: "clock").padding([.top, .trailing], 5.0).font(Font.title3.weight(.medium))
-                        Text("\(formatTime(datetimeString: event.startDatetime)) - \(formatTime(datetimeString: event.endDatetime))")
+                        Text("\(formatTime(event.startDatetime)) - \(formatTime(event.endDatetime))")
                     }
                     HStack {
                         Image(systemName: "mappin.and.ellipse").padding([.top, .trailing], 5.0).font(Font.title3.weight(.medium))
@@ -47,10 +43,10 @@ struct EventView: View {
         }
     }
     
-    func formatDates( _ datetimeString1:String, _ datetimeString2:String) -> String {
+    func formatDates( _ start:Date, _ end:Date) -> String {
         // do not show a date if the event begins and ends on the same day
-        let d1 = formatDate(datetimeString: datetimeString1)
-        let d2 = formatDate(datetimeString: datetimeString2)
+        let d1 = formatDate(start)
+        let d2 = formatDate(end)
         return d1 == d2 ? d1 : "\(d1) - \(d2)"
     }
 
@@ -63,6 +59,6 @@ struct EventView: View {
 
 struct EventView_Previews: PreviewProvider {
     static var previews: some View {
-        EventView(event: testEvent)
+        EventView(event: testEventActive)
     }
 }

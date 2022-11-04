@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3D3647812913278F004D3958 /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3647802913278F004D3958 /* ImagePickerManager.swift */; };
 		1226231129122FC000AD97B8 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226231029122FC000AD97B8 /* Util.swift */; };
 		122623132912300200AD97B8 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122623122912300200AD97B8 /* EventView.swift */; };
+		3D3647812913278F004D3958 /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3647802913278F004D3958 /* ImagePickerManager.swift */; };
 		3D37F3AC28F7AF5C00BDD35D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3AB28F7AF5C00BDD35D /* FirebaseAnalytics */; };
 		3D37F3AE28F7AF5C00BDD35D /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3AD28F7AF5C00BDD35D /* FirebaseAnalyticsOnDeviceConversion */; };
 		3D37F3B028F7AF5C00BDD35D /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3AF28F7AF5C00BDD35D /* FirebaseAnalyticsSwift */; };
@@ -50,6 +50,8 @@
 		67BF8E5828F4C0FB002C2A7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 67BF8E5728F4C0FB002C2A7D /* Assets.xcassets */; };
 		67BF8E5B28F4C0FB002C2A7D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67BF8E5928F4C0FB002C2A7D /* LaunchScreen.storyboard */; };
 		67CAEBDB2901DFA60027CB56 /* CreateMeetingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CAEBDA2901DFA60027CB56 /* CreateMeetingView.swift */; };
+		67DC9D4F291584A8001FF5F0 /* ButtonControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67DC9D4E291584A8001FF5F0 /* ButtonControlView.swift */; };
+		67DC9D51291586C0001FF5F0 /* CommonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67DC9D50291586C0001FF5F0 /* CommonUI.swift */; };
 		ED09A8F42909ACBD00C464DD /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED09A8F32909ACBD00C464DD /* MapView.swift */; };
 		ED09A8F62909BAE500C464DD /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED09A8F52909BAE500C464DD /* LocationManager.swift */; };
 		ED09A8F82909BE2C00C464DD /* Landmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED09A8F72909BE2C00C464DD /* Landmark.swift */; };
@@ -60,9 +62,9 @@
 
 /* Begin PBXFileReference section */
 		122622E82908DB4B00AD97B8 /* FirebaseSchema.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FirebaseSchema.md; sourceTree = "<group>"; };
-		3D3647802913278F004D3958 /* ImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
 		1226231029122FC000AD97B8 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		122623122912300200AD97B8 /* EventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
+		3D3647802913278F004D3958 /* ImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
 		3D37F3E128F7B33400BDD35D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		6706357328FEF0FA00EAE994 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +80,8 @@
 		67BF8E5A28F4C0FB002C2A7D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		67BF8E5C28F4C0FB002C2A7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		67CAEBDA2901DFA60027CB56 /* CreateMeetingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMeetingView.swift; sourceTree = "<group>"; };
+		67DC9D4E291584A8001FF5F0 /* ButtonControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonControlView.swift; sourceTree = "<group>"; };
+		67DC9D50291586C0001FF5F0 /* CommonUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUI.swift; sourceTree = "<group>"; };
 		ED09A8F32909ACBD00C464DD /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		ED09A8F52909BAE500C464DD /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		ED09A8F72909BE2C00C464DD /* Landmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Landmark.swift; sourceTree = "<group>"; };
@@ -147,12 +151,11 @@
 				67BF8E4D28F4C0F8002C2A7D /* SceneDelegate.swift */,
 				67BF8E4F28F4C0F8002C2A7D /* ViewController.swift */,
 				674B68D428FE3EAC00D1C363 /* HomeView.swift */,
+				67DC9D4E291584A8001FF5F0 /* ButtonControlView.swift */,
 				6706357528FEF3AB00EAE994 /* SocialViewController.swift */,
 				3D37F3E128F7B33400BDD35D /* LoginViewController.swift */,
 				3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */,
 				67CAEBDA2901DFA60027CB56 /* CreateMeetingView.swift */,
-				ED2F727F28FF85FE0078EA18 /* MapViewController.swift */,
-				6706357328FEF0FA00EAE994 /* SettingsViewController.swift */,
 				3D3647802913278F004D3958 /* ImagePickerManager.swift */,
 				122623122912300200AD97B8 /* EventView.swift */,
 				122622E82908DB4B00AD97B8 /* FirebaseSchema.md */,
@@ -169,6 +172,7 @@
 				1226231029122FC000AD97B8 /* Util.swift */,
 				67BF8E5428F4C0F8002C2A7D /* MeetApp.xcdatamodeld */,
 				EDCE9A1A28FF4E6A00D4ED21 /* GoogleService-Info.plist */,
+				67DC9D50291586C0001FF5F0 /* CommonUI.swift */,
 			);
 			path = MeetApp;
 			sourceTree = "<group>";
@@ -280,11 +284,13 @@
 			files = (
 				67BF8E5628F4C0F8002C2A7D /* MeetApp.xcdatamodeld in Sources */,
 				ED09A8F42909ACBD00C464DD /* MapView.swift in Sources */,
+				67DC9D4F291584A8001FF5F0 /* ButtonControlView.swift in Sources */,
 				674B68D528FE3EAC00D1C363 /* HomeView.swift in Sources */,
 				122623132912300200AD97B8 /* EventView.swift in Sources */,
 				67BF8E5028F4C0F8002C2A7D /* ViewController.swift in Sources */,
 				67BF8E4C28F4C0F8002C2A7D /* AppDelegate.swift in Sources */,
 				3D37F3E428F7B34800BDD35D /* RegisterViewController.swift in Sources */,
+				67DC9D51291586C0001FF5F0 /* CommonUI.swift in Sources */,
 				ED09A8F82909BE2C00C464DD /* Landmark.swift in Sources */,
 				3D37F3E228F7B33400BDD35D /* LoginViewController.swift in Sources */,
 				1226231129122FC000AD97B8 /* Util.swift in Sources */,

@@ -46,7 +46,7 @@ struct CreateEventView: View {
                     .textFieldStyle(.roundedBorder)
             }.padding()
             
-            cta(text:"Create Event", minWidth: 128, action: createEvent)
+            cta(text:"Create Event", minWidth: 128, bgColor: Color.purple, action: createEvent)
                 .fontWeight(.bold)
                 .padding(.top, 48.0)
         }
