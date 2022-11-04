@@ -7,7 +7,8 @@
 
 import Foundation
 
-public struct Event {
+public struct Event : Identifiable{
+    public var id = UUID() //replace with Firebase ID
     var eventName:String
     var startDatetime:String
     var endDatetime:String
