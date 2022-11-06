@@ -12,7 +12,7 @@ public enum EventState {
 }
 
 public class Event: Identifiable {
-    var UID = UUID() //replace with firebase UID
+    var UID: String
     var eventName:String
     var startDatetime:Date
     var endDatetime:Date
@@ -22,7 +22,8 @@ public class Event: Identifiable {
     var host:String
     var status:EventState
     
-    init(eventName: String, startDatetime: String, endDatetime: String, address: String, description: String, attendees: String, host: String, status: EventState) {
+    init(UID: String, eventName: String, startDatetime: String, endDatetime: String, address: String, description: String, attendees: String, host: String, status: EventState) {
+        self.UID = UID
         self.eventName = eventName
         self.startDatetime = convertStringToDate(datetimeString: startDatetime)
         self.endDatetime = convertStringToDate(datetimeString: endDatetime)
