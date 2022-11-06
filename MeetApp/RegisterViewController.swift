@@ -62,7 +62,13 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
                 "username": self.registerUsernameTextField.text!,
                 "email": self.registerEmailTextField.text!,
                 "displayName": self.registerDisplayNameTextField.text!,
-                "profilePic": "gs://meetapp-cafdc.appspot.com/user.jpeg"
+                "profilePic": "gs://meetapp-cafdc.appspot.com/user.jpeg",
+                "status": "available",
+                "friends": [String: Bool](),
+                "eventsInvited": [String: Bool](),
+                "eventsAccepted": [String: Bool](),
+                "eventsDeclined": [String: Bool](),
+                "eventsHosting": [String: Bool](),
             ])
         }
     }
