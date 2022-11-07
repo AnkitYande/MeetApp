@@ -10,6 +10,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseStorage
 import FirebaseDatabase
+import Foundation
 
 class SettingsViewController: UIViewController {
 
@@ -31,12 +32,17 @@ class SettingsViewController: UIViewController {
     func downloadImage() {
         // TODO: see if can do 1 getData call and get user data
         print("User ID: \(user_id)")
-         database.child("users").child(user_id).child("profilePic").getData(completion: { error, snapshot in
+        database.child("users").child(user_id).getData(completion: { error, snapshot in
             guard error == nil else {
               print(error!.localizedDescription)
               return;
             }
-            let image_url = snapshot?.value as? String ?? "Unknown"
+            var snap = snapshot?.value as? [String: Any]
+            print(snap)
+            let image_url = snap?["profilePic"] as? String ?? "Unknown"
+            print("image_url: \(image_url)")
+            self.displayName.text = snap?["displayName"] as? String
+            self.username.text = snap?["username"] as? String
             let storageRef = self.storage.reference(forURL: image_url).getData(maxSize: 1 * 1024 * 1024, completion: { data, error in
                  if let error = error {
                      // TODO: alert user image is not correct size
@@ -48,6 +54,7 @@ class SettingsViewController: UIViewController {
           })
         
     }
+    
     @IBAction func buttonPressed(_ sender: Any) {
         let data = Data()
         ImagePickerManager().pickImage(self){ image in
