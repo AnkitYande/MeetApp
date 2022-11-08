@@ -15,6 +15,8 @@ struct CreateEventView: View {
     @State private var startDate = Date()
     @State private var endDate = Date()
     @State private var location: String = ""
+    @State private var latitude: Double = 0.0
+    @State private var longitude: Double = 0.0
     
     var body: some View {
         ScrollView {
@@ -23,7 +25,7 @@ struct CreateEventView: View {
                     .textFieldStyle(.plain)
                     .font(.title).fontWeight(.semibold)
                 Text("Where?").font(.title3).fontWeight(.semibold).padding(.top, 24.0)
-                NavigationLink(destination: MapView(location: $location)){
+                NavigationLink(destination: MapView(location: $location, latitude: $latitude, longitude: $longitude)){
                     TextField("Search for Location", text: $location, axis: .vertical)
                         .textFieldStyle(.roundedBorder)
                 }
@@ -37,7 +39,7 @@ struct CreateEventView: View {
                     displayedComponents: [.date, .hourAndMinute]
                 )
                 Text("Who?").font(.title3).fontWeight(.semibold).padding(.top, 24.0)
-                NavigationLink(destination: MapView(location: $location)){
+                NavigationLink(destination: MapView(location: $location, latitude: $latitude, longitude: $longitude)){
                     TextField("Search for Friends/ Groups", text: $eventDescription, axis: .vertical)
                         .textFieldStyle(.roundedBorder)
                 }

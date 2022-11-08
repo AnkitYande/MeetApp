@@ -17,16 +17,20 @@ public class Event: Identifiable {
     var startDatetime:Date
     var endDatetime:Date
     var address:String
+    var latitude:Double
+    var longitude:Double
     var description:String
     var attendees:String
     var host:String
     var status:EventState
     
-    init(eventName: String, startDatetime: String, endDatetime: String, address: String, description: String, attendees: String, host: String, status: EventState) {
+    init(eventName: String, startDatetime: String, endDatetime: String, address: String, latitude: Double, longitude: Double, description: String, attendees: String, host: String, status: EventState) {
         self.eventName = eventName
         self.startDatetime = convertStringToDate(datetimeString: startDatetime)
         self.endDatetime = convertStringToDate(datetimeString: endDatetime)
         self.address = address
+        self.latitude = latitude
+        self.longitude = longitude
         self.description = description
         self.attendees = attendees
         self.host = host
