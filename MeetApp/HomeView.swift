@@ -8,30 +8,9 @@
 import SwiftUI
 import FirebaseDatabase
 
-
-// Temp for TESTING
-// replace with loading from API
-var _eventName:String = "Party at Bo's"
-var _pastStartDatetime:String = "2022-10-30 22:00:00 +0000"
-var _pastEndDatetime:String = "2022-10-31 22:26:00 +0000"
-var _startDatetime:String = "2023-10-30 22:00:00 +0000"
-var _endDatetime:String = "2023-10-31 22:26:00 +0000"
-var _address:String = "2111 Rio Grande St, Austin, TX 78705"
-var _latitude:Double = 30.284680
-var _longitude:Double = -97.744940
-var _description:String = "Bo is throwing the most popping party in all of Wampus!  Come on through for this great networking opportunity"
-var _attendees:String = ""
-var _host:String = "Bo Deng"
-public var testEventConfirmed = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .accepted)
-public var testEventDeclined = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address,latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .declined)
-public var testEventActive = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .active)
-public var testEventExpired1 = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime:  _pastStartDatetime, endDatetime: _pastEndDatetime, address: _address, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .accepted)
-public var testEventExpired2 = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _pastStartDatetime, endDatetime: _pastEndDatetime, address: _address, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .active)
-let eventTestArr = [testEventConfirmed,testEventDeclined,testEventActive,testEventExpired1,testEventExpired2]
-
-
 struct HomeView: View {
     @StateObject private var eventViewModel = EventViewModel(userUUID: user_id)
+ 
     var body: some View {
         NavigationView {
             ZStack{
@@ -39,27 +18,70 @@ struct HomeView: View {
                 ScrollView {
                     VStack{
                         VStack{
-                            headdingButtons()
-                                .padding(.top, 32.0)
+                            headdingButtons().padding(.top, 40.0)
                             Spacer()
                             Text("Happening Now!")
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundColor(Color.white)
-                            card(event: testEventActive).padding(.leading).padding(.trailing)
+                            if eventViewModel.currentEvents.count > 0 {
+                                LazyVStack(){
+                                    ForEach(eventViewModel.currentEvents, id:\.UID) { event in
+                                        card(event: event)
+                                    }
+                                }.padding(.leading).padding(.trailing)
+                            }else{
+                                Text("No events currently happening. Press the plus button the schedule an event!")
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(Color.white)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.horizontal, 40.0)
+                                    .padding(.vertical, 24.0)
+                            }
                         }
                         .background(Color.purple)
                         Spacer()
+                        
                         Text("Future Events")
                             .font(.title)
                             .fontWeight(.bold)
                             .padding(.top, 24.0)
-                        if eventViewModel.events.count > 0 {
+                        if eventViewModel.activeEvents.count > 0 {
                             LazyVStack(){
-                                ForEach(eventViewModel.events, id:\.UID) { event in
+                                ForEach(eventViewModel.activeEvents, id:\.UID) { event in
                                     card(event: event)
                                 }
                             }.padding(.leading).padding(.trailing)
+                        }else{
+                            Text("No future events")
+                        }
+                        
+                        Text("Declined Events")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .padding(.top, 24.0)
+                        if eventViewModel.declinedEvents.count > 0 {
+                            LazyVStack(){
+                                ForEach(eventViewModel.declinedEvents, id:\.UID) { event in
+                                    card(event: event)
+                                }
+                            }.padding(.leading).padding(.trailing)
+                        }else{
+                            Text("No declined events")
+                        }
+                        
+                        Text("Expired Events")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .padding(.top, 24.0)
+                        if eventViewModel.expiredEvents.count > 0 {
+                            LazyVStack(){
+                                ForEach(eventViewModel.expiredEvents, id:\.UID) { event in
+                                    card(event: event)
+                                }
+                            }.padding(.leading).padding(.trailing)
+                        }else{
+                            Text("No expired events")
                         }
                     }
                 }
@@ -67,7 +89,8 @@ struct HomeView: View {
                 
                 addBtn()
             }.onAppear {
-                eventViewModel.getEvents()
+//                eventViewModel.getEvents()
+                eventViewModel.loadDummyData()
             }
         }
     }
@@ -169,10 +192,6 @@ struct card: View{
         }
     }
 }
-
-//func action() -> Void {
-//    print("pressed")
-//}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
