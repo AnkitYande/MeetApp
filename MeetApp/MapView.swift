@@ -56,8 +56,10 @@ struct MapView: View {
         }
     }
     
-    func chooseLocation(chosenLocation: String) {
+    func chooseLocation(chosenLocation: String, coordinate: CLLocationCoordinate2D) {
         self.location = chosenLocation
+        self.latitude = coordinate.latitude
+        self.longitude = coordinate.longitude
     }
     
     var body: some View {

@@ -11,7 +11,7 @@ import MapKit
 struct PlaceListView: View {
     
     let landmarks: [Landmark]
-    var choose: (String) -> ()
+    var choose: (String, CLLocationCoordinate2D) -> ()
     var onTap: () -> ()
     
     var body: some View {
@@ -35,7 +35,7 @@ struct PlaceListView: View {
 struct Place: View {
     
     @State var showingAlert: Bool = false
-    var choose: (String) -> ()
+    var choose: (String, CLLocationCoordinate2D) -> ()
     
     let landmark: Landmark
     
@@ -57,7 +57,7 @@ struct Place: View {
                 ),
                 secondaryButton: .default(
                     Text("Yes"),
-                    action: { self.choose(landmark.title) }
+                    action: { self.choose(landmark.title, landmark.coordinate) }
                 ))
         })
     }
@@ -65,6 +65,6 @@ struct Place: View {
 
 struct PlaceListView_Previews: PreviewProvider {
     static var previews: some View {
-        PlaceListView(landmarks: [], choose: {_ in }, onTap: {})
+        PlaceListView(landmarks: [], choose: {_,_  in }, onTap: {})
     }
 }
