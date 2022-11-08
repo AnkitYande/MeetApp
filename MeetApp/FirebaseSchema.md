@@ -3,26 +3,32 @@
         - username: str
         - email: str
         - displayName: str
-        - profilePicture: str
+        - profilePic: str
         - status: str
         - friends: obj
             - userUID: bool
         - eventsInvited: obj
-            - eventUID: obj
-                - confirmed: bool
+            - eventUID: bool
+        - eventsAccepted: obj
+            - eventUID: bool
+        - eventsDeclined: obj
+            - eventUID: bool
         - eventsHosting: obj
             - eventUID: bool
 - Events: obj
     - eventUID: obj
-         - eventName: string
-         - location: string
-         - startDatetime: string
-         - endDatetime: string
-         - description: string
-         - invitees: obj
-             - userUID: obj
-                 - confirmed: bool
-         - host: string(userUID)
+        - eventName: string
+        - location: string
+        - startDatetime: string
+        - endDatetime: string
+        - description: string
+        - usersInvited: obj
+            - userUID: bool
+        - usersAccepted: obj
+            - userUID: bool
+        - usersDeclined: obj
+            - userUID: bool
+        - host: string(userUID)
 - Groups: obj
     - groupUID: obj
         - groupName: str

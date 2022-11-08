@@ -54,10 +54,48 @@ struct CreateEventView: View {
         }
     }
     
-    func createEvent(){
+    
+    func createEvent() {
         print(eventName, eventDescription, location, startDate, endDate)
-        // TODO: add event to events object
-        // TODO: add uuid of event to current user
+        
+        let databaseRef = Database.database().reference()
+        
+        // TODO: instead of fetching all users, use list of specified users from above field
+        databaseRef.child("users").getData(completion: { error, snapshot in
+            guard error == nil else {
+              print(error!.localizedDescription)
+              return;
+            }
+            var allUsersDict = snapshot?.value as? [String: AnyObject] ?? [:]
+            allUsersDict.removeValue(forKey: user_id)
+            
+            for (userId, _) in allUsersDict {
+                allUsersDict[userId] = true as AnyObject
+            }
+            
+            // add event to events object
+            let eventUUID = UUID().uuidString
+            databaseRef.child("events").child(eventUUID).setValue([
+                "eventName": self.eventName,
+                "location": self.location,
+                "startDatetime": self.startDate.description,
+                "endDatetime": self.endDate.description,
+                "description": self.eventDescription,
+                "usersInvited": allUsersDict,
+                "usersAccepted": [String: Bool](),
+                "usersDeclined": [String: Bool](),
+                "host": user_id
+            ])
+            
+            // add uuid of event to current user
+            databaseRef.child("users").child(user_id).child("eventsHosting").child(eventUUID).setValue(true)
+            
+            // add uuid of event to invited users
+            for (userId, _) in allUsersDict {
+                databaseRef.child("users").child(userId).child("eventsInvited").child(eventUUID).setValue(true)
+            }
+            
+        })
     }
     
 }
