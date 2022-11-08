@@ -66,9 +66,9 @@ struct HomeView: View {
                 .edgesIgnoringSafeArea(.top)
                 
                 addBtn()
+            }.onAppear {
+                eventViewModel.getEvents()
             }
-        }.onAppear {
-            eventViewModel.getEvents()
         }
     }
 }
@@ -157,7 +157,8 @@ struct card: View{
                     .foregroundColor(Color.black)
                 Text("\(formatDate(event.startDatetime))").foregroundColor(Color.black)
                 Text("\(formatTime(event.startDatetime))").foregroundColor(Color.black)
-                Text(event.address).foregroundColor(Color.black)
+                Text(event.address.components(separatedBy: ",")[0])
+                    .foregroundColor(Color.black)
                 ButtonControlView(buttonState: event.status)
             }
             .padding()

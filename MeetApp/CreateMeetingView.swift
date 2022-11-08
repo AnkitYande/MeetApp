@@ -17,7 +17,8 @@ struct CreateEventView: View {
     @State private var location: String = ""
     @State private var latitude: Double = 0.0
     @State private var longitude: Double = 0.0
-    
+    @Environment(\.presentationMode) var presentationMode
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading){
@@ -47,27 +48,30 @@ struct CreateEventView: View {
                 TextField("Enter a Description of your event here", text: $eventDescription, axis: .vertical)
                     .textFieldStyle(.roundedBorder)
             }.padding()
-            
-            cta(text:"Create Event", minWidth: 128, bgColor: Color.purple, action: createEvent)
-                .fontWeight(.bold)
-                .padding(.top, 48.0)
+//            NavigationView(){
+//                NavigationLink(destination: HomeView()){
+                    cta(text:"Create Event", minWidth: 128, bgColor: Color.purple, action: createEvent)
+                        .fontWeight(.bold)
+                        .padding(.top, 48.0)
+                    
+//                }
+//            }
         }
     }
     
     
     func createEvent() {
-        print(eventName, eventDescription, location, startDate, endDate)
         
         let databaseRef = Database.database().reference()
         
         // TODO: instead of fetching all users, use list of specified users from above field
         databaseRef.child("users").getData(completion: { error, snapshot in
             guard error == nil else {
-              print(error!.localizedDescription)
-              return;
+                print(error!.localizedDescription)
+                return;
             }
             var allUsersDict = snapshot?.value as? [String: AnyObject] ?? [:]
-            allUsersDict.removeValue(forKey: user_id)
+            // allUsersDict.removeValue(forKey: user_id)
             
             for (userId, _) in allUsersDict {
                 allUsersDict[userId] = true as AnyObject
@@ -97,7 +101,12 @@ struct CreateEventView: View {
                 databaseRef.child("users").child(userId).child("eventsInvited").child(eventUUID).setValue(true)
             }
             
+            print("Event ", eventName, " UID: ", eventUUID, " created" )
+            
+            self.presentationMode.wrappedValue.dismiss()
+            
         })
+        
     }
     
 }

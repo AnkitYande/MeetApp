@@ -17,6 +17,7 @@ final class EventViewModel: ObservableObject {
     }
     
     func getEvents() {
+        self.events = []
         let databaseRef = Database.database().reference()
         
         databaseRef.child("users").child(userUUID).child("eventsInvited").getData(completion: { error, snapshot in
