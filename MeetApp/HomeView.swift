@@ -16,15 +16,17 @@ var _pastStartDatetime:String = "2022-10-30 22:00:00 +0000"
 var _pastEndDatetime:String = "2022-10-31 22:26:00 +0000"
 var _startDatetime:String = "2023-10-30 22:00:00 +0000"
 var _endDatetime:String = "2023-10-31 22:26:00 +0000"
-var _address = "123 West Campus Street"
+var _address:String = "2111 Rio Grande St, Austin, TX 78705"
+var _latitude:Double = 30.284680
+var _longitude:Double = -97.744940
 var _description:String = "Bo is throwing the most popping party in all of Wampus!  Come on through for this great networking opportunity"
 var _attendees:String = ""
 var _host:String = "Bo Deng"
-public var testEventConfirmed = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address, description: _description, attendees: _attendees, host: _host, status: .accepted)
-public var testEventDeclined = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address, description: _description, attendees: _attendees, host: _host, status: .declined)
-public var testEventActive = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address, description: _description, attendees: _attendees, host: _host, status: .active)
-public var testEventExpired1 = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime:  _pastStartDatetime, endDatetime: _pastEndDatetime, address: _address, description: _description, attendees: _attendees, host: _host, status: .accepted)
-public var testEventExpired2 = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _pastStartDatetime, endDatetime: _pastEndDatetime, address: _address, description: _description, attendees: _attendees, host: _host, status: .active)
+public var testEventConfirmed = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .accepted)
+public var testEventDeclined = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address,latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .declined)
+public var testEventActive = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .active)
+public var testEventExpired1 = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime:  _pastStartDatetime, endDatetime: _pastEndDatetime, address: _address, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .accepted)
+public var testEventExpired2 = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _pastStartDatetime, endDatetime: _pastEndDatetime, address: _address, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .active)
 let eventTestArr = [testEventConfirmed,testEventDeclined,testEventActive,testEventExpired1,testEventExpired2]
 
 

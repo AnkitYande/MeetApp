@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import CoreLocation
+import MapKit
 
 struct EventView: View {
     
     let event:Event
     @State var confirmed:Bool = false// Link this to core data to store status for each event?
-
+    
     var body: some View {
         
         ScrollView {
@@ -36,7 +38,7 @@ struct EventView: View {
                     Text(event.description)
                 }
                 Text("Map").font(.title3).fontWeight(.semibold).padding(.top, 24.0)
-                Text("<Insert Map Here>")
+                Minimap(address: event.address, latitude: event.latitude, longitude: event.longitude)
                 Text("Guests").font(.title3).fontWeight(.semibold).padding(.top, 24.0)
                 Text("<Insert Social List Here>")
             }.padding()
@@ -49,12 +51,26 @@ struct EventView: View {
         let d2 = formatDate(end)
         return d1 == d2 ? d1 : "\(d1) - \(d2)"
     }
-
+    
     func toggleStatus() -> Void {
         confirmed.toggle()
     }
 }
 
+struct Minimap: View {
+    
+    let address: String
+    let latitude: Double
+    let longitude: Double
+    
+    let minimapWidth = UIScreen.main.bounds.width - (UIScreen.main.bounds.width / 7)
+    let minimapHeight = CGFloat(200)
+    
+    var body: some View {
+        MapKitView(landmarks: [Landmark(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)))], address: address, region: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), latitudinalMeters: 1000, longitudinalMeters: 1000))
+            .frame(width: self.minimapWidth, height: self.minimapHeight, alignment: .center)
+    }
+}
 
 
 struct EventView_Previews: PreviewProvider {
