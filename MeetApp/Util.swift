@@ -41,6 +41,10 @@ public class Event: Identifiable {
             self.status = status
         }
     }
+    
+    func isHappeningNow() -> Bool{
+        return self.startDatetime <= Date.now && Date.now <= self.endDatetime
+    }
 }
 
 public class User: Identifiable {

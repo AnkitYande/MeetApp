@@ -18,7 +18,7 @@ struct CreateEventView: View {
     @State private var latitude: Double = 0.0
     @State private var longitude: Double = 0.0
     @Environment(\.presentationMode) var presentationMode
-
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading){
@@ -48,14 +48,9 @@ struct CreateEventView: View {
                 TextField("Enter a Description of your event here", text: $eventDescription, axis: .vertical)
                     .textFieldStyle(.roundedBorder)
             }.padding()
-//            NavigationView(){
-//                NavigationLink(destination: HomeView()){
-                    cta(text:"Create Event", minWidth: 128, bgColor: Color.purple, action: createEvent)
-                        .fontWeight(.bold)
-                        .padding(.top, 48.0)
-                    
-//                }
-//            }
+            cta(text:"Create Event", minWidth: 128, bgColor: Color.purple, action: createEvent)
+                .fontWeight(.bold)
+                .padding(.top, 48.0)
         }
     }
     
@@ -108,7 +103,6 @@ struct CreateEventView: View {
         })
         
     }
-    
 }
 
 struct CreateEventView_Previews: PreviewProvider {

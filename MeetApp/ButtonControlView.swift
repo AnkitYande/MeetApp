@@ -57,23 +57,23 @@ struct expired: View {
     public var body: some View {
         HStack{
             Spacer()
-            cta(text: "Expired", minWidth: 128, bgColor: Color.gray, action: changeToActive)
+            cta(text: "Expired", minWidth: 128, bgColor: Color.gray, action: disabledFunc)
             Spacer()
         }
     }
 }
 
-func action() -> Void {
-    print("pressed")
+func disabledFunc() -> Void {
+    return
 }
 func changeToAccepted() -> Void {
-    print("pressed")
+    print("TODO: Set state to accept in DB")
 }
 func changeToDeclined() -> Void {
-    print("Set state to declined in DB")
+    print("TODO: Set state to declined in DB")
 }
 func changeToActive() -> Void {
-    print("Set state to active in DB")
+    print("TODO: Set state to active in DB")
 }
 
 struct ButtonControlView_Previews: PreviewProvider {
