@@ -16,6 +16,7 @@ let defaultRegion: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoo
 // TODO: get placemarks for directions from Firebase
 let start = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 30.422860, longitude: -97.775100))
 let dest = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 30.503560, longitude: -97.756430))
+//var userViewModel = UserViewModel(userUUID: user_id)
 
 struct MapView: View {
     
@@ -29,7 +30,7 @@ struct MapView: View {
     @State private var showDirections = false
     @Binding var latitude: Double
     @Binding var longitude: Double
-    
+    @StateObject private var userViewModel = UserViewModel(userUUID: user_id)
     
     private func getNearbyLandmarks() {
         let request = MKLocalSearch.Request()
@@ -66,6 +67,9 @@ struct MapView: View {
         ZStack(alignment: .top) {
             
             MapKitView(landmarks: landmarks, showDirections: $showDirections)
+                .onAppear {
+                    userViewModel.getAllUsers()
+                }
                 .ignoresSafeArea()
             
             TextField("Search for a location...", text: $search, onEditingChanged: { _ in })
@@ -147,12 +151,24 @@ struct MapKitView: UIViewRepresentable {
         map.showsUserLocation = true
         map.delegate = context.coordinator
         
+//        self.displayAllUsersLocations()
+//        self.updateUIView(map, context: context)
+        
         // TODO: get actual start and dest dependent on user
-        if showDirections {
-            self.updateUIView(map, context: context)
-            displayDirections(map: map, start: start, dest: dest)
-        }
+//        if showDirections {
+//            self.updateUIView(map, context: context)
+//            displayDirections(map: map, start: start, dest: dest)
+//        }
         return map
+    }
+    
+    func displayAllUsersLocations() {
+        var userLocations: [Landmark] = []
+        for user in userViewModel.users {
+            let coordinate = CLLocationCoordinate2D(latitude: user.latitude, longitude: user.longitude)
+            userLocations.append(Landmark(placemark: MKPlacemark(coordinate: coordinate)))
+        }
+        // TODO: add locations to landmarks
     }
     
     func displayDirections(map: MKMapView, start: MKPlacemark, dest: MKPlacemark) {

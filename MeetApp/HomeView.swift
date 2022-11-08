@@ -8,9 +8,11 @@
 import SwiftUI
 import FirebaseDatabase
 
+var userViewModel = UserViewModel(userUUID: user_id)
+
 struct HomeView: View {
     @StateObject private var eventViewModel = EventViewModel(userUUID: user_id)
-    @StateObject private var userViewModel = UserViewModel(userUUID: user_id)
+//    @StateObject private var userViewModel = UserViewModel(userUUID: user_id)
 
     var body: some View {
         NavigationView {
