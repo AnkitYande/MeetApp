@@ -35,6 +35,8 @@ final class EventViewModel: ObservableObject {
                     
                     let eventName = eventDict["eventName"] as! String
                     let location = eventDict["location"] as! String
+                    let latitude = eventDict["latitude"] as! Double
+                    let longitude = eventDict["longitude"] as! Double
                     let startDatetime = eventDict["startDatetime"] as! String
                     let endDatetime = eventDict["endDatetime"] as! String
                     let description = eventDict["description"] as! String
@@ -57,7 +59,7 @@ final class EventViewModel: ObservableObject {
                         }
                     }
                     
-                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .active)
+                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .active)
                         self.events.append(newEvent)
                 })
             }
@@ -79,6 +81,8 @@ final class EventViewModel: ObservableObject {
                     
                     let eventName = eventDict["eventName"] as! String
                     let location = eventDict["location"] as! String
+                    let latitude = eventDict["latitude"] as! Double
+                    let longitude = eventDict["longitude"] as! Double
                     let startDatetime = eventDict["startDatetime"] as! String
                     let endDatetime = eventDict["endDatetime"] as! String
                     let description = eventDict["description"] as! String
@@ -101,7 +105,7 @@ final class EventViewModel: ObservableObject {
                         }
                     }
                     
-                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .accepted)
+                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .accepted)
                         self.events.append(newEvent)
                 })
             }
@@ -123,6 +127,8 @@ final class EventViewModel: ObservableObject {
                     
                     let eventName = eventDict["eventName"] as! String
                     let location = eventDict["location"] as! String
+                    let latitude = eventDict["latitude"] as! Double
+                    let longitude = eventDict["longitude"] as! Double
                     let startDatetime = eventDict["startDatetime"] as! String
                     let endDatetime = eventDict["endDatetime"] as! String
                     let description = eventDict["description"] as! String
@@ -145,7 +151,7 @@ final class EventViewModel: ObservableObject {
                         }
                     }
                     
-                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .declined)
+                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .declined)
                         self.events.append(newEvent)
                 })
             }

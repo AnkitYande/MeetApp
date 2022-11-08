@@ -78,6 +78,8 @@ struct CreateEventView: View {
             databaseRef.child("events").child(eventUUID).setValue([
                 "eventName": self.eventName,
                 "location": self.location,
+                "latitude": self.latitude,
+                "longitude": self.longitude,
                 "startDatetime": self.startDate.description,
                 "endDatetime": self.endDate.description,
                 "description": self.eventDescription,

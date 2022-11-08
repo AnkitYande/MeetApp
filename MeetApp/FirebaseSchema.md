@@ -19,6 +19,8 @@
     - eventUID: obj
         - eventName: string
         - location: string
+        - latitude: number
+        - longitude: number
         - startDatetime: string
         - endDatetime: string
         - description: string
