@@ -10,7 +10,8 @@ import FirebaseDatabase
 
 struct HomeView: View {
     @StateObject private var eventViewModel = EventViewModel(userUUID: user_id)
- 
+    @StateObject private var userViewModel = UserViewModel(userUUID: user_id)
+
     var body: some View {
         NavigationView {
             ZStack{
@@ -89,8 +90,8 @@ struct HomeView: View {
                 
                 addBtn()
             }.onAppear {
-//                eventViewModel.getEvents()
-                eventViewModel.loadDummyData()
+                eventViewModel.getEvents()
+                userViewModel.getAllUsers()
             }
         }
     }

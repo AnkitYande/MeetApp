@@ -5,6 +5,8 @@
         - displayName: str
         - profilePic: str
         - status: str
+        - latitude: number
+        - longitude: number
         - friends: obj
             - userUID: bool
         - eventsInvited: obj
