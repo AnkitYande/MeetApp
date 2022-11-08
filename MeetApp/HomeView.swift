@@ -28,10 +28,13 @@ public var testEventActive = Event(UID: UUID().uuidString, eventName: _eventName
 public var testEventExpired1 = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime:  _pastStartDatetime, endDatetime: _pastEndDatetime, address: _address, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .accepted)
 public var testEventExpired2 = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _pastStartDatetime, endDatetime: _pastEndDatetime, address: _address, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .active)
 let eventTestArr = [testEventConfirmed,testEventDeclined,testEventActive,testEventExpired1,testEventExpired2]
+//let locationManager = LocationManager()
 
 
 struct HomeView: View {
     @StateObject private var eventViewModel = EventViewModel(userUUID: user_id)
+    @StateObject private var userViewModel = UserViewModel(userUUID: user_id)
+    
     var body: some View {
         NavigationView {
             ZStack{
@@ -68,6 +71,7 @@ struct HomeView: View {
                 addBtn()
             }.onAppear {
                 eventViewModel.getEvents()
+                userViewModel.getAllUsers()
             }
         }
     }
