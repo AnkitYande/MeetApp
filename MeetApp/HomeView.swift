@@ -49,7 +49,7 @@ struct HomeView: View {
                             .padding(.top, 24.0)
                         if eventViewModel.activeEvents.count > 0 {
                             LazyVStack(){
-                                ForEach(eventViewModel.activeEvents, id:\.UID) { event in
+                                ForEach(eventViewModel.activeEvents.sorted(by: {$0.startDatetime < $1.startDatetime}), id:\.UID) { event in
                                     card(event: event)
                                 }
                             }.padding(.leading).padding(.trailing)
@@ -63,7 +63,7 @@ struct HomeView: View {
                             .padding(.top, 24.0)
                         if eventViewModel.declinedEvents.count > 0 {
                             LazyVStack(){
-                                ForEach(eventViewModel.declinedEvents, id:\.UID) { event in
+                                ForEach(eventViewModel.declinedEvents.sorted(by: {$0.startDatetime > $1.startDatetime}), id:\.UID) { event in
                                     card(event: event)
                                 }
                             }.padding(.leading).padding(.trailing)
@@ -77,7 +77,7 @@ struct HomeView: View {
                             .padding(.top, 24.0)
                         if eventViewModel.expiredEvents.count > 0 {
                             LazyVStack(){
-                                ForEach(eventViewModel.expiredEvents, id:\.UID) { event in
+                                ForEach(eventViewModel.expiredEvents.sorted(by: {$0.startDatetime > $1.startDatetime}), id:\.UID) { event in
                                     card(event: event)
                                 }
                             }.padding(.leading).padding(.trailing)
