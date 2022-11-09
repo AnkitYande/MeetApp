@@ -1,11 +1,11 @@
 # Contributions:
 
 ## Ankit  (Release 25%, Overall 25%)
-Alpha
+### Alpha
 - Implemented the Home Screen of the App
 - Began working on the Create Meeting screen
 - Created the layout for a basic settings and friends/groups screen
-Beta
+### Beta
 - Home screen refined to load events from firebase and sort based on status (accepted, declined, etc)
 - Home screen cards refined to have dynamic buttons based on status
 - Handeled Formatting and comparing event Dates of Events
@@ -14,32 +14,32 @@ Beta
 - Popup View modals created (but not integrated)
 
 ## Bo (Release 25%, Overall 25%)
-Alpha
+### Alpha
 - Created and configured Firebase project
 - Added Firebase logic for login/register functionality (paired w/ William)
 - Added segues for login/register/homepage (paired w/ William)
-Beta
+### Beta
 - Implemented adding to Firebase DB when an event is created
 - Implemented fetching from Firebase DB when viewing events on the home screen
 - Helped William debug issues with settings screen
 
 ## William (Release 25%, Overall 25%)
-Alpha
+### Alpha
 - Reconfigured login and register components to fit Firebase functionality
 - Added Firebase logic for login/register functionality (paired w/ Bo)
 - Added segues for login/register/homepage (paired w/ Bo)
-Beta
+### Beta
 - Implement settings screen with username and displaynames
 - Set up storing profile pictures with Firebase Storage and saving the endpoint in Firebase Database
 - Set up changing profile pictures with gallery or camera
 
 ## Lorenzo (Release 25%, Overall 25%)
-Alpha
+### Alpha
 - Implemented login screen
 - Implemented register screen
 - Added auto-login functionality
 - Added basic map screen
-Beta
+### Beta
 - Implemented user class + view model to pull user data from Firebase
 - Minimap created for each event based on chosen event location
 - Database schema altered to include latitude/longitude data for setting map region
