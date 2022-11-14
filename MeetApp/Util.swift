@@ -8,7 +8,7 @@
 import Foundation
 
 public enum EventState {
-    case accepted, declined, active, expired
+    case accepted, declined, active, expired, current
 }
 
 public class Event: Identifiable {
@@ -37,13 +37,11 @@ public class Event: Identifiable {
         self.host = host
         if (Date.now > self.endDatetime) {
             self.status = .expired
-        } else{
+        } else if (self.startDatetime <= Date.now && Date.now <= self.endDatetime){
+            self.status = .current
+        } else {
             self.status = status
         }
-    }
-    
-    func isHappeningNow() -> Bool{
-        return self.startDatetime <= Date.now && Date.now <= self.endDatetime
     }
 }
 
@@ -56,11 +54,11 @@ public class User: Identifiable {
     var status: String
     var latitude: Double
     var longitude: Double
-//    var friends: [User]
+    //    var friends: [User]
     var eventsInvited: [String]
     var eventsHosting: [String]
-//    var eventsAccepted: [Event]
-//    var eventsDeclined: [Event]
+    //    var eventsAccepted: [Event]
+    //    var eventsDeclined: [Event]
     
     init(UID: String, email: String, displayName: String, username: String, profilePic: String, status: String, latitude: Double, longitude: Double, eventsInvited: [String], eventsHosting: [String]) {
         self.UID = UID
@@ -71,11 +69,11 @@ public class User: Identifiable {
         self.status = status
         self.latitude = latitude
         self.longitude = longitude
-//        self.friends = friends
+        //        self.friends = friends
         self.eventsInvited = eventsInvited
         self.eventsHosting = eventsHosting
-//        self.eventsAccepted = eventsAccepted
-//        self.eventsDeclined = eventsDeclined
+        //        self.eventsAccepted = eventsAccepted
+        //        self.eventsDeclined = eventsDeclined
     }
 }
 
