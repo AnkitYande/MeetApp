@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseDatabase
 
-class Group {
+class GroupObject {
 
     var groupName: String
     var groupMembersUUID: [String]
@@ -20,7 +20,7 @@ class Group {
 }
 
 final class GroupViewModel: ObservableObject {
-    @Published var groups: [Group] = []
+    @Published var groups: [GroupObject] = []
     
     var userUUID: String
     
@@ -51,7 +51,7 @@ final class GroupViewModel: ObservableObject {
                     let groupName = groupDict["groupName"] as? String ?? "undefined"
                     let groupMembers = groupDict["members"] as? [String: Any] ?? [String: Any]()
                     
-                    let newGroup = Group(groupName: groupName, groupMembersUUID: Array(groupMembers.keys))
+                    let newGroup = GroupObject(groupName: groupName, groupMembersUUID: Array(groupMembers.keys))
                     self.groups.append(newGroup)
                 })
             }
