@@ -35,9 +35,14 @@ public class Event: Identifiable {
         self.description = description
         self.attendees = attendees
         self.host = host
+        self.status = status
+        setStatus(status: status)
+    }
+    
+    func setStatus(status: EventState) {
         if (Date.now > self.endDatetime) {
-            self.status = .expired
-        } else if (self.startDatetime <= Date.now && Date.now <= self.endDatetime){
+            self.status =  .expired
+        } else if (status == .accepted && self.startDatetime <= Date.now && Date.now <= self.endDatetime){
             self.status = .current
         } else {
             self.status = status
@@ -76,6 +81,8 @@ public class User: Identifiable {
         //        self.eventsDeclined = eventsDeclined
     }
 }
+
+
 
 func convertStringToDate(datetimeString:String) -> Date{
     let dateFormatter = DateFormatter()
