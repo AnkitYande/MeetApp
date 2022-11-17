@@ -34,12 +34,12 @@ struct acceptDecline: View {
         HStack{
             Spacer()
             cta(text: "Accept", minWidth: 64, bgColor: Color.purple, action: {
-                changeEventStatus(eventID: event.UID, currentStatus: "eventsInvited", newStatus: "eventsAccepted", newState: EventState.accepted, eventViewModel:eventViewModel)
+                changeEventStatus(eventID: event.UID, currentStatus: "Invited", newStatus: "Accepted", newState: EventState.accepted, eventViewModel:eventViewModel)
                 
             })
             Spacer()
             cta(text: "Decline", minWidth: 64, bgColor: Color.purple, action: {
-                changeEventStatus(eventID: event.UID, currentStatus: "eventsInvited", newStatus: "eventsDeclined", newState: EventState.declined, eventViewModel:eventViewModel)
+                changeEventStatus(eventID: event.UID, currentStatus: "Invited", newStatus: "Declined", newState: EventState.declined, eventViewModel:eventViewModel)
             })
             Spacer()
         }
@@ -54,7 +54,7 @@ struct accepted: View {
         HStack{
             Spacer()
             cta(text: "Accepted", minWidth: 128, bgColor: Color.purple, action: {
-                changeEventStatus(eventID: event.UID, currentStatus: "eventsAccepted", newStatus: "eventsInvited", newState: EventState.active, eventViewModel:eventViewModel)
+                changeEventStatus(eventID: event.UID, currentStatus: "Accepted", newStatus: "Invited", newState: EventState.active, eventViewModel:eventViewModel)
             })
             Spacer()
         }
@@ -69,7 +69,7 @@ struct declined: View {
         HStack{
             Spacer()
             cta(text: "Declined", minWidth: 128, bgColor: Color.purple, action: {
-                changeEventStatus(eventID: event.UID, currentStatus: "eventsDeclined", newStatus: "eventsInvited", newState: EventState.active, eventViewModel:eventViewModel)
+                changeEventStatus(eventID: event.UID, currentStatus: "Declined", newStatus: "Invited", newState: EventState.active, eventViewModel:eventViewModel)
             })
             Spacer()
         }
@@ -108,21 +108,31 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
     let databaseRef = Database.database().reference()
     
     //remove event from its current status in the user object
-    databaseRef.child("users").child(user_id).child(currentStatus).child(eventID).removeValue(completionBlock: { (error, refer) in
+    databaseRef.child("users").child(user_id).child("events\(currentStatus)").child(eventID).removeValue(completionBlock: { (error, refer) in
         guard error == nil else {
             print(error!.localizedDescription)
             return;
         }})
     
     //add event to its new status in the user object
-    databaseRef.child("users").child(user_id).child(newStatus).child(eventID).setValue(true)
+    databaseRef.child("users").child(user_id).child("events\(newStatus)").child(eventID).setValue(true)
     
-    //update in list
-    // changing ane element of the list doesn't seem to have an effect
+    //remove user from its current status in the event objext
+    databaseRef.child("events").child(eventID).child("users\(currentStatus)").child(user_id).removeValue(completionBlock: { (error, refer) in
+        guard error == nil else {
+            print(error!.localizedDescription)
+            return;
+        }})
+    
+    //add user to its new status in the event object
+    databaseRef.child("events").child(eventID).child("users\(newStatus)").child(user_id).setValue(true)
+
+    // update in UI
+    // changing an element of the list doesn't seem to have an effect
     // copying and reassignign event list
     let eventsCopy = eventViewModel.events
     if let event = eventsCopy.first(where: {$0.UID == eventID}){
-        event.status = newState
+        event.setStatus(status: newState)
     }else{
         print("ERROR: event not found")
     }
