@@ -14,18 +14,20 @@ struct EventView: View {
     
     let event:Event
     var eventViewModel:EventViewModel
-    @Binding var eventList: [Event] // <-- this is literally not used anymore but the code doesn't work without it??
+        @Binding var eventList: [Event] // <-- this is literally not used anymore but the code doesn't work without it??
+//    @State var eventList:[Event] = [] // for preview testing
+    
+    @State var invitees:(acceptedList:[String], declinedList:[String], invitedList:[String]) = ([],[],[])
     
     @Environment(\.presentationMode) var presentationMode
-    
-    @State var confirmed:Bool = false// Link this to core data to store status for each event?
     
     var body: some View {
         
         ScrollView {
             VStack(alignment: .leading){
                 Text(event.eventName).font(.title).fontWeight(.semibold).padding(.top, 12.0)
-                ButtonControlView(event: event, eventViewModel:eventViewModel,  eventList: $eventList)
+                ButtonControlView(event: event, eventViewModel:eventViewModel, eventList: $eventList)
+                
                 Group{
                     Text("Details").font(.title3).fontWeight(.semibold).padding(.top, 12.0)
                     HStack {
@@ -43,14 +45,17 @@ struct EventView: View {
                     Text("Description").font(.title3).fontWeight(.semibold).padding(.top, 24.0)
                     Text(event.description)
                 }
+                
                 Text("Map").font(.title3).fontWeight(.semibold).padding(.top, 24.0)
                 HStack(){
                     Spacer()
                     Minimap(address: event.address, latitude: event.latitude, longitude: event.longitude)
                     Spacer()
                 }
+                
                 Text("Guests").font(.title3).fontWeight(.semibold).padding(.top, 24.0)
-                Text("<Insert Social List Here>")
+                RSVP(invitees: $invitees)
+                
                 if(event.host == user_id){
                     HStack(){
                         Spacer()
@@ -59,9 +64,16 @@ struct EventView: View {
                             self.presentationMode.wrappedValue.dismiss()
                         })
                         Spacer()
-                    }.padding(.top, 24)
+                    }.padding(.top, 32)
                 }
             }.padding()
+        }
+        .refreshable {
+            // eventViewModel.getEvents()
+            loadInvitees(eventID: event.UID)
+        }
+        .onAppear {
+            loadInvitees(eventID: event.UID)
         }
     }
     
@@ -72,9 +84,40 @@ struct EventView: View {
         return d1 == d2 ? d1 : "\(d1) - \(d2)"
     }
     
-    func toggleStatus() -> Void {
-        confirmed.toggle()
+    func loadInvitees(eventID:String) {
+        let databaseRef = Database.database().reference()
+        databaseRef.child("events").child(eventID).getData(completion: { error, snapshot in
+            guard error == nil else {
+                print(error!.localizedDescription)
+                return;
+            }
+            var invitedList:[String] = []
+            var acceptedList:[String] = []
+            var declinedList:[String] = []
+            
+            let eventDict = snapshot?.value as? [String: Any] ?? [String: Any]();
+            
+            if let usersInvited = eventDict["usersInvited"] as? [String: Any] {
+                for (userUUID, _) in usersInvited {
+                    invitedList.append(userUUID)
+                }
+            }
+            
+            if let usersAccepted = eventDict["usersAccepted"] as? [String: Any] {
+                for (userUUID, _) in usersAccepted {
+                    acceptedList.append(userUUID)
+                }
+            }
+            
+            if let usersDeclined = eventDict["usersDeclined"] as? [String: Any] {
+                for (userUUID, _) in usersDeclined {
+                    declinedList.append(userUUID)
+                }
+            }
+            self.invitees = (acceptedList, declinedList, invitedList)
+        })
     }
+    
 }
 
 struct Minimap: View {
@@ -89,6 +132,41 @@ struct Minimap: View {
     var body: some View {
         MapKitView(landmarks: [Landmark(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)))], address: address, region: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), latitudinalMeters: 1000, longitudinalMeters: 1000))
             .frame(width: self.minimapWidth, height: self.minimapHeight, alignment: .center)
+    }
+}
+
+struct RSVP: View {
+    @Binding var invitees: (acceptedList:[String], declinedList:[String], invitedList:[String])
+    var body: some View {
+        HStack(){
+            Spacer()
+            RSVPCard(label: "Accepted", inviteeList: invitees.acceptedList)
+            Spacer()
+            RSVPCard(label: "Invited", inviteeList: invitees.invitedList)
+            Spacer()
+            RSVPCard(label: "Declined", inviteeList: invitees.declinedList)
+            Spacer()
+        }
+    }
+}
+
+struct RSVPCard:View{
+    let label:String
+    let inviteeList:[String]
+    var body: some View {
+        NavigationLink(destination:GuestList(userList: inviteeList)){
+            VStack{
+                Text(label)
+                    .foregroundColor(Color.black)
+                Text("\(inviteeList.count)")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.black)
+            }.padding()
+                .background(Color.white)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .shadow(color: Color.gray, radius: 1)
+        }
     }
 }
 
@@ -127,6 +205,6 @@ func deleteEvent(eventID:String){
 
 //struct EventView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        EventView(event: testEventActive)
+//        EventView(event: testEventActive, eventViewModel: EventViewModel(userUUID: user_id))
 //    }
 //}

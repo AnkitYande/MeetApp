@@ -95,12 +95,15 @@ struct HomeView: View {
                         
                     }
                 }.edgesIgnoringSafeArea(.top)
-                
+                    .refreshable {
+                        eventViewModel.getEvents()
+                        userViewModel.getAllUsers()
+                    }
+                    .onAppear {
+                        eventViewModel.getEvents()
+                        userViewModel.getAllUsers()
+                    }
                 addBtn()
-                
-            }.onAppear {
-                eventViewModel.getEvents()
-                userViewModel.getAllUsers()
             }
         }
     }
@@ -185,7 +188,7 @@ struct card: View{
     var eventViewModel: EventViewModel
     
     var body: some View{
-        NavigationLink(destination: EventView(event: event, eventViewModel:eventViewModel,  eventList: $eventList)){
+        NavigationLink(destination: EventView(event: event, eventViewModel:eventViewModel, eventList: $eventList)){
             VStack(alignment: .leading){
                 Text(event.eventName)
                     .fontWeight(.bold)
