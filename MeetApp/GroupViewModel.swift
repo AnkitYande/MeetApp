@@ -28,6 +28,22 @@ final class GroupViewModel: ObservableObject {
         self.userUUID = userUUID
     }
     
+    func createGroup(newGroup: GroupObject) {
+        print("creating group")
+        
+        let newGroupUUID = UUID().uuidString
+        var newGroupMembersDict = [String: Bool]()
+        for groupMember in newGroup.groupMembersUUID {
+            newGroupMembersDict[groupMember] = true
+        }
+        
+        let databaseRef = Database.database().reference()
+        databaseRef.child("users").child(userUUID).child("groups").child(newGroupUUID).setValue([
+            "groupName": newGroup.groupName,
+            "members": newGroupMembersDict
+        ])
+    }
+    
     func getGroups() {
         print("fetching groups")
         self.groups = []
