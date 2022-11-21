@@ -11,6 +11,7 @@
 		122623132912300200AD97B8 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122623122912300200AD97B8 /* EventView.swift */; };
 		125CE6A0291846600033C9A3 /* EventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE69F291846600033C9A3 /* EventViewModel.swift */; };
 		1284DD5A2926CFE400FDD9D1 /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1284DD592926CFE400FDD9D1 /* GroupViewModel.swift */; };
+		1284DD5C292C16D600FDD9D1 /* GuestList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1284DD5B292C16D600FDD9D1 /* GuestList.swift */; };
 		3D3647812913278F004D3958 /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3647802913278F004D3958 /* ImagePickerManager.swift */; };
 		3D37F3AC28F7AF5C00BDD35D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3AB28F7AF5C00BDD35D /* FirebaseAnalytics */; };
 		3D37F3AE28F7AF5C00BDD35D /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 3D37F3AD28F7AF5C00BDD35D /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -69,6 +70,7 @@
 		122623122912300200AD97B8 /* EventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		125CE69F291846600033C9A3 /* EventViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewModel.swift; sourceTree = "<group>"; };
 		1284DD592926CFE400FDD9D1 /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
+		1284DD5B292C16D600FDD9D1 /* GuestList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuestList.swift; sourceTree = "<group>"; };
 		3D3647802913278F004D3958 /* ImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
 		3D37F3E128F7B33400BDD35D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */,
 				67CAEBDA2901DFA60027CB56 /* CreateMeetingView.swift */,
 				3D3647802913278F004D3958 /* ImagePickerManager.swift */,
+				1284DD5B292C16D600FDD9D1 /* GuestList.swift */,
 				122623122912300200AD97B8 /* EventView.swift */,
 				122622E82908DB4B00AD97B8 /* FirebaseSchema.md */,
 				67BF8E5128F4C0F8002C2A7D /* Main.storyboard */,
@@ -311,6 +314,7 @@
 				ED09A8FA2909C06B00C464DD /* PlaceListView.swift in Sources */,
 				6706357428FEF0FA00EAE994 /* SettingsViewController.swift in Sources */,
 				3D3647812913278F004D3958 /* ImagePickerManager.swift in Sources */,
+				1284DD5C292C16D600FDD9D1 /* GuestList.swift in Sources */,
 				ED29FD92291AF252006BAFF5 /* UserViewModel.swift in Sources */,
 				ED09A8F62909BAE500C464DD /* LocationManager.swift in Sources */,
 			);
