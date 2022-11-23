@@ -51,7 +51,7 @@ struct CreateEventView: View {
             cta(text:"Create Event", minWidth: 128, bgColor: Color.purple, action: createEvent)
                 .fontWeight(.bold)
                 .padding(.top, 48.0)
-        }
+        }.onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
     }
     
     
