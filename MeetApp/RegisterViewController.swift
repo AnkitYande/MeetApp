@@ -72,6 +72,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
                 "eventsDeclined": [String: Bool](),
                 "eventsHosting": [String: Bool](),
             ])
+            self.performSegue(withIdentifier: "RegisterToHomeSegue", sender: self)
         }
     }
     
