@@ -100,7 +100,7 @@ struct HomeView: View {
                 
             }.onAppear {
                 eventViewModel.getEvents()
-                userViewModel.getAllUsers()
+//                userViewModel.getAllUsers()
             }
         }
     }
