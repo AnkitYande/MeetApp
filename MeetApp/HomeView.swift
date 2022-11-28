@@ -10,7 +10,7 @@ import FirebaseDatabase
 
 struct HomeView: View {
     @StateObject private var eventViewModel = EventViewModel(userUUID: user_id)
-    @StateObject private var userViewModel = UserViewModel(userUUID: user_id)
+    @StateObject private var userViewModel = UserViewModel()
     
     var body: some View {
         NavigationView {
@@ -97,11 +97,9 @@ struct HomeView: View {
                 }.edgesIgnoringSafeArea(.top)
                     .refreshable {
                         eventViewModel.getEvents()
-                        userViewModel.getAllUsers()
                     }
                     .onAppear {
                         eventViewModel.getEvents()
-                        userViewModel.getAllUsers()
                     }
                 addBtn()
             }
