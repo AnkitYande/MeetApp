@@ -7,14 +7,17 @@
 
 import UIKit
 import Foundation
+import FirebaseDatabase
+import FirebaseStorage
 
 class SocialViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segCtrl: UISegmentedControl!
     
+    let storage = Storage.storage()
     let cellIdentifier = "cellIdentifier"
-    var userViewModel = UserViewModel(userUUID: user_id)
+    var userViewModel = UserViewModel()
     var users: [User] = [User]()
     
     override func viewDidLoad() {
@@ -37,14 +40,27 @@ class SocialViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ProfileCell
         let row = indexPath.row
-        cell.textLabel?.text = userViewModel.users[row].username
-        cell.textLabel?.numberOfLines = 5
+        
+        let storageRef = self.storage.reference(forURL: userViewModel.users[row].profilePic).getData(maxSize: 1 * 1024 * 1024, completion: { data, error in
+             if let error = error {
+                 print("PICTURE ERROR: \(error.localizedDescription)")
+             } else {
+                 let image = UIImage(data: data!)
+                 cell.profilePic.image = image
+                 
+         }})
+        cell.displayName.text = userViewModel.users[row].displayName
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+}
+
+class ProfileCell: UITableViewCell {
+    @IBOutlet weak var profilePic: UIImageView!
+    @IBOutlet weak var displayName: UILabel!
 }

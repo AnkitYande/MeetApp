@@ -7,18 +7,14 @@
 
 import Foundation
 import FirebaseDatabase
+import UIKit
 
 final class UserViewModel: ObservableObject {
     
     @Published var users: [User] = []
     
-    var userUUID: String
-    
-    init(userUUID: String) {
-        self.userUUID = userUUID
-    }
-    
     func getAllUsers(completion: @escaping ([User]) -> Void) {
+        print("Fetching all users...")
         let group = DispatchGroup()
         group.enter()
         
@@ -76,7 +72,7 @@ final class UserViewModel: ObservableObject {
         }
         
         group.notify(queue: .main) {
-            print("Finished retrieving users. Total count: \(self.users.count)")
+            print("Finished retrieving all users. Total count: \(self.users.count)")
             completion(self.users)
         }
     }
