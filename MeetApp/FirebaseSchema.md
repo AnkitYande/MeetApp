@@ -9,6 +9,8 @@
         - longitude: number
         - friends: obj
             - userUID: bool
+        - groups: obj
+            - groupUID: bool
         - eventsInvited: obj
             - eventUID: bool
         - eventsAccepted: obj

@@ -10,6 +10,7 @@ import FirebaseDatabase
 
 struct HomeView: View {
     @StateObject private var eventViewModel = EventViewModel(userUUID: user_id)
+    @StateObject private var userViewModel = UserViewModel()
     
     var body: some View {
         NavigationView {
@@ -94,11 +95,15 @@ struct HomeView: View {
                         
                     }
                 }.edgesIgnoringSafeArea(.top)
-                
+                    .refreshable {
+                        eventViewModel.getEvents()
+                        userViewModel.getAllUsers()
+                    }
+                    .onAppear {
+                        eventViewModel.getEvents()
+                        userViewModel.getAllUsers()
+                    }
                 addBtn()
-                
-            }.onAppear {
-                eventViewModel.getEvents()
             }
         }
     }
@@ -183,7 +188,7 @@ struct card: View{
     var eventViewModel: EventViewModel
     
     var body: some View{
-        NavigationLink(destination: EventView(event: event, eventViewModel:eventViewModel,  eventList: $eventList)){
+        NavigationLink(destination: EventView(event: event, eventViewModel:eventViewModel, eventList: $eventList)){
             VStack(alignment: .leading){
                 Text(event.eventName)
                     .fontWeight(.bold)
@@ -209,3 +214,19 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
+extension UIApplication {
+    func addTapGestureRecognizer() {
+        guard let window = windows.first else { return }
+        let tapGesture = UITapGestureRecognizer(target: window, action: #selector(UIView.endEditing))
+        tapGesture.requiresExclusiveTouchType = false
+        tapGesture.cancelsTouchesInView = false
+        tapGesture.delegate = self
+        window.addGestureRecognizer(tapGesture)
+    }
+}
+
+extension UIApplication: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true // set to `false` if you don't want to detect tap during other gestures
+    }
+}
