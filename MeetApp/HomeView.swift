@@ -97,11 +97,9 @@ struct HomeView: View {
                 }.edgesIgnoringSafeArea(.top)
                     .refreshable {
                         eventViewModel.getEvents()
-                        userViewModel.getAllUsers()
                     }
                     .onAppear {
                         eventViewModel.getEvents()
-                        userViewModel.getAllUsers()
                     }
                 addBtn()
             }
