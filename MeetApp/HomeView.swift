@@ -8,12 +8,10 @@
 import SwiftUI
 import FirebaseDatabase
 
-var userViewModel = UserViewModel(userUUID: user_id)
-
 struct HomeView: View {
     @StateObject private var eventViewModel = EventViewModel(userUUID: user_id)
-//    @StateObject private var userViewModel = UserViewModel(userUUID: user_id)
-
+    @StateObject private var userViewModel = UserViewModel()
+    
     var body: some View {
         NavigationView {
             ZStack{
@@ -27,10 +25,12 @@ struct HomeView: View {
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundColor(Color.white)
-                            if eventViewModel.currentEvents.count > 0 {
+                            if eventViewModel.events.contains(where: {$0.status == .current}){
                                 LazyVStack(){
-                                    ForEach(eventViewModel.currentEvents, id:\.UID) { event in
-                                        card(event: event)
+                                    ForEach(eventViewModel.events.sorted(by: {$0.startDatetime < $1.startDatetime}), id:\.UID) { event in
+                                        if(event.status == .current){
+                                            card(event: event, eventList: $eventViewModel.events, eventViewModel: eventViewModel)
+                                        }
                                     }
                                 }.padding(.leading).padding(.trailing)
                             }else{
@@ -49,10 +49,12 @@ struct HomeView: View {
                             .font(.title)
                             .fontWeight(.bold)
                             .padding(.top, 24.0)
-                        if eventViewModel.activeEvents.count > 0 {
+                        if eventViewModel.events.contains(where: {$0.status == .active || $0.status == .accepted}){
                             LazyVStack(){
-                                ForEach(eventViewModel.activeEvents, id:\.UID) { event in
-                                    card(event: event)
+                                ForEach(eventViewModel.events.sorted(by: {$0.startDatetime < $1.startDatetime}), id:\.UID) { event in
+                                    if(event.status == .active || event.status == .accepted){
+                                        card(event: event, eventList: $eventViewModel.events, eventViewModel: eventViewModel)
+                                    }
                                 }
                             }.padding(.leading).padding(.trailing)
                         }else{
@@ -63,10 +65,12 @@ struct HomeView: View {
                             .font(.title)
                             .fontWeight(.bold)
                             .padding(.top, 24.0)
-                        if eventViewModel.declinedEvents.count > 0 {
+                        if eventViewModel.events.contains(where: {$0.status == .declined}){
                             LazyVStack(){
-                                ForEach(eventViewModel.declinedEvents, id:\.UID) { event in
-                                    card(event: event)
+                                ForEach(eventViewModel.events.sorted(by: {$0.startDatetime < $1.startDatetime}), id:\.UID) { event in
+                                    if(event.status == .declined){
+                                        card(event: event, eventList: $eventViewModel.events, eventViewModel: eventViewModel)
+                                    }
                                 }
                             }.padding(.leading).padding(.trailing)
                         }else{
@@ -77,23 +81,27 @@ struct HomeView: View {
                             .font(.title)
                             .fontWeight(.bold)
                             .padding(.top, 24.0)
-                        if eventViewModel.expiredEvents.count > 0 {
+                        if eventViewModel.events.contains(where: {$0.status == .expired}){
                             LazyVStack(){
-                                ForEach(eventViewModel.expiredEvents, id:\.UID) { event in
-                                    card(event: event)
+                                ForEach(eventViewModel.events.sorted(by: {$0.startDatetime < $1.startDatetime}), id:\.UID) { event in
+                                    if(event.status == .expired){
+                                        card(event: event, eventList: $eventViewModel.events, eventViewModel: eventViewModel)
+                                    }
                                 }
                             }.padding(.leading).padding(.trailing)
                         }else{
                             Text("No expired events")
                         }
+                        
                     }
-                }
-                .edgesIgnoringSafeArea(.top)
-                
+                }.edgesIgnoringSafeArea(.top)
+                    .refreshable {
+                        eventViewModel.getEvents()
+                    }
+                    .onAppear {
+                        eventViewModel.getEvents()
+                    }
                 addBtn()
-            }.onAppear {
-                eventViewModel.getEvents()
-                userViewModel.getAllUsers()
             }
         }
     }
@@ -174,9 +182,11 @@ struct addBtn: View{
 
 struct card: View{
     var event:Event
+    @Binding var eventList:[Event]
+    var eventViewModel: EventViewModel
     
     var body: some View{
-        NavigationLink(destination: EventView(event: event)){
+        NavigationLink(destination: EventView(event: event, eventViewModel:eventViewModel, eventList: $eventList)){
             VStack(alignment: .leading){
                 Text(event.eventName)
                     .fontWeight(.bold)
@@ -185,7 +195,7 @@ struct card: View{
                 Text("\(formatTime(event.startDatetime))").foregroundColor(Color.black)
                 Text(event.address.components(separatedBy: ",")[0])
                     .foregroundColor(Color.black)
-                ButtonControlView(buttonState: event.status)
+                ButtonControlView(event: event, eventViewModel:eventViewModel,  eventList: $eventList)
             }
             .padding()
             .background(Color.white)
@@ -202,3 +212,19 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
+extension UIApplication {
+    func addTapGestureRecognizer() {
+        guard let window = windows.first else { return }
+        let tapGesture = UITapGestureRecognizer(target: window, action: #selector(UIView.endEditing))
+        tapGesture.requiresExclusiveTouchType = false
+        tapGesture.cancelsTouchesInView = false
+        tapGesture.delegate = self
+        window.addGestureRecognizer(tapGesture)
+    }
+}
+
+extension UIApplication: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true // set to `false` if you don't want to detect tap during other gestures
+    }
+}

@@ -10,10 +10,6 @@ import FirebaseDatabase
 
 final class EventViewModel: ObservableObject {
     @Published var events: [Event] = []
-    @Published var currentEvents:[Event] = []
-    @Published var activeEvents:[Event] = []
-    @Published var expiredEvents:[Event] = []
-    @Published var declinedEvents:[Event] = []
     
     var userUUID: String
     
@@ -22,11 +18,8 @@ final class EventViewModel: ObservableObject {
     }
     
     func getEvents() {
+        print("fetching events")
         self.events = []
-        self.currentEvents = []
-        self.activeEvents = []
-        self.expiredEvents = []
-        self.declinedEvents = []
 
         let databaseRef = Database.database().reference()
         
@@ -72,7 +65,6 @@ final class EventViewModel: ObservableObject {
                     
                     let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .active)
                     self.events.append(newEvent)
-                    self.sortEvents(event: newEvent)
                 })
             }
         })
@@ -119,7 +111,6 @@ final class EventViewModel: ObservableObject {
                     
                     let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .accepted)
                     self.events.append(newEvent)
-                    self.sortEvents(event: newEvent)
                 })
             }
         })
@@ -166,40 +157,15 @@ final class EventViewModel: ObservableObject {
                     
                     let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .declined)
                     self.events.append(newEvent)
-                    self.sortEvents(event: newEvent)
                 })
             }
         })
     }
     
-    func sortEvents(event:Event){
-        if event.isHappeningNow(){
-            currentEvents.append(event)
-        }else{
-            switch event.status {
-            case .active:
-                activeEvents.append(event)
-            case .accepted:
-                activeEvents.append(event)
-            case .declined:
-                declinedEvents.append(event)
-            case .expired:
-                expiredEvents.append(event)
-            }
-        }
-    }
-    
     func loadDummyData(){
         self.events = []
-        self.currentEvents = []
-        self.activeEvents = []
-        self.expiredEvents = []
-        self.declinedEvents = []
         let eventsList = [testEventConfirmed,testEventDeclined,testEventActive,testEventExpired1,testEventExpired2]
         self.events = eventsList
-        for event in eventsList {
-            self.sortEvents(event: event)
-        }
     }
 }
 

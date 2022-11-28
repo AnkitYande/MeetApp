@@ -11,12 +11,15 @@ import FirebaseAuth
 import FirebaseStorage
 import FirebaseDatabase
 import Foundation
+import CoreData
 
 class SettingsViewController: UIViewController {
 
     private let database = Database.database().reference()
     private let storage = Storage.storage()
     
+    @IBOutlet weak var socialNotificationSwitch: UISwitch!
+    @IBOutlet weak var checkInNotificationSwitch: UISwitch!
     @IBOutlet weak var displayName: UILabel!
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var profilePictureButton: UIButton!
@@ -24,8 +27,6 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // TODO: Fill in displayName and username here
-        displayName.text = "First Last"
-        username.text = "username"
         downloadImage()
     }
     
@@ -74,6 +75,56 @@ class SettingsViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @IBAction func checkInNotifSwitch(_ sender: Any) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let checkInNotif = NSEntityDescription.entity(forEntityName: "notifications", in: context)
+        
+        if checkInNotificationSwitch.isOn {
+            checkInNotif?.setValue(true, forKey: "checkIn")
+        } else {
+            checkInNotif?.setValue(false, forKey: "checkIn")
+        }
+        
+        appDelegate.saveContext()
+    }
+    
+    @IBAction func socialNotifSwitch(_ sender: Any) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let checkInNotif = NSEntityDescription.entity(forEntityName: "notifications", in: context)
+        
+        if checkInNotificationSwitch.isOn {
+            checkInNotif?.setValue(true, forKey: "social")
+        } else {
+            checkInNotif?.setValue(false, forKey: "social")
+        }
+        
+        appDelegate.saveContext()
+    }
+    
+    func retrieveNotifications() -> [NSManagedObject] {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "notifications")
+        var fetchedResults: [NSManagedObject]?
+
+        do {
+            try fetchedResults = context.fetch(request) as? [NSManagedObject]
+        } catch {
+            let nserror = error as NSError
+            NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+            abort()
+        }
+
+        return (fetchedResults)!
     }
     
     @IBAction func signOutButtonPressed(_ sender: Any) {
