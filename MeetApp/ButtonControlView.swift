@@ -8,8 +8,15 @@
 import SwiftUI
 import FirebaseDatabase
 
+extension Date {
+  func subtractHours(_ hours: Int) -> Date {
+    let seconds: TimeInterval = Double(hours) * 60 * 60
+    let newDate: Date = self.addingTimeInterval(-seconds)
+    return newDate
+  }
+}
+
 struct ButtonControlView: View {
-    
     
     let event:Event
     var eventViewModel:EventViewModel
@@ -126,6 +133,44 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
     
     //add user to its new status in the event object
     databaseRef.child("events").child(eventID).child("users\(newStatus)").child(user_id).setValue(true)
+    
+    // TODO: access core data
+    
+    if newStatus == "Accepted" {
+        let notificationContent = UNMutableNotificationContent()
+        notificationContent.title = "Notification"
+        notificationContent.subtitle = "Check In"
+        notificationContent.body = "Check into your upcoming event!"
+        
+        databaseRef.child("events").child(eventID).child("startDatetime").getData(completion: {error, snapshot in
+            guard error == nil else {
+                print(error!.localizedDescription)
+                return;
+            }
+            let startTime = snapshot?.value as? String
+            
+            let start = convertStringToDate(datetimeString: startTime ?? "")
+            
+            let notifTime = start.subtractHours(1)
+            
+            let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: notifTime)
+            
+            let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+
+            let notificationRequest = UNNotificationRequest(identifier: "checkInNotif", content: notificationContent, trigger: notificationTrigger)
+
+            let notificationCenter = UNUserNotificationCenter.current()
+            notificationCenter.add(notificationRequest) { error in
+                if error != nil {
+                    print(error!.localizedDescription)
+                }
+            }
+        })
+    } else if newStatus == "Declined" {
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: ["checkInNotif"])
+    }
+    
 
     // update in UI
     // changing an element of the list doesn't seem to have an effect
