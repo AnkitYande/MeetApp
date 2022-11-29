@@ -99,7 +99,7 @@ struct MapView: View {
                     .navigationTitle(eventName)
             }
         }.onAppear {
-            userViewModel.getAllUsers { users in
+            userViewModel.getAllUsers(excludesSelf: true) { users in
                 self.users = users
                 for user in users {
                     if user.UID != user_id {
