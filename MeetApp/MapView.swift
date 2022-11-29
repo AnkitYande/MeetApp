@@ -10,13 +10,8 @@ import MapKit
 import CoreLocation
 import Foundation
 import Contacts
+import FirebaseStorage
 
-let defaultRegion: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50, longitude: 50), span: MKCoordinateSpan(latitudeDelta: 0.025, longitudeDelta: 0.025))
-
-// TODO: get placemarks for directions from Firebase
-let start = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 30.422860, longitude: -97.775100))
-let dest = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 30.503560, longitude: -97.756430))
-//var userViewModel = UserViewModel(userUUID: user_id)
 
 struct MapView: View {
     
@@ -26,11 +21,16 @@ struct MapView: View {
     @State private var tapped: Bool = false
     @State private var animationAmount = 1.0
     @Binding var location: String
-    @State private var directions: [String] = []
-    @State private var showDirections = false
+    //    @State private var directions: [String] = []
+    @State private var showDirections = true
+    @State private var showAllUsers = false
     @Binding var latitude: Double
     @Binding var longitude: Double
-    @StateObject private var userViewModel = UserViewModel(userUUID: user_id)
+    @StateObject private var userViewModel = UserViewModel()
+    var eventMap: Bool = false
+    @State var users: [User] = []
+    @State private var userLandmarks: [Landmark] = [Landmark]()
+    let storage = Storage.storage()
     
     private func getNearbyLandmarks() {
         let request = MKLocalSearch.Request()
@@ -65,23 +65,55 @@ struct MapView: View {
     
     var body: some View {
         ZStack(alignment: .top) {
-            
-            MapKitView(landmarks: landmarks, showDirections: $showDirections)
-                .onAppear {
-                    userViewModel.getAllUsers()
+            if !eventMap {
+                MapKitView(manager: locationManager, landmarks: landmarks, userLandmarks: userLandmarks, showDirections: $showDirections, showAllUsers: $showAllUsers)
+                    .ignoresSafeArea()
+                    .onAppear() {
+                        showDirections = false
+                        showAllUsers = false
+                    }
+                
+                TextField("Search for a location...", text: $search, onEditingChanged: { _ in })
+                {
+                    self.getNearbyLandmarks()
+                }.textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                    .offset(y: 0)
+                
+                PlaceListView(landmarks: self.landmarks, choose: self.chooseLocation) {
+                    self.tapped.toggle()
+                }.offset(y: calculateOffset())
+            } else {
+                MapKitView(manager: locationManager, landmarks: landmarks, userLandmarks: userLandmarks, address: location, eventLocation: CLLocationCoordinate2D(latitude: latitude, longitude: longitude) ,region: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), latitudinalMeters: 1000, longitudinalMeters: 1000), showDirections: $showDirections, showAllUsers: $showAllUsers)
+                    .ignoresSafeArea()
+                    .onAppear() {
+                        showAllUsers = true
+                        showDirections = true
+                        let eventPlacemark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+                        let eventLandmark = Landmark(placemark: eventPlacemark, chosenTitle: location)
+                        landmarks.append(eventLandmark)
+                    }
+            }
+        }.onAppear {
+            userViewModel.getAllUsers { users in
+                self.users = users
+                for user in users {
+                    if user.UID != user_id {
+                        let userCoordinate = CLLocationCoordinate2D(latitude: user.latitude, longitude: user.longitude)
+                        var userLandmark = Landmark(placemark: MKPlacemark(coordinate: userCoordinate), chosenTitle: user.displayName)
+                        print("USER {\(user.displayName)} is at location <\(userCoordinate.latitude), \(userCoordinate.longitude)>")
+                        let _ = self.storage.reference(forURL: user.profilePic).getData(maxSize: 1 * 1024 * 1024, completion: { data, error in
+                            if let error = error {
+                                print("PICTURE ERROR: \(error.localizedDescription)")
+                            } else {
+                                let image = UIImage(data: data!)!
+                                userLandmark.customImage = image
+                                userLandmark.isUser = true
+                                userLandmarks.append(userLandmark)
+                            }})
+                    }
                 }
-                .ignoresSafeArea()
-            
-            TextField("Search for a location...", text: $search, onEditingChanged: { _ in })
-            {
-                self.getNearbyLandmarks()
-            }.textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-                .offset(y: 0)
-            
-            PlaceListView(landmarks: self.landmarks, choose: self.chooseLocation) {
-                self.tapped.toggle()
-            }.offset(y: calculateOffset())
+            }
         }
     }
 }
@@ -92,7 +124,7 @@ class Coordinator: NSObject, MKMapViewDelegate {
     var selectionFlag: Bool
     var selectedRegion: MKCoordinateRegion
     
-    init(control: MapKitView, selectionFlag: Bool = false, selectedRegion: MKCoordinateRegion = defaultRegion) {
+    init(control: MapKitView, selectionFlag: Bool = false, selectedRegion: MKCoordinateRegion = MKCoordinateRegion()) {
         self.control = control
         self.selectionFlag = selectionFlag
         self.selectedRegion = selectedRegion
@@ -117,26 +149,43 @@ class Coordinator: NSObject, MKMapViewDelegate {
         renderer.lineWidth = 5
         return renderer
     }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "")
+        if annotation is MKUserLocation {
+            return nil
+        } else if annotation is LandmarkAnnotation {
+            let landmarkAnnotation = annotation as! LandmarkAnnotation
+            if landmarkAnnotation.isUser {
+                annotationView.image = landmarkAnnotation.customImage
+                annotationView.canShowCallout = true
+                let size = CGSize(width: 30, height: 30)
+                annotationView.image = UIGraphicsImageRenderer(size:size).image { _ in
+                    annotationView.layer.borderWidth = 1
+                    annotationView.layer.borderColor = CGColor.init(red: 0, green: 0, blue: 0, alpha: 1)
+                    annotationView.layer.backgroundColor = CGColor.init(red: 0, green: 0, blue: 0, alpha: 1)
+                    annotationView.image!.draw(in:CGRect(origin:.zero, size:size))
+                }
+            } else {
+                return nil
+            }
+        }
+        return annotationView
+    }
 }
 
 struct MapKitView: UIViewRepresentable {
     
+    var manager: LocationManager
     var landmarks: [Landmark]
-    let address: String
+    var userLandmarks: [Landmark]
+    var address: String = ""
+    var eventLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
     
-    @State var region: MKCoordinateRegion
-    @Binding var directions: [String]
+    @State var region: MKCoordinateRegion = MKCoordinateRegion()
+//    @Binding var directions: [String]
     @Binding var showDirections: Bool
-    
-    init(landmarks: [Landmark], address: String = "", region: MKCoordinateRegion = defaultRegion, directions: Binding<[String]> = Binding.constant([]), showDirections: Binding<Bool> = Binding.constant(false)) {
-        self.landmarks = landmarks
-        self.address = address
-        self.region = region
-        self._directions = directions
-        self._showDirections = showDirections
-        
-//        self.landmarks += [Landmark(placemark: start), Landmark(placemark: dest)]
-    }
+    @Binding var showAllUsers: Bool
     
     func findLocationByAddress(address: String, completion: @escaping((CLLocation?) -> ())) {
         let geoCoder = CLGeocoder()
@@ -151,24 +200,14 @@ struct MapKitView: UIViewRepresentable {
         map.showsUserLocation = true
         map.delegate = context.coordinator
         
-//        self.displayAllUsersLocations()
-//        self.updateUIView(map, context: context)
-        
-        // TODO: get actual start and dest dependent on user
-//        if showDirections {
-//            self.updateUIView(map, context: context)
-//            displayDirections(map: map, start: start, dest: dest)
-//        }
-        return map
-    }
-    
-    func displayAllUsersLocations() {
-        var userLocations: [Landmark] = []
-        for user in userViewModel.users {
-            let coordinate = CLLocationCoordinate2D(latitude: user.latitude, longitude: user.longitude)
-            userLocations.append(Landmark(placemark: MKPlacemark(coordinate: coordinate)))
+        if showDirections {
+            let destination = MKPlacemark(coordinate: eventLocation)
+            let _ = manager.$userLocation.sink(receiveValue: { newLocation in
+                print("User location updated to: \(newLocation)")
+                displayDirections(map: map, start: MKPlacemark(coordinate: newLocation.coordinate), dest: destination)
+            })
         }
-        // TODO: add locations to landmarks
+        return map
     }
     
     func displayDirections(map: MKMapView, start: MKPlacemark, dest: MKPlacemark) {
@@ -181,13 +220,14 @@ struct MapKitView: UIViewRepresentable {
         let directions = MKDirections(request: request)
         directions.calculate { response, error in
             guard let route = response?.routes.first else { return }
-            map.addAnnotations([start, dest])
+            //            map.addAnnotations([start, dest])
+            //            map.addAnnotation(dest)
             map.addOverlay(route.polyline)
             map.setVisibleMapRect(
                 route.polyline.boundingMapRect,
-                edgePadding: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20),
+                edgePadding: UIEdgeInsets(top: 50, left: 30, bottom: 50, right: 30),
                 animated: true)
-            self.directions = route.steps.map { $0.instructions }.filter { !$0.isEmpty }
+            //            self.directions = route.steps.map { $0.instructions }.filter { !$0.isEmpty }
         }
     }
     
@@ -205,7 +245,10 @@ struct MapKitView: UIViewRepresentable {
     
     private func updateAnnotations(from mapView: MKMapView) {
         mapView.removeAnnotations(mapView.annotations)
-        let annotations = self.landmarks.map(LandmarkAnnotation.init)
+        var annotations = self.landmarks.map(LandmarkAnnotation.init)
+        if showAllUsers {
+            annotations += self.userLandmarks.map(LandmarkAnnotation.init)
+        }
         mapView.addAnnotations(annotations)
     }
 }
