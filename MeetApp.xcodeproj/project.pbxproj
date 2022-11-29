@@ -95,6 +95,7 @@
 		ED09A8F92909C06B00C464DD /* PlaceListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceListView.swift; sourceTree = "<group>"; };
 		ED29FD91291AF252006BAFF5 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		ED2F727D28FF727A0078EA18 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		ED9E0A642935A02700E0998A /* Base Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Base Location.gpx"; sourceTree = "<group>"; };
 		EDCE9A1A28FF4E6A00D4ED21 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -173,6 +174,7 @@
 				122622E82908DB4B00AD97B8 /* FirebaseSchema.md */,
 				67BF8E5128F4C0F8002C2A7D /* Main.storyboard */,
 				ED09A8F32909ACBD00C464DD /* MapView.swift */,
+				ED9E0A642935A02700E0998A /* Base Location.gpx */,
 				ED09A8F92909C06B00C464DD /* PlaceListView.swift */,
 				ED09A8F72909BE2C00C464DD /* Landmark.swift */,
 				ED09A8F52909BAE500C464DD /* LocationManager.swift */,

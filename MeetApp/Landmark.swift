@@ -11,6 +11,9 @@ import MapKit
 struct Landmark {
     
     let placemark: MKPlacemark
+    var chosenTitle: String = ""
+    var customImage: UIImage = UIImage()
+    var isUser: Bool = false
     
     var id: UUID {
         return UUID()
@@ -33,9 +36,13 @@ final class LandmarkAnnotation: NSObject, MKAnnotation {
     
     let title: String?
     let coordinate: CLLocationCoordinate2D
+    let customImage: UIImage?
+    let isUser: Bool
     
     init(landmark: Landmark) {
-        self.title = landmark.name
+        self.title = landmark.name == "" ? landmark.chosenTitle : landmark.name
         self.coordinate = landmark.coordinate
+        self.customImage = landmark.customImage
+        self.isUser = landmark.isUser
     }
 }
