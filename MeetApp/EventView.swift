@@ -198,6 +198,40 @@ func deleteEvent(eventID:String){
             return;
         }})
     
+    // iterate through usersAccepted, usersInvited, usersDeclined and remove this event from those users
+    databaseRef.child("events").child(eventID).child("usersAccepted").getData(completion: { error, snapshot in
+        guard error == nil else {
+            print(error!.localizedDescription)
+            return;
+        }
+        let usersAccepted = snapshot?.value as? [String: Any] ?? [String: Any]();
+        for (userUUID, _) in usersAccepted {
+            databaseRef.child("users").child(userUUID).child("eventsAccepted").child(eventID).removeValue()
+        }
+    })
+    
+    databaseRef.child("events").child(eventID).child("usersInvited").getData(completion: { error, snapshot in
+        guard error == nil else {
+            print(error!.localizedDescription)
+            return;
+        }
+        let usersInvited = snapshot?.value as? [String: Any] ?? [String: Any]();
+        for (userUUID, _) in usersInvited {
+            databaseRef.child("users").child(userUUID).child("eventsInvited").child(eventID).removeValue()
+        }
+    })
+    
+    databaseRef.child("events").child(eventID).child("usersDeclined").getData(completion: { error, snapshot in
+        guard error == nil else {
+            print(error!.localizedDescription)
+            return;
+        }
+        let usersDeclined = snapshot?.value as? [String: Any] ?? [String: Any]();
+        for (userUUID, _) in usersDeclined {
+            databaseRef.child("users").child(userUUID).child("eventsDeclined").child(eventID).removeValue()
+        }
+    })
+    
     //Delete event object
     databaseRef.child("events").child(eventID).removeValue()
 }
