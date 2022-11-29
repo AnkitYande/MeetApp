@@ -26,7 +26,6 @@ class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // TODO: Fill in displayName and username here
         downloadImage()
     }
     

@@ -10,25 +10,41 @@ import Foundation
 import FirebaseDatabase
 import FirebaseStorage
 
+enum SocialViewMode {
+    case standardView
+    case selectView
+}
+
 class SocialViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segCtrl: UISegmentedControl!
+    @IBOutlet weak var confirmButton: UIButton!
     
     let storage = Storage.storage()
     let cellIdentifier = "cellIdentifier"
     var userViewModel = UserViewModel()
     var users: [User] = [User]()
+    var viewMode = SocialViewMode.standardView
+    var delegate = CreateEventView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.allowsMultipleSelection = true
+        tableView.allowsMultipleSelectionDuringEditing = true
         tableView.delegate = self
         tableView.dataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        userViewModel.getAllUsers() { users in
+        if viewMode == .standardView {
+            confirmButton.isHidden = true
+        } else if viewMode == .selectView {
+            confirmButton.isHidden = false
+            confirmButton.isEnabled = false
+        }
+        userViewModel.getAllUsers(excludesSelf: true) { users in
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -56,11 +72,48 @@ class SocialViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        if viewMode == .standardView {
+            tableView.deselectRow(at: indexPath, animated: true)
+        } else if viewMode == .selectView {
+            confirmButton.isEnabled = true
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let numSelected = tableView.indexPathsForSelectedRows?.count
+        if numSelected == nil {
+            confirmButton.isEnabled = false
+        }
+    }
+    
+    @IBAction func confirmButtonPressed(_ sender: Any) {
+        guard tableView.indexPathsForSelectedRows != nil else {return}
+        
+        var friendsInvited = [User]()
+        for indexPath in tableView.indexPathsForSelectedRows! {
+            friendsInvited.append(userViewModel.users[indexPath.row])
+        }
+        self.delegate.updateFriendsInvited(newFriends: friendsInvited)
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
 class ProfileCell: UITableViewCell {
     @IBOutlet weak var profilePic: UIImageView!
     @IBOutlet weak var displayName: UILabel!
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.selectionStyle = .none
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        self.accessoryType = selected ? .checkmark : .none
+    }
+    
 }

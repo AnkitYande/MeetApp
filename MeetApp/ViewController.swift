@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import FirebaseAuth
 
 class ViewController: UIViewController {
     
@@ -20,6 +21,13 @@ class ViewController: UIViewController {
         addChild(childView)
         childView.view.frame = theContainer.bounds
         theContainer.addSubview(childView.view)
+        
+//        let firebaseAuth = Auth.auth()
+//        do {
+//          try firebaseAuth.signOut()
+//        } catch let signOutError as NSError {
+//          print("Error signing out: %@", signOutError)
+//        }
     }
 
 

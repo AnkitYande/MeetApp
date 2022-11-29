@@ -134,7 +134,7 @@
                                 <connections>
                                     <action selector="loginButtonPressed:" destination="MCG-1u-aJn" eventType="touchUpInside" id="eD3-3i-rwQ"/>
                                     <action selector="signOutButtonPressed:" destination="hZj-hk-znv" eventType="touchUpInside" id="Vyk-0v-PHC"/>
-                                    <segue destination="MCG-1u-aJn" kind="show" id="Rzt-eg-iKU"/>
+                                    <segue destination="vob-X1-rIg" kind="unwind" unwindAction="unwindToFirstViewController:" id="E2z-tY-eTU"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -163,6 +163,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xO2-RI-SkD" sceneMemberID="firstResponder"/>
+                <exit id="vob-X1-rIg" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="866.41221374045801" y="-638.73239436619724"/>
         </scene>
@@ -190,7 +191,7 @@
                                 </segments>
                             </segmentedControl>
                             <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cKz-CJ-Myx">
-                                <rect key="frame" x="4" y="205" width="361" height="44"/>
+                                <rect key="frame" x="2" y="205" width="362" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -229,14 +230,25 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wrP-0i-2eV">
+                                <rect key="frame" x="154" y="679" width="85" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Confirm"/>
+                                <connections>
+                                    <action selector="confirmButtonPressed:" destination="8bP-ba-n9r" eventType="touchUpInside" id="gtz-7e-bHR"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ciJ-fH-V97"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="sOk-2M-X8m"/>
                     <connections>
+                        <outlet property="confirmButton" destination="wrP-0i-2eV" id="BuQ-Nm-nBf"/>
                         <outlet property="segCtrl" destination="dAz-Oo-izY" id="tae-al-myp"/>
                         <outlet property="tableView" destination="3Ns-y0-zBv" id="PNr-v4-G5P"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="SocialToHomeSegue" modalPresentationStyle="fullScreen" id="zDS-FN-6fw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Asw-jp-nQM" sceneMemberID="firstResponder"/>
@@ -248,7 +260,7 @@
             <objects>
                 <viewController id="MCG-1u-aJn" customClass="LoginViewController" customModule="MeetApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0HV-Ja-rgu">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="783"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W3u-F0-Raz">
@@ -390,7 +402,7 @@
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="loginButtonPressed:" destination="MCG-1u-aJn" eventType="touchUpInside" id="jnC-F3-bWU"/>
-                                    <segue destination="MCG-1u-aJn" kind="presentation" modalPresentationStyle="fullScreen" id="RB2-XY-RWN"/>
+                                    <action selector="signInButtonPressed:" destination="aBZ-zN-fH6" eventType="touchUpInside" id="Mk7-pc-yat"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="brC-9o-03R">
@@ -430,8 +442,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Rzt-eg-iKU"/>
-        <segue reference="Sdp-ku-VuQ"/>
+        <segue reference="zDS-FN-6fw"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Bars" width="568" height="234"/>

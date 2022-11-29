@@ -18,10 +18,13 @@ struct GuestList: View {
     var body: some View {
         List {
             ForEach(Array(users.enumerated()), id:\.offset) { index, user in
-                Text(user.displayName)
-                Image(uiImage: usersProfilePictures[index])
+                HStack{
+                    Image(uiImage: usersProfilePictures[index])
+                    Text(user.displayName)
+                }
             }
         }
+        .scrollContentBackground(.hidden)
         .refreshable {
             self.loadUsers()
         }
@@ -73,7 +76,7 @@ struct GuestList: View {
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return newImage!
-    }
+    } 
 }
 
 struct GuestList_Previews: PreviewProvider {

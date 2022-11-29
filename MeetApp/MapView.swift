@@ -82,7 +82,9 @@ struct MapView: View {
                     .offset(y: 0)
                 
                 PlaceListView(landmarks: self.landmarks, choose: self.chooseLocation) {
-                    self.tapped.toggle()
+                    withAnimation(Animation.spring()) {
+                        self.tapped.toggle()
+                    }
                 }.offset(y: calculateOffset())
             } else {
                 MapKitView(manager: locationManager, landmarks: landmarks, userLandmarks: userLandmarks, address: location, eventLocation: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), region: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), latitudinalMeters: 1000, longitudinalMeters: 1000), showDirections: $showDirections, showAllUsers: $showAllUsers)
