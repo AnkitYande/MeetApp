@@ -31,6 +31,7 @@ struct MapView: View {
     @State var users: [User] = []
     @State private var userLandmarks: [Landmark] = [Landmark]()
     let storage = Storage.storage()
+    var eventName: String = ""
     
     private func getNearbyLandmarks() {
         let request = MKLocalSearch.Request()
@@ -84,8 +85,8 @@ struct MapView: View {
                     self.tapped.toggle()
                 }.offset(y: calculateOffset())
             } else {
-                MapKitView(manager: locationManager, landmarks: landmarks, userLandmarks: userLandmarks, address: location, eventLocation: CLLocationCoordinate2D(latitude: latitude, longitude: longitude) ,region: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), latitudinalMeters: 1000, longitudinalMeters: 1000), showDirections: $showDirections, showAllUsers: $showAllUsers)
-                    .ignoresSafeArea()
+                MapKitView(manager: locationManager, landmarks: landmarks, userLandmarks: userLandmarks, address: location, eventLocation: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), region: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), latitudinalMeters: 1000, longitudinalMeters: 1000), showDirections: $showDirections, showAllUsers: $showAllUsers)
+                    .ignoresSafeArea(edges: [.bottom, .horizontal])
                     .onAppear() {
                         showAllUsers = true
                         showDirections = true
@@ -93,6 +94,7 @@ struct MapView: View {
                         let eventLandmark = Landmark(placemark: eventPlacemark, chosenTitle: location)
                         landmarks.append(eventLandmark)
                     }
+                    .navigationTitle(eventName)
             }
         }.onAppear {
             userViewModel.getAllUsers { users in

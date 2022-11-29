@@ -96,7 +96,7 @@ struct otw: View {
     public var body: some View {
         HStack{
             Spacer()
-            NavigationLink(destination: MapView(location: $location, latitude: $latitude, longitude: $longitude, eventMap: true)) {
+            NavigationLink(destination: MapView(location: $location, latitude: $latitude, longitude: $longitude, eventMap: true, eventName: event.eventName)) {
                 Text("On The Way!")
             }
             .fontWeight(.semibold)
