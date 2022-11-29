@@ -21,12 +21,14 @@ struct MapView: View {
     @State private var tapped: Bool = false
     @State private var animationAmount = 1.0
     @Binding var location: String
+    @Binding var locationName: String
     //    @State private var directions: [String] = []
     @State private var showDirections = true
     @State private var showAllUsers = false
     @Binding var latitude: Double
     @Binding var longitude: Double
     @StateObject private var userViewModel = UserViewModel()
+    @StateObject private var eventViewModel = EventViewModel(userUUID: user_id)
     var eventMap: Bool = false
     @State var users: [User] = []
     @State private var userLandmarks: [Landmark] = [Landmark]()
@@ -58,8 +60,9 @@ struct MapView: View {
         }
     }
     
-    func chooseLocation(chosenLocation: String, coordinate: CLLocationCoordinate2D) {
+    func chooseLocation(chosenLocation: String, chosenLocationName: String, coordinate: CLLocationCoordinate2D) {
         self.location = chosenLocation
+        self.locationName = chosenLocationName
         self.latitude = coordinate.latitude
         self.longitude = coordinate.longitude
     }
@@ -93,13 +96,14 @@ struct MapView: View {
                         showAllUsers = true
                         showDirections = true
                         let eventPlacemark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
-                        let eventLandmark = Landmark(placemark: eventPlacemark, chosenTitle: location)
+                        let eventLandmark = Landmark(placemark: eventPlacemark, chosenTitle: locationName)
                         landmarks.append(eventLandmark)
                     }
                     .navigationTitle(eventName)
             }
         }.onAppear {
-            userViewModel.getAllUsers(excludesSelf: true) { users in
+            eventViewModel.getEvents()
+            userViewModel.getAllUsers(excludesSelf: false) { users in
                 self.users = users
                 for user in users {
                     if user.UID != user_id {
@@ -171,7 +175,10 @@ class Coordinator: NSObject, MKMapViewDelegate {
                     annotationView.image!.draw(in:CGRect(origin:.zero, size:size))
                 }
             } else {
-                return nil
+                let anot = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "")
+                anot.canShowCallout = true
+                anot.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+                return anot
             }
         }
         return annotationView
@@ -188,6 +195,16 @@ class Coordinator: NSObject, MKMapViewDelegate {
             }
             mapView.removeOverlays(mapView.overlays)
             control.displayDirections(map: mapView, start: MKPlacemark(coordinate: startingCoordinate))
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        if let annotation = view.annotation {
+            if annotation is LandmarkAnnotation {
+                let landmarkAnnotation = annotation as! LandmarkAnnotation
+                let launchOptions = [MKLaunchOptionsMapCenterKey: landmarkAnnotation.coordinate]
+                landmarkAnnotation.mapItem().openInMaps(launchOptions: launchOptions)
+            }
         }
     }
 }
@@ -279,6 +296,6 @@ struct MapKitView: UIViewRepresentable {
 
 struct MapView_Previews: PreviewProvider {
     static var previews: some View {
-        MapView(location: .constant(""), latitude: .constant(0.0), longitude: .constant(0.0))
+        MapView(location: .constant(""), locationName: .constant(""), latitude: .constant(0.0), longitude: .constant(0.0))
     }
 }

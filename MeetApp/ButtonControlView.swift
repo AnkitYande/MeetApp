@@ -97,13 +97,14 @@ struct otw: View {
     let event: Event
     
     @State private var location: String = ""
+    @State private var locationName: String = ""
     @State private var latitude: Double = 0.0
     @State private var longitude: Double = 0.0
     
     public var body: some View {
         HStack{
             Spacer()
-            NavigationLink(destination: MapView(location: $location, latitude: $latitude, longitude: $longitude, eventMap: true, eventName: event.eventName)) {
+            NavigationLink(destination: MapView(location: $location, locationName: $locationName, latitude: $latitude, longitude: $longitude, eventMap: true, eventName: event.eventName)) {
                 Text("On The Way!")
             }
             .fontWeight(.semibold)
@@ -121,6 +122,7 @@ struct otw: View {
     
     func setLocation() -> Void {
         location = event.address
+        locationName = event.locationName
         latitude = event.latitude
         longitude = event.longitude
         print("Location has been set to: \(location). \nLAT: \(latitude)\tLON: \(longitude)")

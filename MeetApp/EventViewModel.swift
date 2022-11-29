@@ -39,6 +39,7 @@ final class EventViewModel: ObservableObject {
                     
                     let eventName = eventDict["eventName"] as! String
                     let location = eventDict["location"] as! String
+                    let locationName = eventDict["locationName"] as! String
                     let latitude = eventDict["latitude"] as! Double
                     let longitude = eventDict["longitude"] as! Double
                     let startDatetime = eventDict["startDatetime"] as! String
@@ -63,7 +64,7 @@ final class EventViewModel: ObservableObject {
                         }
                     }
                     
-                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .active)
+                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, locationName: locationName, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .active)
                     self.events.append(newEvent)
                 })
             }
@@ -85,6 +86,7 @@ final class EventViewModel: ObservableObject {
                     
                     let eventName = eventDict["eventName"] as! String
                     let location = eventDict["location"] as! String
+                    let locationName = eventDict["locationName"] as! String
                     let latitude = eventDict["latitude"] as! Double
                     let longitude = eventDict["longitude"] as! Double
                     let startDatetime = eventDict["startDatetime"] as! String
@@ -109,7 +111,7 @@ final class EventViewModel: ObservableObject {
                         }
                     }
                     
-                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .accepted)
+                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, locationName: locationName, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .accepted)
                     self.events.append(newEvent)
                 })
             }
@@ -131,6 +133,7 @@ final class EventViewModel: ObservableObject {
                     
                     let eventName = eventDict["eventName"] as! String
                     let location = eventDict["location"] as! String
+                    let locationName = eventDict["locationName"] as! String
                     let latitude = eventDict["latitude"] as! Double
                     let longitude = eventDict["longitude"] as! Double
                     let startDatetime = eventDict["startDatetime"] as! String
@@ -155,7 +158,7 @@ final class EventViewModel: ObservableObject {
                         }
                     }
                     
-                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .declined)
+                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, locationName: locationName, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .declined)
                     self.events.append(newEvent)
                 })
             }
@@ -176,13 +179,14 @@ let _pastEndDatetime:String = "2022-10-31 22:26:00 +0000"
 let _startDatetime:String = "2023-10-30 22:00:00 +0000"
 let _endDatetime:String = "2023-10-31 22:26:00 +0000"
 let _address:String = "2111 Rio Grande St, Austin, TX 78705"
+let _locationName:String = "Villas on Rio"
 let _latitude:Double = 30.284680
 let _longitude:Double = -97.744940
 let _description:String = "Bo is throwing the most popping party in all of Wampus!  Come on through for this great networking opportunity"
 let _attendees:String = ""
 let _host:String = "Bo Deng"
-let testEventConfirmed = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .accepted)
-let testEventDeclined = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address,latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .declined)
-let testEventActive = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .active)
-let testEventExpired1 = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime:  _pastStartDatetime, endDatetime: _pastEndDatetime, address: _address, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .accepted)
-let testEventExpired2 = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _pastStartDatetime, endDatetime: _pastEndDatetime, address: _address, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .active)
+let testEventConfirmed = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address, locationName: _locationName, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .accepted)
+let testEventDeclined = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address, locationName: _locationName, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .declined)
+let testEventActive = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _startDatetime, endDatetime: _endDatetime, address: _address, locationName: _locationName, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .active)
+let testEventExpired1 = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime:  _pastStartDatetime, endDatetime: _pastEndDatetime, address: _address, locationName: _locationName, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .accepted)
+let testEventExpired2 = Event(UID: UUID().uuidString, eventName: _eventName, startDatetime: _pastStartDatetime, endDatetime: _pastEndDatetime, address: _address, locationName: _locationName, latitude: _latitude, longitude: _longitude, description: _description, attendees: _attendees, host: _host, status: .active)
