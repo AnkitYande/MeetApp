@@ -23,6 +23,7 @@
     - eventUID: obj
         - eventName: string
         - location: string
+        - locationName: string
         - latitude: number
         - longitude: number
         - startDatetime: string
