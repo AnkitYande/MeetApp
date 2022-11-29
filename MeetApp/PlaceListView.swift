@@ -16,19 +16,33 @@ struct PlaceListView: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            HStack {
-                EmptyView()
-            }.frame(width: UIScreen.main.bounds.size.width, height: 50)
-                .background(Color.gray)
-                .gesture(TapGesture()
-                    .onEnded(self.onTap)
-                )
+            HStack{
+                Spacer()
+                RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    .fill(.gray)
+                    .frame(width: 70, height: 5)
+                Spacer()
+            }
+            .padding(.vertical)
+            .gesture(TapGesture().onEnded(self.onTap))
+            .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                .onEnded({ value in
+                    if value.translation.height < 0 {
+                        self.onTap()
+                    }
+                    
+                    if value.translation.height > 0 {
+                        self.onTap()
+                    }
+                }))
             List {
                 ForEach(self.landmarks, id: \.id) { landmark in
                     Place(choose: self.choose, landmark: landmark)
                 }
-            }
-        }.cornerRadius(10)
+            }.scrollContentBackground(.hidden)
+        }
+        .cornerRadius(10)
+        .background(Color.white)
     }
 }
 

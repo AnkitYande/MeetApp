@@ -76,7 +76,9 @@ struct MapView: View {
                 .offset(y: 0)
             
             PlaceListView(landmarks: self.landmarks, choose: self.chooseLocation) {
-                self.tapped.toggle()
+                withAnimation(Animation.spring()) {
+                    self.tapped.toggle()
+                }
             }.offset(y: calculateOffset())
         }
     }
