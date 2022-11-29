@@ -44,7 +44,7 @@ class SocialViewController: UIViewController, UITableViewDelegate, UITableViewDa
             confirmButton.isHidden = false
             confirmButton.isEnabled = false
         }
-        userViewModel.getAllUsers() { users in
+        userViewModel.getAllUsers(excludesSelf: true) { users in
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }

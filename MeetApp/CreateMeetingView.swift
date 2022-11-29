@@ -78,6 +78,7 @@ struct CreateEventView: View {
 //                allUsersDict[userId] = true as AnyObject
 //            }
             var invitedDict = [String: Bool]()
+            invitedDict[user_id] = true // invite yourself
             for user in self.friendsInvited {
                 invitedDict[user.UID] = true
             }

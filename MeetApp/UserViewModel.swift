@@ -13,7 +13,7 @@ final class UserViewModel: ObservableObject {
     
     @Published var users: [User] = []
     
-    func getAllUsers(completion: @escaping ([User]) -> Void) {
+    func getAllUsers(excludesSelf: Bool, completion: @escaping ([User]) -> Void) {
         print("Fetching all users...")
         let group = DispatchGroup()
         group.enter()
@@ -31,6 +31,9 @@ final class UserViewModel: ObservableObject {
                 let allUsers = snapshot?.value as? [String: Any] ?? [String: Any]();
                 var count = 0
                 for (userID, _) in allUsers {
+                    if excludesSelf && userID == user_id {
+                        continue
+                    }
                     databaseRef.child("users").child(userID).getData(completion: { error, snapshot in
                         guard error == nil else {
                             print("ERROR: \(error!.localizedDescription)")
@@ -63,7 +66,9 @@ final class UserViewModel: ObservableObject {
                         let newUser = User(UID: userID, email: email, displayName: displayName, username: username, profilePic: profilePic, status: status, latitude: latitude, longitude: longitude, eventsInvited: allEvents, eventsHosting: hostEvents)
                         self.users.append(newUser)
                         count += 1
-                        if count == allUsers.count {
+                        if excludesSelf && count == allUsers.count - 1 {
+                            group.leave()
+                        } else if !excludesSelf && count == allUsers.count {
                             group.leave()
                         }
                     })
