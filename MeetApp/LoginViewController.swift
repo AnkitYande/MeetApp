@@ -35,6 +35,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @IBAction func unwindToFirstViewController(_ sender: UIStoryboardSegue) {
+         // No code needed, no need to connect the IBAction explicitely
+    }
+    
     @IBAction func loginButtonPressed(_ sender: Any) {
         guard loginEmailTextField.hasText && loginPasswordTextField.hasText else {
             let incompleteAlert = UIAlertController(

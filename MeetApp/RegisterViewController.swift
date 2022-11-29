@@ -76,6 +76,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @IBAction func signInButtonPressed(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     func textFieldShouldReturn(_ textField:UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
