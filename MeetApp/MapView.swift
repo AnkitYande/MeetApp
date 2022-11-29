@@ -242,8 +242,15 @@ struct MapKitView: UIViewRepresentable {
                 route.polyline.boundingMapRect,
                 edgePadding: UIEdgeInsets(top: 100, left: 100, bottom: 100, right: 100),
                 animated: true)
-            //            self.directions = route.steps.map { $0.instructions }.filter { !$0.isEmpty }
+            print(eta(seconds: route.expectedTravelTime))
+//            self.directions = route.steps.map { $0.instructions }.filter { !$0.isEmpty }
         }
+    }
+    
+    func eta(seconds: Double) -> String {
+      let (hr,  minf) = modf(seconds / 3600)
+      let (min, secf) = modf(60 * minf)
+      return "ETA: \(Int(hr)) hour(s), \(Int(min)) minute(s), and \(String(format: "%.0f", 60 * secf)) second(s)"
     }
     
     func makeCoordinator() -> Coordinator {
