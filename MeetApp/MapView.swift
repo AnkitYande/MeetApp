@@ -172,6 +172,20 @@ class Coordinator: NSObject, MKMapViewDelegate {
         }
         return annotationView
     }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if let annotation = view.annotation {
+            let startingCoordinate = annotation.coordinate
+            if !(annotation is MKUserLocation) {
+                let landmarkAnnotation = annotation as! LandmarkAnnotation
+                if !landmarkAnnotation.isUser {
+                    return
+                }
+            }
+            mapView.removeOverlays(mapView.overlays)
+            control.displayDirections(map: mapView, start: MKPlacemark(coordinate: startingCoordinate))
+        }
+    }
 }
 
 struct MapKitView: UIViewRepresentable {
@@ -201,17 +215,16 @@ struct MapKitView: UIViewRepresentable {
         map.delegate = context.coordinator
         
         if showDirections {
-            let destination = MKPlacemark(coordinate: eventLocation)
             let _ = manager.$userLocation.sink(receiveValue: { newLocation in
                 print("User location updated to: \(newLocation)")
-                displayDirections(map: map, start: MKPlacemark(coordinate: newLocation.coordinate), dest: destination)
+                displayDirections(map: map, start: MKPlacemark(coordinate: newLocation.coordinate))
             })
         }
         return map
     }
     
-    func displayDirections(map: MKMapView, start: MKPlacemark, dest: MKPlacemark) {
-        
+    func displayDirections(map: MKMapView, start: MKPlacemark) {
+        let dest = MKPlacemark(coordinate: eventLocation)
         let request = MKDirections.Request()
         request.source = MKMapItem(placemark: start)
         request.destination = MKMapItem(placemark: dest)
@@ -225,7 +238,7 @@ struct MapKitView: UIViewRepresentable {
             map.addOverlay(route.polyline)
             map.setVisibleMapRect(
                 route.polyline.boundingMapRect,
-                edgePadding: UIEdgeInsets(top: 50, left: 30, bottom: 50, right: 30),
+                edgePadding: UIEdgeInsets(top: 100, left: 100, bottom: 100, right: 100),
                 animated: true)
             //            self.directions = route.steps.map { $0.instructions }.filter { !$0.isEmpty }
         }
