@@ -7,10 +7,14 @@
 
 import Foundation
 import MapKit
+import Contacts
 
 struct Landmark {
     
     let placemark: MKPlacemark
+    var chosenTitle: String = ""
+    var customImage: UIImage = UIImage()
+    var isUser: Bool = false
     
     var id: UUID {
         return UUID()
@@ -32,10 +36,24 @@ struct Landmark {
 final class LandmarkAnnotation: NSObject, MKAnnotation {
     
     let title: String?
+    let subtitle: String?
     let coordinate: CLLocationCoordinate2D
+    let customImage: UIImage?
+    let isUser: Bool
     
     init(landmark: Landmark) {
-        self.title = landmark.name
+        self.title = landmark.name == "" ? landmark.chosenTitle : landmark.name
+        self.subtitle = landmark.name
         self.coordinate = landmark.coordinate
+        self.customImage = landmark.customImage
+        self.isUser = landmark.isUser
+    }
+    
+    func mapItem() -> MKMapItem {
+        let addressDictionary = [CNPostalAddressStreetKey: title]
+        let placemark = MKPlacemark(coordinate: coordinate, addressDictionary: addressDictionary)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = title
+        return mapItem
     }
 }

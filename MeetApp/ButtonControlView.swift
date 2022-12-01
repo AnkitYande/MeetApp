@@ -28,7 +28,7 @@ struct ButtonControlView: View {
         case .declined:  declined(event: event, eventViewModel: eventViewModel)
         case .active:  acceptDecline(event: event, eventViewModel: eventViewModel)
         case .expired:  expired()
-        case .current: otw()
+        case .current: otw(event: event)
         }
     }
 }
@@ -94,12 +94,38 @@ struct expired: View {
 }
 
 struct otw: View {
+    let event: Event
+    
+    @State private var location: String = ""
+    @State private var locationName: String = ""
+    @State private var latitude: Double = 0.0
+    @State private var longitude: Double = 0.0
+    
     public var body: some View {
         HStack{
             Spacer()
-            cta(text: "On The Way!", minWidth: 128, bgColor: Color.purple, action: mapPlaceHolder)
+            NavigationLink(destination: MapView(location: $location, locationName: $locationName, latitude: $latitude, longitude: $longitude, eventMap: true, eventName: event.eventName)) {
+                Text("On The Way!")
+            }
+            .fontWeight(.semibold)
+            .frame(minWidth: 128)
+            .padding()
+            .background(Color.purple)
+            .foregroundColor(Color.white)
+            .clipShape(RoundedRectangle(cornerRadius: 100))
+            .clipShape(RoundedRectangle(cornerRadius: 100))
             Spacer()
+        }.onAppear {
+            setLocation()
         }
+    }
+    
+    func setLocation() -> Void {
+        location = event.address
+        locationName = event.locationName
+        latitude = event.latitude
+        longitude = event.longitude
+        print("Location has been set to: \(location). \nLAT: \(latitude)\tLON: \(longitude)")
     }
 }
 
@@ -107,7 +133,7 @@ func disabledFunc() -> Void {
     return
 }
 
-func mapPlaceHolder() -> Void {
+func mapPlaceHolder(event: Event) -> Void {
     print("Share location popup/ Navigate to full MAP")
 }
 

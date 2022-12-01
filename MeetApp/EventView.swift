@@ -122,6 +122,8 @@ struct EventView: View {
 
 struct Minimap: View {
     
+    @ObservedObject var locationManager = LocationManager()
+    
     let address: String
     let latitude: Double
     let longitude: Double
@@ -129,8 +131,12 @@ struct Minimap: View {
     let minimapWidth = UIScreen.main.bounds.width - (UIScreen.main.bounds.width / 7)
     let minimapHeight = CGFloat(200)
     
+    @State private var showDirections = false
+    @State private var showAllUsers = false
+    @State private var userLandmarks: [Landmark] = [Landmark]()
+    
     var body: some View {
-        MapKitView(landmarks: [Landmark(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)))], address: address, region: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), latitudinalMeters: 1000, longitudinalMeters: 1000))
+        MapKitView(manager: locationManager, landmarks: [Landmark(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)), chosenTitle: address)], userLandmarks: userLandmarks, address: address, region: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), latitudinalMeters: 1000, longitudinalMeters: 1000), showDirections: $showDirections, showAllUsers: $showAllUsers)
             .frame(width: self.minimapWidth, height: self.minimapHeight, alignment: .center)
     }
 }

@@ -34,7 +34,7 @@ struct HomeView: View {
                                     }
                                 }.padding(.leading).padding(.trailing)
                             }else{
-                                Text("No events currently happening. Press the plus button the schedule an event!")
+                                Text("No events currently happening. Press the plus button to schedule an event!")
                                     .fontWeight(.semibold)
                                     .foregroundColor(Color.white)
                                     .multilineTextAlignment(.center)
