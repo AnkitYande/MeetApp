@@ -131,7 +131,7 @@ struct FriendSelectView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> SocialViewController {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         let viewController = sb.instantiateViewController(identifier: "SocialViewController") as! SocialViewController
-        viewController.viewMode = SocialViewMode.selectView
+        viewController.selectionEnabled = true
         viewController.delegate = self.delegate
         return viewController
     }

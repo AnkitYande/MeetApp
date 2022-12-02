@@ -1,41 +1,37 @@
 //
-//  SocialViewController.swift
+//  AddSocialViewController.swift
 //  MeetApp
 //
-//  Created by Ankit Yande on 10/18/22.
+//  Created by Bo Deng on 12/1/22.
 //
 
 import UIKit
-import Foundation
 import FirebaseDatabase
 import FirebaseStorage
 
-enum SocialViewMode {
-    case friendView
-    case groupView
-}
 
-class SocialViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+class AddSocialViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var segCtrl: UISegmentedControl!
-    @IBOutlet weak var confirmButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var confirmButton: UIButton!
     
     let cellIdentifier = "cellIdentifier"
     let storage = Storage.storage()
     
+    var delegate: SocialViewController!
     var userViewModel = UserViewModel()
-    var selectionEnabled = false
-    var viewMode = SocialViewMode.friendView
-    var delegate = CreateEventView()
+    var viewMode: SocialViewMode!
     
     var filteredUsers: [User] = []
     var selectedUsers: Set<User> = []
     var searchActive = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        confirmButton.isEnabled = false
         
         tableView.allowsMultipleSelection = true
         tableView.allowsMultipleSelectionDuringEditing = true
@@ -48,13 +44,10 @@ class SocialViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed)), animated: false)
-        
-        if selectionEnabled {
-            confirmButton.isHidden = false
-            confirmButton.isEnabled = false
-        } else {
-            confirmButton.isHidden = true
+        if viewMode == .friendView {
+            titleLabel.text = "Add Friend"
+        } else if viewMode == .groupView {
+            titleLabel.text = "Add Group"
         }
         userViewModel.getAllUsers(excludesSelf: true) { users in
             DispatchQueue.main.async {
@@ -127,80 +120,29 @@ class SocialViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if selectionEnabled {
-            if searchActive {
-                selectedUsers.insert(filteredUsers[indexPath.row])
-            } else {
-                selectedUsers.insert(userViewModel.users[indexPath.row])
-            }
-            
-            confirmButton.isEnabled = true
+
+        if searchActive {
+            selectedUsers.insert(filteredUsers[indexPath.row])
         } else {
-            tableView.deselectRow(at: indexPath, animated: true)
+            selectedUsers.insert(userViewModel.users[indexPath.row])
         }
+        confirmButton.isEnabled = true
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if selectionEnabled {
-            if searchActive {
-                selectedUsers.remove(filteredUsers[indexPath.row])
-            } else {
-                selectedUsers.remove(userViewModel.users[indexPath.row])
-            }
-            
-            let numSelected = tableView.indexPathsForSelectedRows?.count
-            if numSelected == nil {
-                confirmButton.isEnabled = false
-            }
+        if searchActive {
+            selectedUsers.remove(filteredUsers[indexPath.row])
+        } else {
+            selectedUsers.remove(userViewModel.users[indexPath.row])
         }
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "AddSocialSegue" {
-            let dest = segue.destination as! AddSocialViewController
-            dest.delegate = self
-            dest.viewMode = self.viewMode
-        }
-    }
-    
-    @objc func addButtonPressed() {
-        performSegue(withIdentifier: "AddSocialSegue", sender: self)
-    }
-    
-    @IBAction func segCtrlChanged(_ sender: Any) {
-        switch self.segCtrl.selectedSegmentIndex {
-        case 0:
-            self.viewMode = .friendView
-        case 1:
-            self.viewMode = .groupView
-        default:
-            break
+        
+        let numSelected = tableView.indexPathsForSelectedRows?.count
+        if numSelected == nil {
+            confirmButton.isEnabled = false
         }
     }
     
     @IBAction func confirmButtonPressed(_ sender: Any) {
-        self.delegate.updateFriendsInvited(newFriends: Array(selectedUsers))
         self.navigationController?.popViewController(animated: true)
     }
-}
-
-class ProfileCell: UITableViewCell {
-    @IBOutlet weak var profilePic: UIImageView!
-    @IBOutlet weak var displayName: UILabel!
-    var userObject: User!
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.selectionStyle = .none
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        self.accessoryType = selected ? .checkmark : .none
-    }
-    
 }

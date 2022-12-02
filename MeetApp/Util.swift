@@ -52,7 +52,15 @@ public class Event: Identifiable {
     }
 }
 
-public class User: Identifiable {
+public class User: Identifiable, Hashable {
+    public static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.UID == rhs.UID
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        return hasher.combine(self.UID)
+    }
+    
     var UID: String
     var email: String
     var displayName: String

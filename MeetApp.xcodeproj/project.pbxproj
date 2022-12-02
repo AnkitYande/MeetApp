@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1226231129122FC000AD97B8 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226231029122FC000AD97B8 /* Util.swift */; };
 		122623132912300200AD97B8 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122623122912300200AD97B8 /* EventView.swift */; };
+		124803D8293998F700DBC6DC /* AddSocialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124803D7293998F700DBC6DC /* AddSocialViewController.swift */; };
 		125CE6A0291846600033C9A3 /* EventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE69F291846600033C9A3 /* EventViewModel.swift */; };
 		1284DD5A2926CFE400FDD9D1 /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1284DD592926CFE400FDD9D1 /* GroupViewModel.swift */; };
 		1284DD5C292C16D600FDD9D1 /* GuestList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1284DD5B292C16D600FDD9D1 /* GuestList.swift */; };
@@ -68,6 +69,7 @@
 		122622E82908DB4B00AD97B8 /* FirebaseSchema.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FirebaseSchema.md; sourceTree = "<group>"; };
 		1226231029122FC000AD97B8 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		122623122912300200AD97B8 /* EventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
+		124803D7293998F700DBC6DC /* AddSocialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSocialViewController.swift; sourceTree = "<group>"; };
 		125CE69F291846600033C9A3 /* EventViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewModel.swift; sourceTree = "<group>"; };
 		1284DD592926CFE400FDD9D1 /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
 		1284DD5B292C16D600FDD9D1 /* GuestList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuestList.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				ED29FD91291AF252006BAFF5 /* UserViewModel.swift */,
 				67DC9D4E291584A8001FF5F0 /* ButtonControlView.swift */,
 				6706357528FEF3AB00EAE994 /* SocialViewController.swift */,
+				124803D7293998F700DBC6DC /* AddSocialViewController.swift */,
 				3D37F3E128F7B33400BDD35D /* LoginViewController.swift */,
 				1284DD592926CFE400FDD9D1 /* GroupViewModel.swift */,
 				3D37F3E328F7B34800BDD35D /* RegisterViewController.swift */,
@@ -315,6 +318,7 @@
 				67CAEBDB2901DFA60027CB56 /* CreateMeetingView.swift in Sources */,
 				ED09A8FA2909C06B00C464DD /* PlaceListView.swift in Sources */,
 				6706357428FEF0FA00EAE994 /* SettingsViewController.swift in Sources */,
+				124803D8293998F700DBC6DC /* AddSocialViewController.swift in Sources */,
 				3D3647812913278F004D3958 /* ImagePickerManager.swift in Sources */,
 				1284DD5C292C16D600FDD9D1 /* GuestList.swift in Sources */,
 				ED29FD92291AF252006BAFF5 /* UserViewModel.swift in Sources */,

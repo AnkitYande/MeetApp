@@ -81,4 +81,21 @@ final class UserViewModel: ObservableObject {
             completion(self.users)
         }
     }
+    
+    func getFriends(completion: @escaping ([User]) -> Void) {
+        self.users = []
+        let databaseRef = Database.database().reference()
+        
+        databaseRef.child("users").child(user_id).child("friends").getData(completion: { error, snapshot in
+            guard error == nil else {
+                print("ERROR: \(error!.localizedDescription)")
+                completion(self.users)
+                return;
+            }
+            
+            let friends = snapshot?.value as? [String: Any] ?? [String: Any]();
+            
+            completion(self.users)
+        })
+    }
 }
