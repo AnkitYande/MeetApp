@@ -22,12 +22,19 @@ class ViewController: UIViewController {
         childView.view.frame = theContainer.bounds
         theContainer.addSubview(childView.view)
         
+        requestAuthorization(completion: { _ in })
+        
 //        let firebaseAuth = Auth.auth()
 //        do {
 //          try firebaseAuth.signOut()
 //        } catch let signOutError as NSError {
 //          print("Error signing out: %@", signOutError)
 //        }
+    }
+    
+    func requestAuthorization(completion: @escaping (Bool) -> Void) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in completion(granted)
+        }
     }
 
 

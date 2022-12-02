@@ -30,7 +30,6 @@ class SettingsViewController: UIViewController {
     }
     
     func downloadImage() {
-        // TODO: see if can do 1 getData call and get user data
         print("User ID: \(user_id)")
         database.child("users").child(user_id).getData(completion: { error, snapshot in
             guard error == nil else {

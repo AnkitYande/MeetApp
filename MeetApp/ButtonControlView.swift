@@ -6,14 +6,19 @@
 //
 
 import SwiftUI
+import CoreData
 import FirebaseDatabase
 
 extension Date {
-  func subtractHours(_ hours: Int) -> Date {
-    let seconds: TimeInterval = Double(hours) * 60 * 60
-    let newDate: Date = self.addingTimeInterval(-seconds)
-    return newDate
-  }
+    func subtractHours(_ hours: Int) -> Date {
+        let seconds: TimeInterval = Double(hours) * 60 * 60
+        let newDate: Date = self.addingTimeInterval(-seconds)
+        return newDate
+    }
+    
+    static func - (lhs: Date, rhs: Date) -> TimeInterval {
+        return lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate
+    }
 }
 
 struct ButtonControlView: View {
@@ -161,10 +166,13 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
     databaseRef.child("events").child(eventID).child("users\(newStatus)").child(user_id).setValue(true)
     
     // TODO: access core data
-    
+//    let notifications = retrieveNotifications()
+//    for notification in notifications {
+//        if notification.value(for)
+//    }
     if newStatus == "Accepted" {
         let notificationContent = UNMutableNotificationContent()
-        notificationContent.title = "Notification"
+        notificationContent.title = "MeetApp"
         notificationContent.subtitle = "Check In"
         notificationContent.body = "Check into your upcoming event!"
         
@@ -174,21 +182,31 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
                 return;
             }
             let startTime = snapshot?.value as? String
+            print("startTime: \(String(describing: startTime))")
             
             let start = convertStringToDate(datetimeString: startTime ?? "")
+            print("start: \(start)")
             
             let notifTime = start.subtractHours(1)
             
-            let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: notifTime)
+            let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
             
-            let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+            var notifRemTime = start - Date()
+            print("notifRemTime \(notifRemTime)")
+            notifRemTime -= 3600
+            print("notifRemTime \(notifRemTime)")
+            if notifRemTime > 0 {
+                let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+                
+                let notificationTriggerInterval = UNTimeIntervalNotificationTrigger(timeInterval: notifRemTime, repeats: false)
+                
+                let notificationRequest = UNNotificationRequest(identifier: "checkInNotif", content: notificationContent, trigger: notificationTriggerInterval)
 
-            let notificationRequest = UNNotificationRequest(identifier: "checkInNotif", content: notificationContent, trigger: notificationTrigger)
-
-            let notificationCenter = UNUserNotificationCenter.current()
-            notificationCenter.add(notificationRequest) { error in
-                if error != nil {
-                    print(error!.localizedDescription)
+                let notificationCenter = UNUserNotificationCenter.current()
+                notificationCenter.add(notificationRequest) { error in
+                    if error != nil {
+                        print(error!.localizedDescription)
+                    }
                 }
             }
         })
@@ -209,5 +227,23 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
     }
     eventViewModel.events = eventsCopy
     
+}
+
+func retrieveNotifications() -> [NSManagedObject] {
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let context = appDelegate.persistentContainer.viewContext
+
+    let request = NSFetchRequest<NSFetchRequestResult>(entityName: "notifications")
+    var fetchedResults: [NSManagedObject]?
+
+    do {
+        try fetchedResults = context.fetch(request) as? [NSManagedObject]
+    } catch {
+        let nserror = error as NSError
+        NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+        abort()
+    }
+
+    return (fetchedResults)!
 }
 
