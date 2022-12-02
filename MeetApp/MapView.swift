@@ -122,6 +122,10 @@ struct MapView: View {
                     }
                 }
             }
+//            let testEventID = "A22F56FF-0FC9-4479-B468-E6C7C034CAD3"
+//            userViewModel.getUsersForEvent(eventID: testEventID) { eventUsers in
+//                print("USERS FOR EVENT \(testEventID): \(eventUsers)")
+//            }
         }
     }
 }
