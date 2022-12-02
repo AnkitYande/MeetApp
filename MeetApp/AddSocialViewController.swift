@@ -17,7 +17,7 @@ class AddSocialViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var confirmButton: UIButton!
     
-    let cellIdentifier = "cellIdentifier"
+    let cellIdentifier = "profileCell"
     let storage = Storage.storage()
     
     var delegate: SocialViewController!
@@ -46,12 +46,17 @@ class AddSocialViewController: UIViewController, UITableViewDelegate, UITableVie
         
         if viewMode == .friendView {
             titleLabel.text = "Add Friend"
+            userViewModel.getAllUsers(excludesSelf: true) { users in
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
         } else if viewMode == .groupView {
             titleLabel.text = "Add Group"
-        }
-        userViewModel.getAllUsers(excludesSelf: true) { users in
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            userViewModel.getFriends() { users in
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
             }
         }
     }
@@ -65,6 +70,27 @@ class AddSocialViewController: UIViewController, UITableViewDelegate, UITableVie
                 self.tableView.selectRow(at: IndexPath(row: row, section: 0), animated: false, scrollPosition: .none)
             }
         }
+    }
+    
+    // adds selected users as friends for the current user,
+    // and adds this user as a friend for the selected users
+    private func addFriends() {
+        let databaseRef = Database.database().reference()
+        
+        for user in self.selectedUsers {
+            databaseRef.child("users").child(user_id).child("friends").child(user.UID).setValue(true)
+            databaseRef.child("users").child(user.UID).child("friends").child(user_id).setValue(true)
+        }
+        
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    // adds selected users to a group,
+    // and adds the group to the selected users
+    private func addGroup(groupName: String) {
+        var groupMembersUUID = selectedUsers.map { $0.UID } + [user_id]
+        GroupViewModel.createGroup(newGroup: GroupObject(groupUUID: UUID().uuidString, groupName: groupName, groupMembersUUID: groupMembersUUID))
+        self.navigationController?.popViewController(animated: true)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -143,6 +169,21 @@ class AddSocialViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     @IBAction func confirmButtonPressed(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        switch self.viewMode {
+        case .friendView:
+            addFriends()
+        case .groupView:
+            let alert = UIAlertController(title: "New Group", message: "Enter a group name", preferredStyle: .alert)
+            alert.addTextField { (textField) in
+                textField.placeholder = "Group name"
+            }
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+                let textField = alert?.textFields![0]
+                self.addGroup(groupName: textField?.text ?? "Group")
+            }))
+            self.present(alert, animated: true)
+        default:
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 }
