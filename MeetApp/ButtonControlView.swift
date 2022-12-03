@@ -165,7 +165,6 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
     //add user to its new status in the event object
     databaseRef.child("events").child(eventID).child("users\(newStatus)").child(user_id).setValue(true)
     
-    // TODO: always returns true rn
     let notifications = retrieveNotifications()
     let notification = notifications.first
     print("notification value: \(notification?.value(forKey: "checkIn"))")
