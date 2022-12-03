@@ -226,6 +226,7 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
     let eventsCopy = eventViewModel.events
     if let event = eventsCopy.first(where: {$0.UID == eventID}){
         event.setStatus(status: newState)
+        print("stsus set to", event.status)
     }else{
         print("ERROR: event not found")
     }

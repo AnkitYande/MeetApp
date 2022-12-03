@@ -42,13 +42,19 @@ public class Event: Identifiable {
     }
     
     func setStatus(status: EventState) {
-        if (Date.now > self.endDatetime) {
+        if (Date.now > self.endDatetime + 3600) {
             self.status =  .expired
-        } else if (status == .accepted && self.startDatetime <= Date.now && Date.now <= self.endDatetime){
+        } else if self.isHappeningNow() && status == .accepted{
             self.status = .current
         } else {
             self.status = status
         }
+        print("status set to", self.status)
+    }
+    
+    //happening within 1 hour before or after the event
+    func isHappeningNow() -> Bool {
+        return self.startDatetime - 3600 <= Date.now && Date.now <= self.endDatetime + 3600
     }
 }
 
