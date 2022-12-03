@@ -59,9 +59,6 @@
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x29-lr-kMC">
                                 <rect key="frame" x="286" y="334" width="49" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="checkInNotifSwitch:" destination="hZj-hk-znv" eventType="valueChanged" id="qbc-Lr-siB"/>
-                                </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Notification Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yhf-HO-Nvh">
                                 <rect key="frame" x="16" y="300" width="178" height="24"/>
@@ -158,7 +155,6 @@
                         <outlet property="checkInNotificationSwitch" destination="x29-lr-kMC" id="XL1-1J-yr4"/>
                         <outlet property="displayName" destination="RhJ-Ol-WP3" id="5Wv-xV-0W1"/>
                         <outlet property="profilePictureButton" destination="5Gg-qa-QpL" id="dYf-bx-ny0"/>
-                        <outlet property="socialNotificationSwitch" destination="7NV-Fa-IAs" id="qqW-0I-7sQ"/>
                         <outlet property="username" destination="rje-78-T2i" id="Jw8-PF-9PY"/>
                     </connections>
                 </viewController>
@@ -192,7 +188,7 @@
                                 </connections>
                             </segmentedControl>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="cKz-CJ-Myx">
-                                <rect key="frame" x="20" y="194" width="353" height="56"/>
+                                <rect key="frame" x="20" y="193.66666666666666" width="353" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="8bP-ba-n9r" id="VmP-e4-oNF"/>

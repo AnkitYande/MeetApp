@@ -27,6 +27,8 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         downloadImage()
+        self.checkInNotificationSwitch.addTarget(self, action: #selector(onSwitchValueChanged(_:)), for: .valueChanged)
+        self.checkInNotificationSwitch.setOn(true, animated: false)
     }
     
     func downloadImage() {
@@ -75,54 +77,91 @@ class SettingsViewController: UIViewController {
         }
     }
     
-    @IBAction func checkInNotifSwitch(_ sender: Any) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    @objc private func onSwitchValueChanged(_ sender: UISwitch) {
         
-        let context = appDelegate.persistentContainer.viewContext
-        
-        let checkInNotif = NSEntityDescription.entity(forEntityName: "notifications", in: context)
-        
-        if checkInNotificationSwitch.isOn {
-            checkInNotif?.setValue(true, forKey: "checkIn")
-        } else {
-            checkInNotif?.setValue(false, forKey: "checkIn")
-        }
-        
-        appDelegate.saveContext()
-    }
-    
-    @IBAction func socialNotifSwitch(_ sender: Any) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
-        let context = appDelegate.persistentContainer.viewContext
-        
-        let checkInNotif = NSEntityDescription.entity(forEntityName: "notifications", in: context)
-        
-        if checkInNotificationSwitch.isOn {
-            checkInNotif?.setValue(true, forKey: "social")
-        } else {
-            checkInNotif?.setValue(false, forKey: "social")
-        }
-        
-        appDelegate.saveContext()
-    }
-    
-    func retrieveNotifications() -> [NSManagedObject] {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
 
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "notifications")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Notifications")
+        
         var fetchedResults: [NSManagedObject]?
 
         do {
             try fetchedResults = context.fetch(request) as? [NSManagedObject]
+            
+            let notification = fetchedResults?.first
+            print("result: \(fetchedResults)")
+            if notification?.value(forKey: "checkIn") != nil {
+                if (sender.isOn == true) {
+                    print("ON")
+                    notification?.setValue(true, forKey: "checkIn")
+                    print("should be on: \(notification?.value(forKey: "checkIn"))")
+                } else {
+                    print("OFF")
+                    notification?.setValue(false, forKey: "checkIn")
+                    print("should be off: \(notification?.value(forKey: "checkIn"))")
+                }
+            }
         } catch {
             let nserror = error as NSError
             NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
             abort()
         }
 
-        return (fetchedResults)!
+        appDelegate.saveContext()
+//
+//        if (sender.isOn == true){
+//            updateNotifications()
+//            print("UISwitch state is now ON")
+//        } else {
+//            print("UISwitch state is now Off")
+//        }
+    }
+    
+//    @IBAction func socialNotifSwitch(_ sender: Any) {
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//
+//        let context = appDelegate.persistentContainer.viewContext
+//
+//        let checkInNotif = NSEntityDescription.entity(forEntityName: "Notifications", in: context)
+//
+//        if checkInNotificationSwitch.isOn {
+//            checkInNotif?.setValue(true, forKey: "social")
+//        } else {
+//            checkInNotif?.setValue(false, forKey: "social")
+//        }
+//
+//        appDelegate.saveContext()
+//    }
+    
+    func updateNotifications() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Notifications")
+        
+        var fetchedResults: [NSManagedObject]?
+
+        do {
+            try fetchedResults = context.fetch(request) as? [NSManagedObject]
+            
+            let notification = fetchedResults?.first
+            if notification?.value(forKey: "checkIn") != nil {
+                if checkInNotificationSwitch.isOn {
+                    notification?.setValue(true, forKey: "checkIn")
+                    print("should be on: \(notification?.value(forKey: "checkIn"))")
+                } else {
+                    notification?.setValue(false, forKey: "checkIn")
+                    print("should be off: \(notification?.value(forKey: "checkIn"))")
+                }
+            }
+        } catch {
+            let nserror = error as NSError
+            NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+            abort()
+        }
+
+        appDelegate.saveContext()
     }
     
     @IBAction func signOutButtonPressed(_ sender: Any) {

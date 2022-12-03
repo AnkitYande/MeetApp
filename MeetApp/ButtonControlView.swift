@@ -165,57 +165,61 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
     //add user to its new status in the event object
     databaseRef.child("events").child(eventID).child("users\(newStatus)").child(user_id).setValue(true)
     
-    // TODO: access core data
-//    let notifications = retrieveNotifications()
-//    for notification in notifications {
-//        if notification.value(for)
-//    }
-    if newStatus == "Accepted" {
-        let notificationContent = UNMutableNotificationContent()
-        notificationContent.title = "MeetApp"
-        notificationContent.subtitle = "Check In"
-        notificationContent.body = "Check into your upcoming event!"
-        
-        databaseRef.child("events").child(eventID).child("startDatetime").getData(completion: {error, snapshot in
-            guard error == nil else {
-                print(error!.localizedDescription)
-                return;
-            }
-            let startTime = snapshot?.value as? String
-            print("startTime: \(String(describing: startTime))")
-            
-            let start = convertStringToDate(datetimeString: startTime ?? "")
-            print("start: \(start)")
-            
-            let notifTime = start.subtractHours(1)
-            
-            let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
-            
-            var notifRemTime = start - Date()
-            print("notifRemTime \(notifRemTime)")
-            notifRemTime -= 3600
-            print("notifRemTime \(notifRemTime)")
-            if notifRemTime > 0 {
-                let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
-                
-                let notificationTriggerInterval = UNTimeIntervalNotificationTrigger(timeInterval: notifRemTime, repeats: false)
-                
-                let notificationRequest = UNNotificationRequest(identifier: "checkInNotif", content: notificationContent, trigger: notificationTriggerInterval)
+    // TODO: always returns true rn
+    let notifications = retrieveNotifications()
+    let notification = notifications.first
+    print("notification value: \(notification?.value(forKey: "checkIn"))")
+    let notificationVal = notification?.value(forKey: "checkIn")
+    print ((notificationVal != nil) == true)
+    
+    if (notification?.value(forKey: "checkIn") != nil) == true {
+        if newStatus == "Accepted" {
+            print("should not be here bruh")
 
-                let notificationCenter = UNUserNotificationCenter.current()
-                notificationCenter.add(notificationRequest) { error in
-                    if error != nil {
-                        print(error!.localizedDescription)
+            let notificationContent = UNMutableNotificationContent()
+            notificationContent.title = "MeetApp"
+            notificationContent.subtitle = "Check In"
+            notificationContent.body = "Check into your upcoming event!"
+            
+            databaseRef.child("events").child(eventID).child("startDatetime").getData(completion: {error, snapshot in
+                guard error == nil else {
+                    print(error!.localizedDescription)
+                    return;
+                }
+                let startTime = snapshot?.value as? String
+                print("startTime: \(String(describing: startTime))")
+                
+                let start = convertStringToDate(datetimeString: startTime ?? "")
+                print("start: \(start)")
+                
+                let notifTime = start.subtractHours(1)
+                
+                let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
+                
+                var notifRemTime = start - Date()
+                print("notifRemTime \(notifRemTime)")
+                notifRemTime -= 3600
+                print("notifRemTime \(notifRemTime)")
+                if notifRemTime > 0 {
+                    let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+                    
+                    let notificationTriggerInterval = UNTimeIntervalNotificationTrigger(timeInterval: notifRemTime, repeats: false)
+                    
+                    let notificationRequest = UNNotificationRequest(identifier: "checkInNotif", content: notificationContent, trigger: notificationTriggerInterval)
+
+                    let notificationCenter = UNUserNotificationCenter.current()
+                    notificationCenter.add(notificationRequest) { error in
+                        if error != nil {
+                            print(error!.localizedDescription)
+                        }
                     }
                 }
-            }
-        })
-    } else if newStatus == "Declined" {
-        let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: ["checkInNotif"])
+            })
+        } else if newStatus == "Declined" {
+            let center = UNUserNotificationCenter.current()
+            center.removePendingNotificationRequests(withIdentifiers: ["checkInNotif"])
+        }
     }
-    
-
     // update in UI
     // changing an element of the list doesn't seem to have an effect
     // copying and reassignign event list
@@ -233,7 +237,7 @@ func retrieveNotifications() -> [NSManagedObject] {
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let context = appDelegate.persistentContainer.viewContext
 
-    let request = NSFetchRequest<NSFetchRequestResult>(entityName: "notifications")
+    let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Notifications")
     var fetchedResults: [NSManagedObject]?
 
     do {
