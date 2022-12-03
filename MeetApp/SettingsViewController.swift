@@ -28,7 +28,11 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
         downloadImage()
         self.checkInNotificationSwitch.addTarget(self, action: #selector(onSwitchValueChanged(_:)), for: .valueChanged)
-        self.checkInNotificationSwitch.setOn(true, animated: false)
+        checkSwitchPosition()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        checkSwitchPosition()
     }
     
     func downloadImage() {
@@ -77,6 +81,35 @@ class SettingsViewController: UIViewController {
         }
     }
     
+    private func checkSwitchPosition() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Notifications")
+        
+        var fetchedResults: [NSManagedObject]?
+
+        do {
+            try fetchedResults = context.fetch(request) as? [NSManagedObject]
+            
+            let notification = fetchedResults?.first
+            
+            var notificationVal = notification?.value(forKey: "checkIn") as! Int
+            
+            if notificationVal == 1 {
+                print("entered on")
+                checkInNotificationSwitch.setOn(true, animated: false)
+            } else {
+                print("entered off")
+                checkInNotificationSwitch.setOn(false, animated: false)
+            }
+        } catch {
+            let nserror = error as NSError
+            NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+            abort()
+        }
+    }
+    
     @objc private func onSwitchValueChanged(_ sender: UISwitch) {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -90,15 +123,19 @@ class SettingsViewController: UIViewController {
             try fetchedResults = context.fetch(request) as? [NSManagedObject]
             
             let notification = fetchedResults?.first
+            
+            var notifVal: Bool = true
             print("result: \(fetchedResults)")
             if notification?.value(forKey: "checkIn") != nil {
                 if (sender.isOn == true) {
                     print("ON")
-                    notification?.setValue(true, forKey: "checkIn")
+                    notifVal = Bool(true)
+                    notification?.setValue(notifVal, forKey: "checkIn")
                     print("should be on: \(notification?.value(forKey: "checkIn"))")
                 } else {
                     print("OFF")
-                    notification?.setValue(false, forKey: "checkIn")
+                    notifVal = Bool(false)
+                    notification?.setValue(notifVal, forKey: "checkIn")
                     print("should be off: \(notification?.value(forKey: "checkIn"))")
                 }
             }

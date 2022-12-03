@@ -169,10 +169,13 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
     let notifications = retrieveNotifications()
     let notification = notifications.first
     print("notification value: \(notification?.value(forKey: "checkIn"))")
-    let notificationVal = notification?.value(forKey: "checkIn")
-    print ((notificationVal != nil) == true)
+    var notificationVal = notification?.value(forKey: "checkIn") as! Int
     
-    if (notification?.value(forKey: "checkIn") != nil) == true {
+    print("new notification value: \(notificationVal)")
+    
+    print (notificationVal == 1)
+    
+    if notificationVal == 1 {
         if newStatus == "Accepted" {
             print("should not be here bruh")
 

@@ -30,7 +30,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         registerUsernameTextField.placeholder = "Username"
         registerDisplayNameTextField.placeholder = "Display Name"
         registerPasswordTextField.placeholder = "Password"
-        setNotificationBooleans()
+        setNotificationBooleans(notifVal: true)
     }
     
     @IBAction func registerButtonPressed(_ sender: Any) {
@@ -91,7 +91,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
     }
     
-    func setNotificationBooleans() {
+    func setNotificationBooleans(notifVal: Bool) {
         print("set initial notification")
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
@@ -99,6 +99,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         
         let checkInNotif = NSEntityDescription.insertNewObject(forEntityName: "Notifications", into: context)
         
-        checkInNotif.setValue(true, forKey: "checkIn")
+        checkInNotif.setValue(notifVal, forKey: "checkIn")
     }
 }
