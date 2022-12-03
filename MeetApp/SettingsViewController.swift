@@ -18,7 +18,6 @@ class SettingsViewController: UIViewController {
     private let database = Database.database().reference()
     private let storage = Storage.storage()
     
-    @IBOutlet weak var socialNotificationSwitch: UISwitch!
     @IBOutlet weak var checkInNotificationSwitch: UISwitch!
     @IBOutlet weak var displayName: UILabel!
     @IBOutlet weak var username: UILabel!
