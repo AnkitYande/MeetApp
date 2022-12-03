@@ -167,16 +167,11 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
     
     let notifications = retrieveNotifications()
     let notification = notifications.first
-    print("notification value: \(notification?.value(forKey: "checkIn"))")
+
     var notificationVal = notification?.value(forKey: "checkIn") as! Int
-    
-    print("new notification value: \(notificationVal)")
-    
-    print (notificationVal == 1)
-    
+    // checks if user wants notifications then proceeds to send a notification an hour before the event starts
     if notificationVal == 1 {
         if newStatus == "Accepted" {
-            print("should not be here bruh")
 
             let notificationContent = UNMutableNotificationContent()
             notificationContent.title = "MeetApp"
@@ -189,19 +184,15 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
                     return;
                 }
                 let startTime = snapshot?.value as? String
-                print("startTime: \(String(describing: startTime))")
                 
                 let start = convertStringToDate(datetimeString: startTime ?? "")
-                print("start: \(start)")
                 
                 let notifTime = start.subtractHours(1)
                 
                 let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
                 
                 var notifRemTime = start - Date()
-                print("notifRemTime \(notifRemTime)")
                 notifRemTime -= 3600
-                print("notifRemTime \(notifRemTime)")
                 if notifRemTime > 0 {
                     let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
                     
@@ -236,6 +227,7 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
     
 }
 
+//retrieves the notifications list from core data
 func retrieveNotifications() -> [NSManagedObject] {
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let context = appDelegate.persistentContainer.viewContext
