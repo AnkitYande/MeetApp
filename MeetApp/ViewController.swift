@@ -24,7 +24,7 @@ class ViewController: UIViewController {
         theContainer.addSubview(childView.view)
                 
         requestAuthorization(completion: { _ in })
-        
+        unshareLocation()
 //        let firebaseAuth = Auth.auth()
 //        do {
 //          try firebaseAuth.signOut()
@@ -38,8 +38,9 @@ class ViewController: UIViewController {
         }
     }
     
-    
-
+    @objc func unshareLocation(){
+        UserDefaults.standard.set(false, forKey: "locationFlag")
+    }
 
 }
 
