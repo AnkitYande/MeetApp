@@ -113,7 +113,7 @@ struct otw: View {
         if (locationFlags.contains(event.UID)){
             HStack{
                 Spacer()
-                NavigationLink(destination: MapView(location: $location, locationName: $locationName, latitude: $latitude, longitude: $longitude, eventMap: true, eventName: event.eventName)) {
+                NavigationLink(destination: MapView(location: $location, locationName: $locationName, latitude: $latitude, longitude: $longitude, eventMap: true, eventName: event.eventName, eventID: event.UID)) {
                     Text("See Map")
                 }
                 .fontWeight(.semibold)
