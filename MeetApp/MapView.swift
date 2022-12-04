@@ -34,6 +34,7 @@ struct MapView: View {
     @State private var userLandmarks: [Landmark] = [Landmark]()
     let storage = Storage.storage()
     var eventName: String = ""
+    var eventID: String = ""
     
     private func getNearbyLandmarks() {
         let request = MKLocalSearch.Request()
@@ -93,6 +94,22 @@ struct MapView: View {
                 MapKitView(manager: locationManager, landmarks: landmarks, userLandmarks: userLandmarks, address: location, eventLocation: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), region: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), latitudinalMeters: 1000, longitudinalMeters: 1000), showDirections: $showDirections, showAllUsers: $showAllUsers)
                     .ignoresSafeArea(edges: [.bottom, .horizontal])
                     .onAppear() {
+                        userViewModel.getUsersForEvent(eventID: eventID) { eventUsers in
+                            for user in eventUsers {
+                                let userCoordinate = CLLocationCoordinate2D(latitude: user.latitude, longitude: user.longitude)
+                                var userLandmark = Landmark(placemark: MKPlacemark(coordinate: userCoordinate), chosenTitle: user.displayName)
+                                print("USER {\(user.displayName)} is at location <\(userCoordinate.latitude), \(userCoordinate.longitude)>")
+                                let _ = self.storage.reference(forURL: user.profilePic).getData(maxSize: 1 * 1024 * 1024, completion: { data, error in
+                                    if let error = error {
+                                        print("PICTURE ERROR: \(error.localizedDescription)")
+                                    } else {
+                                        let image = UIImage(data: data!)!
+                                        userLandmark.customImage = image
+                                        userLandmark.isUser = true
+                                        userLandmarks.append(userLandmark)
+                                    }})
+                            }
+                        }
                         showAllUsers = true
                         showDirections = true
                         let eventPlacemark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
@@ -103,25 +120,6 @@ struct MapView: View {
             }
         }.onAppear {
             eventViewModel.getEvents()
-            userViewModel.getAllUsers(excludesSelf: false) { users in
-                self.users = users
-                for user in users {
-                    if user.UID != user_id {
-                        let userCoordinate = CLLocationCoordinate2D(latitude: user.latitude, longitude: user.longitude)
-                        var userLandmark = Landmark(placemark: MKPlacemark(coordinate: userCoordinate), chosenTitle: user.displayName)
-                        print("USER {\(user.displayName)} is at location <\(userCoordinate.latitude), \(userCoordinate.longitude)>")
-                        let _ = self.storage.reference(forURL: user.profilePic).getData(maxSize: 1 * 1024 * 1024, completion: { data, error in
-                            if let error = error {
-                                print("PICTURE ERROR: \(error.localizedDescription)")
-                            } else {
-                                let image = UIImage(data: data!)!
-                                userLandmark.customImage = image
-                                userLandmark.isUser = true
-                                userLandmarks.append(userLandmark)
-                            }})
-                    }
-                }
-            }
         }
     }
 }

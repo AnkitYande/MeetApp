@@ -139,4 +139,56 @@ final class UserViewModel: ObservableObject {
         }
         return nil
     }
+    
+    func getUsersForEvent(eventID: String, completion: @escaping ([User]) -> Void) {
+        print("Fetching users for event \(eventID)...")
+        let group = DispatchGroup()
+        group.enter()
+        
+        var eventUsers: [User] = []
+        var userIDs: [String] = []
+        
+        let databaseRef = Database.database().reference()
+        
+        DispatchQueue.main.async {
+            databaseRef.child("events").child(eventID).getData(completion: { error, snapshot in
+                guard error == nil else {
+                    print("ERROR: \(error!.localizedDescription)")
+                    completion(eventUsers)
+                    return;
+                }
+                let eventInfo = snapshot?.value as? [String: Any] ?? [String: Any]();
+                if let usersAccepted = eventInfo["usersAccepted"] as? [String: Any] {
+                    for (userID, _) in usersAccepted {
+                        if user_id != userID {
+                            userIDs.append(userID)
+                        }
+                    }
+                }
+                var count = 0
+                for userID in userIDs {
+                    databaseRef.child("users").child(userID).getData(completion: { error, snapshot in
+                        guard error == nil else {
+                            print("ERROR: \(error!.localizedDescription)")
+                            completion(eventUsers)
+                            return;
+                        }
+                        let userInfo = snapshot?.value as? [String: Any] ?? [String: Any]();
+                        if let newUser = self.processUserInfo(userInfo: userInfo, userID: userID) {
+                            eventUsers.append(newUser)
+                            count += 1
+                            if count == userIDs.count {
+                                group.leave()
+                            }
+                        }
+                    })
+                }
+            })
+        }
+        
+        group.notify(queue: .main) {
+            print("Finished retrieving users for event \(eventID). Total count: \(eventUsers.count)")
+            completion(eventUsers)
+        }
+    }
 }
