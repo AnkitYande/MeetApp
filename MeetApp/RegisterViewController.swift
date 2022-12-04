@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import CoreData
 
 class RegisterViewController: UIViewController, UITextFieldDelegate {
 
@@ -29,6 +30,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         registerUsernameTextField.placeholder = "Username"
         registerDisplayNameTextField.placeholder = "Display Name"
         registerPasswordTextField.placeholder = "Password"
+        setNotificationBooleans(notifVal: true)
     }
     
     @IBAction func registerButtonPressed(_ sender: Any) {
@@ -87,5 +89,16 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+    }
+    
+    func setNotificationBooleans(notifVal: Bool) {
+        print("set initial notification")
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let checkInNotif = NSEntityDescription.insertNewObject(forEntityName: "Notifications", into: context)
+        
+        checkInNotif.setValue(notifVal, forKey: "checkIn")
     }
 }

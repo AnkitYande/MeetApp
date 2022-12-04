@@ -8,6 +8,7 @@
 import UIKit
 import SwiftUI
 import FirebaseAuth
+import CoreData
 
 class ViewController: UIViewController {
     
@@ -21,6 +22,8 @@ class ViewController: UIViewController {
         addChild(childView)
         childView.view.frame = theContainer.bounds
         theContainer.addSubview(childView.view)
+                
+        requestAuthorization(completion: { _ in })
         
 //        let firebaseAuth = Auth.auth()
 //        do {
@@ -28,8 +31,13 @@ class ViewController: UIViewController {
 //        } catch let signOutError as NSError {
 //          print("Error signing out: %@", signOutError)
 //        }
+
     }
-
-
+    
+    func requestAuthorization(completion: @escaping (Bool) -> Void) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in completion(granted)
+        }
+    }
+    
 }
 

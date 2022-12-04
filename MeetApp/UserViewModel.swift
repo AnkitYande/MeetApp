@@ -68,36 +68,16 @@ final class UserViewModel: ObservableObject {
                             completion(self.users)
                             return;
                         }
-                        let userInfo = snapshot?.value as? [String: Any] ?? [String: Any]();
-                        let username = userInfo["username"] as! String
-                        let email = userInfo["email"] as! String
-                        let displayName = userInfo["displayName"] as! String
-                        let profilePic = userInfo["profilePic"] as! String
-                        let status = userInfo["status"] as! String
-                        let latitude = userInfo["latitude"] as! Double
-                        let longitude = userInfo["longitude"] as! Double
-                        
-                        var allEvents = [String]()
-                        var hostEvents = [String]()
-                        if let eventsInvited = userInfo["eventsInvited"] as? [String: Any] {
-                            for (eventUUID, _) in eventsInvited {
-                                allEvents.append(eventUUID)
+                        if let userInfo = snapshot?.value as? [String: Any]{
+                            if let newUser = self.processUserInfo(userInfo: userInfo, userID: userID){
+                                self.users.append(newUser)
+                                count += 1
+                                if excludesSelf && count == allUsers.count - 1 {
+                                    group.leave()
+                                } else if !excludesSelf && count == allUsers.count {
+                                    group.leave()
+                                }
                             }
-                        }
-                        if let eventsHosting = userInfo["eventsHosting"] as? [String: Any] {
-                            for (eventUUID, _) in eventsHosting {
-                                allEvents.append(eventUUID)
-                                hostEvents.append(eventUUID)
-                            }
-                        }
-                        
-                        let newUser = User(UID: userID, email: email, displayName: displayName, username: username, profilePic: profilePic, status: status, latitude: latitude, longitude: longitude, eventsInvited: allEvents, eventsHosting: hostEvents)
-                        self.users.append(newUser)
-                        count += 1
-                        if excludesSelf && count == allUsers.count - 1 {
-                            group.leave()
-                        } else if !excludesSelf && count == allUsers.count {
-                            group.leave()
                         }
                     })
                 }
@@ -137,34 +117,14 @@ final class UserViewModel: ObservableObject {
                             completion(self.users)
                             return;
                         }
-                        let userInfo = snapshot?.value as? [String: Any] ?? [String: Any]();
-                        let username = userInfo["username"] as! String
-                        let email = userInfo["email"] as! String
-                        let displayName = userInfo["displayName"] as! String
-                        let profilePic = userInfo["profilePic"] as! String
-                        let status = userInfo["status"] as! String
-                        let latitude = userInfo["latitude"] as! Double
-                        let longitude = userInfo["longitude"] as! Double
-                        
-                        var allEvents = [String]()
-                        var hostEvents = [String]()
-                        if let eventsInvited = userInfo["eventsInvited"] as? [String: Any] {
-                            for (eventUUID, _) in eventsInvited {
-                                allEvents.append(eventUUID)
+                        if let userInfo = snapshot?.value as? [String: Any]{
+                            if let newUser = self.processUserInfo(userInfo: userInfo, userID: userID){
+                                self.users.append(newUser)
+                                count += 1
+                                if count == allFriends.count {
+                                    group.leave()
+                                }
                             }
-                        }
-                        if let eventsHosting = userInfo["eventsHosting"] as? [String: Any] {
-                            for (eventUUID, _) in eventsHosting {
-                                allEvents.append(eventUUID)
-                                hostEvents.append(eventUUID)
-                            }
-                        }
-                        
-                        let newUser = User(UID: userID, email: email, displayName: displayName, username: username, profilePic: profilePic, status: status, latitude: latitude, longitude: longitude, eventsInvited: allEvents, eventsHosting: hostEvents)
-                        self.users.append(newUser)
-                        count += 1
-                        if count == allFriends.count {
-                            group.leave()
                         }
                     })
                 }
@@ -176,6 +136,36 @@ final class UserViewModel: ObservableObject {
             print("Finished retrieving all friends. Total count: \(self.users.count)")
             completion(self.users)
         }
+        
+    }
+    
+    func processUserInfo(userInfo:[String:Any], userID:String) -> User? {
+        if  let username = userInfo["username"] as? String,
+            let email = userInfo["email"] as? String,
+            let displayName = userInfo["displayName"] as? String,
+            let profilePic = userInfo["profilePic"] as? String,
+            let status = userInfo["status"] as? String,
+            let latitude = userInfo["latitude"] as? Double,
+            let longitude = userInfo["longitude"] as? Double
+        {
+            var allEvents = [String]()
+            var hostEvents = [String]()
+            if let eventsInvited = userInfo["eventsInvited"] as? [String: Any] {
+                for (eventUUID, _) in eventsInvited {
+                    allEvents.append(eventUUID)
+                }
+            }
+            if let eventsHosting = userInfo["eventsHosting"] as? [String: Any] {
+                for (eventUUID, _) in eventsHosting {
+                    allEvents.append(eventUUID)
+                    hostEvents.append(eventUUID)
+                }
+            }
+            
+            let newUser = User(UID: userID, email: email, displayName: displayName, username: username, profilePic: profilePic, status: status, latitude: latitude, longitude: longitude, eventsInvited: allEvents, eventsHosting: hostEvents)
+            return newUser
+        }
+        return nil
     }
     
     func getUsersForEvent(eventID: String, completion: @escaping ([User]) -> Void) {

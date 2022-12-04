@@ -20,7 +20,7 @@ final class EventViewModel: ObservableObject {
     func getEvents() {
         print("fetching events")
         self.events = []
-
+        
         let databaseRef = Database.database().reference()
         
         databaseRef.child("users").child(userUUID).child("eventsInvited").getData(completion: { error, snapshot in
@@ -35,37 +35,11 @@ final class EventViewModel: ObservableObject {
                         print(error!.localizedDescription)
                         return;
                     }
-                    let eventDict = snapshot?.value as? [String: Any] ?? [String: Any]();
-                    
-                    let eventName = eventDict["eventName"] as! String
-                    let location = eventDict["location"] as! String
-                    let locationName = eventDict["locationName"] as! String
-                    let latitude = eventDict["latitude"] as! Double
-                    let longitude = eventDict["longitude"] as! Double
-                    let startDatetime = eventDict["startDatetime"] as! String
-                    let endDatetime = eventDict["endDatetime"] as! String
-                    let description = eventDict["description"] as! String
-                    let host = eventDict["host"] as! String
-                    
-                    var attendeesList = [String]()
-                    if let usersInvited = eventDict["usersInvited"] as? [String: Any] {
-                        for (userUUID, _) in usersInvited {
-                            attendeesList.append(userUUID)
+                    if let eventDict = snapshot?.value as? [String: Any]{
+                        if let newEvent = processEventDict(eventDict: eventDict, uuid: eventUUID, status: .active){
+                            self.events.append(newEvent)
                         }
                     }
-                    if let usersAccepted = eventDict["usersAccepted"] as? [String: Any] {
-                        for (userUUID, _) in usersAccepted {
-                            attendeesList.append(userUUID)
-                        }
-                    }
-                    if let usersDeclined = eventDict["usersDeclined"] as? [String: Any] {
-                        for (userUUID, _) in usersDeclined {
-                            attendeesList.append(userUUID)
-                        }
-                    }
-                    
-                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, locationName: locationName, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .active)
-                    self.events.append(newEvent)
                 })
             }
         })
@@ -82,37 +56,11 @@ final class EventViewModel: ObservableObject {
                         print(error!.localizedDescription)
                         return;
                     }
-                    let eventDict = snapshot?.value as? [String: Any] ?? [String: Any]();
-                    
-                    let eventName = eventDict["eventName"] as! String
-                    let location = eventDict["location"] as! String
-                    let locationName = eventDict["locationName"] as! String
-                    let latitude = eventDict["latitude"] as! Double
-                    let longitude = eventDict["longitude"] as! Double
-                    let startDatetime = eventDict["startDatetime"] as! String
-                    let endDatetime = eventDict["endDatetime"] as! String
-                    let description = eventDict["description"] as! String
-                    let host = eventDict["host"] as! String
-                    
-                    var attendeesList = [String]()
-                    if let usersInvited = eventDict["usersInvited"] as? [String: Any] {
-                        for (userUUID, _) in usersInvited {
-                            attendeesList.append(userUUID)
+                    if let eventDict = snapshot?.value as? [String: Any]{
+                        if let newEvent = processEventDict(eventDict: eventDict, uuid: eventUUID, status: .accepted){
+                            self.events.append(newEvent)
                         }
                     }
-                    if let usersAccepted = eventDict["usersAccepted"] as? [String: Any] {
-                        for (userUUID, _) in usersAccepted {
-                            attendeesList.append(userUUID)
-                        }
-                    }
-                    if let usersDeclined = eventDict["usersDeclined"] as? [String: Any] {
-                        for (userUUID, _) in usersDeclined {
-                            attendeesList.append(userUUID)
-                        }
-                    }
-                    
-                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, locationName: locationName, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .accepted)
-                    self.events.append(newEvent)
                 })
             }
         })
@@ -129,41 +77,52 @@ final class EventViewModel: ObservableObject {
                         print(error!.localizedDescription)
                         return;
                     }
-                    let eventDict = snapshot?.value as? [String: Any] ?? [String: Any]();
-                    
-                    let eventName = eventDict["eventName"] as! String
-                    let location = eventDict["location"] as! String
-                    let locationName = eventDict["locationName"] as! String
-                    let latitude = eventDict["latitude"] as! Double
-                    let longitude = eventDict["longitude"] as! Double
-                    let startDatetime = eventDict["startDatetime"] as! String
-                    let endDatetime = eventDict["endDatetime"] as! String
-                    let description = eventDict["description"] as! String
-                    let host = eventDict["host"] as! String
-                    
-                    var attendeesList = [String]()
-                    if let usersInvited = eventDict["usersInvited"] as? [String: Any] {
-                        for (userUUID, _) in usersInvited {
-                            attendeesList.append(userUUID)
+                    if let eventDict = snapshot?.value as? [String: Any]{
+                        if let newEvent = processEventDict(eventDict: eventDict, uuid: eventUUID, status: .declined){
+                            self.events.append(newEvent)
                         }
                     }
-                    if let usersAccepted = eventDict["usersAccepted"] as? [String: Any] {
-                        for (userUUID, _) in usersAccepted {
-                            attendeesList.append(userUUID)
-                        }
-                    }
-                    if let usersDeclined = eventDict["usersDeclined"] as? [String: Any] {
-                        for (userUUID, _) in usersDeclined {
-                            attendeesList.append(userUUID)
-                        }
-                    }
-                    
-                    let newEvent = Event(UID: eventUUID, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, locationName: locationName, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: .declined)
-                    self.events.append(newEvent)
                 })
             }
         })
+        
+        func processEventDict(eventDict:[String: Any], uuid: String, status:EventState) -> Event? {
+            if let eventName = eventDict["eventName"] as? String,
+               let location = eventDict["location"] as? String,
+               let locationName = eventDict["locationName"] as? String,
+               let latitude = eventDict["latitude"] as? Double,
+               let longitude = eventDict["longitude"] as? Double,
+               let startDatetime = eventDict["startDatetime"] as? String,
+               let endDatetime = eventDict["endDatetime"] as? String,
+               let description = eventDict["description"] as? String,
+               let host = eventDict["host"] as? String
+            {
+                
+                var attendeesList = [String]()
+                if let usersInvited = eventDict["usersInvited"] as? [String: Any] {
+                    for (userUUID, _) in usersInvited {
+                        attendeesList.append(userUUID)
+                    }
+                }
+                if let usersAccepted = eventDict["usersAccepted"] as? [String: Any] {
+                    for (userUUID, _) in usersAccepted {
+                        attendeesList.append(userUUID)
+                    }
+                }
+                if let usersDeclined = eventDict["usersDeclined"] as? [String: Any] {
+                    for (userUUID, _) in usersDeclined {
+                        attendeesList.append(userUUID)
+                    }
+                }
+                
+                let newEvent = Event(UID: uuid, eventName: eventName, startDatetime: startDatetime, endDatetime: endDatetime, address: location, locationName: locationName, latitude: latitude, longitude: longitude, description: description, attendees: attendeesList.joined(separator: ", "), host: host, status: status)
+                return newEvent
+            }
+            return nil
+        }
     }
+    
+    
     
     func loadDummyData(){
         self.events = []

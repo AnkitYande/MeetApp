@@ -18,7 +18,6 @@ class SettingsViewController: UIViewController {
     private let database = Database.database().reference()
     private let storage = Storage.storage()
     
-    @IBOutlet weak var socialNotificationSwitch: UISwitch!
     @IBOutlet weak var checkInNotificationSwitch: UISwitch!
     @IBOutlet weak var displayName: UILabel!
     @IBOutlet weak var username: UILabel!
@@ -27,10 +26,16 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         downloadImage()
+        self.checkInNotificationSwitch.addTarget(self, action: #selector(onSwitchValueChanged(_:)), for: .valueChanged)
+        checkSwitchPosition()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        checkSwitchPosition()
+    }
+    
+    // downlaods image from firebase storage and makes it appear on the settings screen
     func downloadImage() {
-        // TODO: see if can do 1 getData call and get user data
         print("User ID: \(user_id)")
         database.child("users").child(user_id).getData(completion: { error, snapshot in
             guard error == nil else {
@@ -55,6 +60,7 @@ class SettingsViewController: UIViewController {
         
     }
     
+    //checks to see if user wants to change their profile picture by clicking on the image button
     @IBAction func buttonPressed(_ sender: Any) {
         let data = Data()
         ImagePickerManager().pickImage(self){ image in
@@ -76,56 +82,100 @@ class SettingsViewController: UIViewController {
         }
     }
     
-    @IBAction func checkInNotifSwitch(_ sender: Any) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
-        let context = appDelegate.persistentContainer.viewContext
-        
-        let checkInNotif = NSEntityDescription.entity(forEntityName: "notifications", in: context)
-        
-        if checkInNotificationSwitch.isOn {
-            checkInNotif?.setValue(true, forKey: "checkIn")
-        } else {
-            checkInNotif?.setValue(false, forKey: "checkIn")
-        }
-        
-        appDelegate.saveContext()
-    }
-    
-    @IBAction func socialNotifSwitch(_ sender: Any) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
-        let context = appDelegate.persistentContainer.viewContext
-        
-        let checkInNotif = NSEntityDescription.entity(forEntityName: "notifications", in: context)
-        
-        if checkInNotificationSwitch.isOn {
-            checkInNotif?.setValue(true, forKey: "social")
-        } else {
-            checkInNotif?.setValue(false, forKey: "social")
-        }
-        
-        appDelegate.saveContext()
-    }
-    
-    func retrieveNotifications() -> [NSManagedObject] {
+    // checks to see what the checkIn notification is set to in core data and sets the switch respectively
+    private func checkSwitchPosition() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
 
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "notifications")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Notifications")
+        
         var fetchedResults: [NSManagedObject]?
 
         do {
             try fetchedResults = context.fetch(request) as? [NSManagedObject]
+            
+            let notification = fetchedResults?.first
+            
+            var notificationVal = notification?.value(forKey: "checkIn") as! Int
+            
+            if notificationVal == 1 {
+                print("entered on")
+                checkInNotificationSwitch.setOn(true, animated: false)
+            } else {
+                print("entered off")
+                checkInNotificationSwitch.setOn(false, animated: false)
+            }
+        } catch {
+            let nserror = error as NSError
+            NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+            abort()
+        }
+    }
+    
+    //a listener to see if user flips switch
+    @objc private func onSwitchValueChanged(_ sender: UISwitch) {
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Notifications")
+        
+        var fetchedResults: [NSManagedObject]?
+        
+        do {
+            try fetchedResults = context.fetch(request) as? [NSManagedObject]
+            
+            let notification = fetchedResults?.first
+            
+            var notifVal: Bool = true
+            if notification?.value(forKey: "checkIn") != nil {
+                if (sender.isOn == true) {
+                    notifVal = Bool(true)
+                    notification?.setValue(notifVal, forKey: "checkIn")
+                } else {
+                    notifVal = Bool(false)
+                    notification?.setValue(notifVal, forKey: "checkIn")
+                }
+            }
+        } catch {
+            let nserror = error as NSError
+            NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+            abort()
+        }
+        
+        appDelegate.saveContext()
+    }
+    
+    // updates notification bool in core data
+    func updateNotifications() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Notifications")
+        
+        var fetchedResults: [NSManagedObject]?
+
+        do {
+            try fetchedResults = context.fetch(request) as? [NSManagedObject]
+            
+            let notification = fetchedResults?.first
+            if notification?.value(forKey: "checkIn") != nil {
+                if checkInNotificationSwitch.isOn {
+                    notification?.setValue(true, forKey: "checkIn")
+                } else {
+                    notification?.setValue(false, forKey: "checkIn")
+                }
+            }
         } catch {
             let nserror = error as NSError
             NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
             abort()
         }
 
-        return (fetchedResults)!
+        appDelegate.saveContext()
     }
     
+    // signs user out
     @IBAction func signOutButtonPressed(_ sender: Any) {
         let firebaseAuth = Auth.auth()
         do {
@@ -135,6 +185,7 @@ class SettingsViewController: UIViewController {
         }
     }
     
+    //resizes profile image
     private func resizeImage(image: UIImage, newWidth: CGFloat, newHeight: CGFloat) -> UIImage {
         let scale = newWidth / image.size.width
         //let newHeight = image.size.height * scale
