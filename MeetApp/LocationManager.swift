@@ -19,7 +19,7 @@ class LocationManager: NSObject, ObservableObject {
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.distanceFilter = kCLDistanceFilterNone
-        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.requestAlwaysAuthorization()
         self.locationManager.startUpdatingLocation()
     }
 }
@@ -29,8 +29,12 @@ extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             self.userLocation = location
-            let databaseRef = Database.database().reference()
-            databaseRef.child("users").child(user_id).updateChildValues(["latitude": location.coordinate.latitude, "longitude": location.coordinate.longitude])
+            if let locationFLags = UserDefaults.standard.array(forKey: "locationFlags") {
+                if(locationFLags.count > 0){
+                    let databaseRef = Database.database().reference()
+                    databaseRef.child("users").child(user_id).updateChildValues(["latitude": location.coordinate.latitude, "longitude": location.coordinate.longitude])
+                }
+            }
         }
     }
 }

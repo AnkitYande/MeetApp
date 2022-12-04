@@ -24,13 +24,14 @@ class ViewController: UIViewController {
         theContainer.addSubview(childView.view)
                 
         requestAuthorization(completion: { _ in })
-        unshareLocation()
+        
 //        let firebaseAuth = Auth.auth()
 //        do {
 //          try firebaseAuth.signOut()
 //        } catch let signOutError as NSError {
 //          print("Error signing out: %@", signOutError)
 //        }
+
     }
     
     func requestAuthorization(completion: @escaping (Bool) -> Void) {
@@ -38,9 +39,5 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc func unshareLocation(){
-        UserDefaults.standard.set(false, forKey: "locationFlag")
-    }
-
 }
 

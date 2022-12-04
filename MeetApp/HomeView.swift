@@ -97,6 +97,7 @@ struct HomeView: View {
                 }.edgesIgnoringSafeArea(.top)
                     .refreshable {
                         eventViewModel.getEvents()
+                        print("FLAGS", UserDefaults.standard.array(forKey: "locationFlags"))
                     }
                     .onAppear {
                         eventViewModel.getEvents()
