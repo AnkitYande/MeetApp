@@ -49,7 +49,6 @@ public class Event: Identifiable {
         } else {
             self.status = status
         }
-        print("status set to", self.status)
     }
     
     //happening within 1 hour before or after the event

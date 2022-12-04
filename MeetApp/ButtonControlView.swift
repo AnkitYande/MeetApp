@@ -25,7 +25,7 @@ struct ButtonControlView: View {
     
     let event:Event
     var eventViewModel:EventViewModel
-    @Binding var eventList: [Event] // <-- this is literally not used anymore but the code doesn't work without it??
+    @Binding var eventList: [Event]
     
     var body: some View {
         switch event.status {
@@ -101,27 +101,44 @@ struct expired: View {
 struct otw: View {
     let event: Event
     
+    @State private var showingAlert = false
+    @State private var locationFlags = UserDefaults.standard.array(forKey: "locationFlags") as? [String] ?? []
+    
     @State private var location: String = ""
     @State private var locationName: String = ""
     @State private var latitude: Double = 0.0
     @State private var longitude: Double = 0.0
     
     public var body: some View {
-        HStack{
-            Spacer()
-            NavigationLink(destination: MapView(location: $location, locationName: $locationName, latitude: $latitude, longitude: $longitude, eventMap: true, eventName: event.eventName)) {
-                Text("On The Way!")
+        if (locationFlags.contains(event.UID)){
+            HStack{
+                Spacer()
+                NavigationLink(destination: MapView(location: $location, locationName: $locationName, latitude: $latitude, longitude: $longitude, eventMap: true, eventName: event.eventName)) {
+                    Text("See Map")
+                }
+                .fontWeight(.semibold)
+                .frame(minWidth: 128)
+                .padding()
+                .background(Color.purple)
+                .foregroundColor(Color.white)
+                .clipShape(RoundedRectangle(cornerRadius: 100))
+                .clipShape(RoundedRectangle(cornerRadius: 100))
+                Spacer()
+            }.onAppear {
+                setLocation()
             }
-            .fontWeight(.semibold)
-            .frame(minWidth: 128)
-            .padding()
-            .background(Color.purple)
-            .foregroundColor(Color.white)
-            .clipShape(RoundedRectangle(cornerRadius: 100))
-            .clipShape(RoundedRectangle(cornerRadius: 100))
-            Spacer()
-        }.onAppear {
-            setLocation()
+        } else {
+            HStack{
+                Spacer()
+                cta(text: "On The Way!", minWidth: 128, bgColor: Color.purple, action: toggleAlert)
+                    .alert( "On your way?", isPresented: $showingAlert){
+                        Button(action: shareLocation) { Text("Confirm") }
+                        Button("Cancle", role: .cancel) { }
+                    } message: {
+                        Text("Pressing confirm will allow everyone in your event be able to see your location until the event ends")
+                    }
+                Spacer()
+            }
         }
     }
     
@@ -130,7 +147,25 @@ struct otw: View {
         locationName = event.locationName
         latitude = event.latitude
         longitude = event.longitude
-        print("Location has been set to: \(location). \nLAT: \(latitude)\tLON: \(longitude)")
+        //        print("Location has been set to: \(location). \nLAT: \(latitude)\tLON: \(longitude)")
+    }
+    
+    func toggleAlert() -> Void{
+        self.showingAlert = !self.showingAlert
+    }
+    
+    func shareLocation(){
+        locationFlags.append(event.UID)
+        UserDefaults.standard.set(locationFlags, forKey: "locationFlags")
+        let timeDelta = event.endDatetime + 3600 - Date()
+        print("removing flag in", timeDelta)
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeDelta) {
+            print("EVENT EXPIRED")
+            print(locationFlags)
+            locationFlags.removeAll(where: {$0 == event.UID})
+            print(locationFlags)
+            UserDefaults.standard.set(locationFlags, forKey: "locationFlags")
+        }
     }
 }
 
@@ -167,50 +202,51 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
     
     let notifications = retrieveNotifications()
     let notification = notifications.first
-
-    var notificationVal = notification?.value(forKey: "checkIn") as! Int
-    // checks if user wants notifications then proceeds to send a notification an hour before the event starts
-    if notificationVal == 1 {
-        if newStatus == "Accepted" {
-
-            let notificationContent = UNMutableNotificationContent()
-            notificationContent.title = "MeetApp"
-            notificationContent.subtitle = "Check In"
-            notificationContent.body = "Check into your upcoming event!"
-            
-            databaseRef.child("events").child(eventID).child("startDatetime").getData(completion: {error, snapshot in
-                guard error == nil else {
-                    print(error!.localizedDescription)
-                    return;
-                }
-                let startTime = snapshot?.value as? String
+    
+    if let notificationVal = notification?.value(forKey: "checkIn") as? Int{
+        // checks if user wants notifications then proceeds to send a notification an hour before the event starts
+        if notificationVal == 1 {
+            if newStatus == "Accepted" {
                 
-                let start = convertStringToDate(datetimeString: startTime ?? "")
+                let notificationContent = UNMutableNotificationContent()
+                notificationContent.title = "MeetApp"
+                notificationContent.subtitle = "Check In"
+                notificationContent.body = "Check into your upcoming event!"
                 
-                let notifTime = start.subtractHours(1)
-                
-                let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
-                
-                var notifRemTime = start - Date()
-                notifRemTime -= 3600
-                if notifRemTime > 0 {
-                    let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+                databaseRef.child("events").child(eventID).child("startDatetime").getData(completion: {error, snapshot in
+                    guard error == nil else {
+                        print(error!.localizedDescription)
+                        return;
+                    }
+                    let startTime = snapshot?.value as? String
                     
-                    let notificationTriggerInterval = UNTimeIntervalNotificationTrigger(timeInterval: notifRemTime, repeats: false)
+                    let start = convertStringToDate(datetimeString: startTime ?? "")
                     
-                    let notificationRequest = UNNotificationRequest(identifier: "checkInNotif", content: notificationContent, trigger: notificationTriggerInterval)
-
-                    let notificationCenter = UNUserNotificationCenter.current()
-                    notificationCenter.add(notificationRequest) { error in
-                        if error != nil {
-                            print(error!.localizedDescription)
+                    let notifTime = start.subtractHours(1)
+                    
+                    let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
+                    
+                    var notifRemTime = start - Date()
+                    notifRemTime -= 3600
+                    if notifRemTime > 0 {
+                        let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+                        
+                        let notificationTriggerInterval = UNTimeIntervalNotificationTrigger(timeInterval: notifRemTime, repeats: false)
+                        
+                        let notificationRequest = UNNotificationRequest(identifier: "checkInNotif", content: notificationContent, trigger: notificationTriggerInterval)
+                        
+                        let notificationCenter = UNUserNotificationCenter.current()
+                        notificationCenter.add(notificationRequest) { error in
+                            if error != nil {
+                                print(error!.localizedDescription)
+                            }
                         }
                     }
-                }
-            })
-        } else if newStatus == "Declined" {
-            let center = UNUserNotificationCenter.current()
-            center.removePendingNotificationRequests(withIdentifiers: ["checkInNotif"])
+                })
+            } else if newStatus == "Declined" {
+                let center = UNUserNotificationCenter.current()
+                center.removePendingNotificationRequests(withIdentifiers: ["checkInNotif"])
+            }
         }
     }
     // update in UI
@@ -219,7 +255,6 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
     let eventsCopy = eventViewModel.events
     if let event = eventsCopy.first(where: {$0.UID == eventID}){
         event.setStatus(status: newState)
-        print("stsus set to", event.status)
     }else{
         print("ERROR: event not found")
     }
@@ -231,10 +266,10 @@ func changeEventStatus(eventID:String, currentStatus:String, newStatus:String, n
 func retrieveNotifications() -> [NSManagedObject] {
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let context = appDelegate.persistentContainer.viewContext
-
+    
     let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Notifications")
     var fetchedResults: [NSManagedObject]?
-
+    
     do {
         try fetchedResults = context.fetch(request) as? [NSManagedObject]
     } catch {
@@ -242,7 +277,7 @@ func retrieveNotifications() -> [NSManagedObject] {
         NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
         abort()
     }
-
+    
     return (fetchedResults)!
 }
 

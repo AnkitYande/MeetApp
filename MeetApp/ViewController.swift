@@ -31,6 +31,7 @@ class ViewController: UIViewController {
 //        } catch let signOutError as NSError {
 //          print("Error signing out: %@", signOutError)
 //        }
+
     }
     
     func requestAuthorization(completion: @escaping (Bool) -> Void) {
@@ -38,8 +39,5 @@ class ViewController: UIViewController {
         }
     }
     
-    
-
-
 }
 
