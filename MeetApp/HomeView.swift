@@ -49,10 +49,10 @@ struct HomeView: View {
                             .font(.title)
                             .fontWeight(.bold)
                             .padding(.top, 24.0)
-                        if eventViewModel.events.contains(where: {$0.status == .active || $0.status == .accepted && !$0.isHappeningNow()}){
+                        if eventViewModel.events.contains(where: {($0.status == .active || $0.status == .accepted) && !$0.isHappeningNow()}){
                             LazyVStack(){
                                 ForEach(eventViewModel.events.sorted(by: {$0.startDatetime < $1.startDatetime}), id:\.UID) { event in
-                                    if(event.status == .active || event.status == .accepted && !event.isHappeningNow()){
+                                    if((event.status == .active || event.status == .accepted) && !event.isHappeningNow()){
                                         card(event: event, eventList: $eventViewModel.events, eventViewModel: eventViewModel)
                                     }
                                 }
@@ -97,7 +97,7 @@ struct HomeView: View {
                 }.edgesIgnoringSafeArea(.top)
                     .refreshable {
                         eventViewModel.getEvents()
-                        print("FLAGS", UserDefaults.standard.array(forKey: "locationFlags"))
+//                        print("FLAGS", UserDefaults.standard.array(forKey: "locationFlags"))
                     }
                     .onAppear {
                         eventViewModel.getEvents()
