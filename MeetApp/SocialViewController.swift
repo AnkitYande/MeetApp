@@ -52,13 +52,13 @@ class SocialViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed)), animated: false)
-        
         if selectionEnabled {
             confirmButton.isHidden = false
             confirmButton.isEnabled = false
         } else {
             confirmButton.isHidden = true
+            
+            self.navigationController?.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed)), animated: false)
         }
         switch self.viewMode {
         case .friendView:
