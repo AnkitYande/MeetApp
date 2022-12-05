@@ -22,7 +22,6 @@ struct MapView: View {
     @State private var animationAmount = 1.0
     @Binding var location: String
     @Binding var locationName: String
-    //    @State private var directions: [String] = []
     @State private var showDirections = true
     @State private var showAllUsers = false
     @Binding var latitude: Double
@@ -36,6 +35,8 @@ struct MapView: View {
     var eventName: String = ""
     var eventID: String = ""
     
+    // Retrieves nearby landmarks based on search query
+    // and adds them to the map
     private func getNearbyLandmarks() {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = search
@@ -51,6 +52,7 @@ struct MapView: View {
         }
     }
     
+    // Calculates the offset for the PlaceListView after searching
     func calculateOffset() -> CGFloat {
         if self.landmarks.count > 0 && !self.tapped {
             return UIScreen.main.bounds.size.height - UIScreen.main.bounds.size.height / 4
@@ -61,6 +63,8 @@ struct MapView: View {
         }
     }
     
+    // Sets the values to pass on after selecting a location from the map
+    // when creating an event
     func chooseLocation(chosenLocation: String, chosenLocationName: String, coordinate: CLLocationCoordinate2D) {
         self.location = chosenLocation
         self.locationName = chosenLocationName
@@ -136,6 +140,7 @@ class Coordinator: NSObject, MKMapViewDelegate {
         self.selectedRegion = selectedRegion
     }
     
+    // Sets the initial region for the map view
     func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
         if selectionFlag {
             mapView.setRegion(selectedRegion, animated: true)
@@ -149,6 +154,7 @@ class Coordinator: NSObject, MKMapViewDelegate {
         }
     }
     
+    // Renders the overlay for displaying directions
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
         renderer.strokeColor = .systemBlue
@@ -156,6 +162,8 @@ class Coordinator: NSObject, MKMapViewDelegate {
         return renderer
     }
     
+    // Customizes map annotations for the user, other users, and locations on the map,
+    // setting icon images to profile pictures for other users
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "")
         if annotation is MKUserLocation {
@@ -182,6 +190,8 @@ class Coordinator: NSObject, MKMapViewDelegate {
         return annotationView
     }
     
+    // Displays directions from the selected user annotation to the event
+    // location, clearing the map of any paths shown before
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if let annotation = view.annotation {
             let startingCoordinate = annotation.coordinate
@@ -196,6 +206,8 @@ class Coordinator: NSObject, MKMapViewDelegate {
         }
     }
     
+    // Launches Apple Maps with directions to the event location when the callout
+    // accessory item is selected for a location annotation
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if let annotation = view.annotation {
             if annotation is LandmarkAnnotation {
@@ -216,10 +228,10 @@ struct MapKitView: UIViewRepresentable {
     var eventLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
     
     @State var region: MKCoordinateRegion = MKCoordinateRegion()
-//    @Binding var directions: [String]
     @Binding var showDirections: Bool
     @Binding var showAllUsers: Bool
     
+    // Outputs a location from an input address string
     func findLocationByAddress(address: String, completion: @escaping((CLLocation?) -> ())) {
         let geoCoder = CLGeocoder()
         geoCoder.geocodeAddressString(address, completionHandler: {(places, error) in
@@ -228,6 +240,7 @@ struct MapKitView: UIViewRepresentable {
         })
     }
     
+    // Initializes the map view, showing directions if flag is set
     func makeUIView(context: Context) -> MKMapView {
         let map = MKMapView()
         map.showsUserLocation = true
@@ -242,6 +255,8 @@ struct MapKitView: UIViewRepresentable {
         return map
     }
     
+    // Creates a directions request and renders the path from the start
+    // location to the event location
     func displayDirections(map: MKMapView, start: MKPlacemark) {
         let dest = MKPlacemark(coordinate: eventLocation)
         let request = MKDirections.Request()
@@ -252,24 +267,24 @@ struct MapKitView: UIViewRepresentable {
         let directions = MKDirections(request: request)
         directions.calculate { response, error in
             guard let route = response?.routes.first else { return }
-            //            map.addAnnotations([start, dest])
-            //            map.addAnnotation(dest)
             map.addOverlay(route.polyline)
             map.setVisibleMapRect(
                 route.polyline.boundingMapRect,
                 edgePadding: UIEdgeInsets(top: 100, left: 100, bottom: 100, right: 100),
                 animated: true)
             print(eta(seconds: route.expectedTravelTime))
-//            self.directions = route.steps.map { $0.instructions }.filter { !$0.isEmpty }
         }
     }
     
+    // Returns a string displaying the seconds of a trip
+    // in a more readable format
     func eta(seconds: Double) -> String {
       let (hr,  minf) = modf(seconds / 3600)
       let (min, secf) = modf(60 * minf)
       return "ETA: \(Int(hr)) hour(s), \(Int(min)) minute(s), and \(String(format: "%.0f", 60 * secf)) second(s)"
     }
     
+    // Customizes the coordinator object with a selected region if chosen
     func makeCoordinator() -> Coordinator {
         if address != "" {
             return Coordinator(control: self, selectionFlag: true, selectedRegion: region)
@@ -282,6 +297,8 @@ struct MapKitView: UIViewRepresentable {
         updateAnnotations(from: uiView)
     }
     
+    // Adds location landmarks as annotations on the map, adding user
+    // landmarks if the flag is set
     private func updateAnnotations(from mapView: MKMapView) {
         mapView.removeAnnotations(mapView.annotations)
         var annotations = self.landmarks.map(LandmarkAnnotation.init)

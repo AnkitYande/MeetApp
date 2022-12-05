@@ -13,6 +13,7 @@ final class UserViewModel: ObservableObject {
     
     @Published var users: [User] = []
     
+    // Returns all users in the database
     func getAllUsers(excludesSelf: Bool, completion: @escaping ([User]) -> Void) {
         print("Fetching all users...")
         let group = DispatchGroup()
@@ -63,6 +64,7 @@ final class UserViewModel: ObservableObject {
         }
     }
     
+    // Returns all friends of the current user
     func getFriends(completion: @escaping ([User]) -> Void) {
         print("Fetching all friends for \(user_id)...")
         let group = DispatchGroup()
@@ -111,6 +113,8 @@ final class UserViewModel: ObservableObject {
         
     }
     
+    // Helper function for creating a User object from information retrieved
+    // from the database
     func processUserInfo(userInfo:[String:Any], userID:String) -> User? {
         if  let username = userInfo["username"] as? String,
             let email = userInfo["email"] as? String,
@@ -140,6 +144,7 @@ final class UserViewModel: ObservableObject {
         return nil
     }
     
+    // Returns all users that have accepted invitations to a specific event
     func getUsersForEvent(eventID: String, completion: @escaping ([User]) -> Void) {
         print("Fetching users for event \(eventID)...")
         let group = DispatchGroup()

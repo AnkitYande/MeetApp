@@ -49,6 +49,7 @@ final class LandmarkAnnotation: NSObject, MKAnnotation {
         self.isUser = landmark.isUser
     }
     
+    // Creates a map item based on an address and title
     func mapItem() -> MKMapItem {
         let addressDictionary = [CNPostalAddressStreetKey: title]
         let placemark = MKPlacemark(coordinate: coordinate, addressDictionary: addressDictionary)
