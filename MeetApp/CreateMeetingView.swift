@@ -73,11 +73,6 @@ struct CreateEventView: View {
                 return;
             }
             
-//            var allUsersDict = snapshot?.value as? [String: AnyObject] ?? [:]
-//
-//            for (userId, _) in allUsersDict {
-//                allUsersDict[userId] = true as AnyObject
-//            }
             var invitedDict = [String: Bool]()
             invitedDict[user_id] = true // invite yourself
             for user in self.friendsInvited {

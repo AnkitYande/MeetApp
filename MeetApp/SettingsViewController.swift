@@ -96,9 +96,9 @@ class SettingsViewController: UIViewController {
             
             let notification = fetchedResults?.first
             
-            var notificationVal = notification?.value(forKey: "checkIn") as! Int
+            let notificationVal = notification?.value(forKey: "checkIn") as? Bool ?? true
             
-            if notificationVal == 1 {
+            if notificationVal {
                 print("entered on")
                 checkInNotificationSwitch.setOn(true, animated: false)
             } else {
@@ -133,6 +133,7 @@ class SettingsViewController: UIViewController {
                     notifVal = Bool(true)
                     notification?.setValue(notifVal, forKey: "checkIn")
                 } else {
+                    print("set to false")
                     notifVal = Bool(false)
                     notification?.setValue(notifVal, forKey: "checkIn")
                 }

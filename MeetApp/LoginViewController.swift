@@ -7,11 +7,12 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
 
 public var user_id = ""
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
-
+    
     @IBOutlet weak var loginEmailTextField: UITextField!
     @IBOutlet weak var loginPasswordTextField: UITextField!
     
@@ -29,14 +30,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         if Auth.auth().currentUser != nil {
-            user_id = Auth.auth().currentUser!.uid
-            print("id: \(user_id)")
-            performSegue(withIdentifier: loginSegueIdentifier, sender: self)
+            let temp_user_id = Auth.auth().currentUser!.uid
+            let databaseRef = Database.database().reference()
+            databaseRef.child("users").observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.hasChild(temp_user_id){
+                    user_id = Auth.auth().currentUser!.uid
+                    print("id: \(user_id)")
+                    self.performSegue(withIdentifier: self.loginSegueIdentifier, sender: self)
+                }else{
+                    print("Existing user not found in DB")
+                }
+            })
         }
     }
     
     @IBAction func unwindToFirstViewController(_ sender: UIStoryboardSegue) {
-         // No code needed, no need to connect the IBAction explicitely
+        // No code needed, no need to connect the IBAction explicitely
     }
     
     @IBAction func loginButtonPressed(_ sender: Any) {
